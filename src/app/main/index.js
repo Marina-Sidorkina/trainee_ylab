@@ -7,6 +7,7 @@ import Layout from "@src/components/layouts/layout";
 import TopContainer from "@src/containers/top";
 import HeadContainer from "@src/containers/head";
 import ToolsContainer from "@src/containers/tools";
+import CustomSelectContainer from "@src/containers/custom-select-container";
 
 function Main() {
   const store = useStore();
@@ -23,6 +24,7 @@ function Main() {
       <TopContainer/>
       <HeadContainer/>
       <ToolsContainer/>
+      <CustomSelectContainer />
       <CatalogFilter/>
       <CatalogList/>
     </Layout>
