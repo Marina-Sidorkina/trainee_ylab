@@ -15,18 +15,33 @@
   height: 30px;
   padding: 5px;
   background-color: #ffffff;
-  border: none;
   cursor: pointer;
 }
 
+.CustomSelect-control:focus {
+  border: 1px solid #6f7eff;
+  outline: none;
+  padding: 4px;
+}
+
 .CustomSelect-search {
-  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   height: 15px;
   width: 217px;
   margin: 5px 0 10px 0;
-  border: none;
   font-size: 13px;
+  line-height: 13px;
   font-style: italic;
+  border: none;
+}
+
+.CustomSelect-search:focus {
+  box-sizing: content-box;
+  border: 1px solid #6f7eff;
+  outline: none;
+  margin: 4px 0 9px 0;
 }
 
 .CustomSelect-dropdown {
@@ -37,34 +52,35 @@
   max-height: 163px;
   width: 240px;
   padding: 5px;
+  box-shadow: 0px 8px 8px rgba(60, 60, 63, 0.25);
 }
 
 .CustomSelect-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   padding: 0;
-  margin-top: 0;
-  margin-bottom: 0;
+  margin: 0;
   list-style-type: none;
-  width: 100%;
-  height: 120px;
+  width: 230px;
+  max-height: 120px;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
 .CustomSelect-list::-webkit-scrollbar {
   width: 8px;
-  height: 60px;
-}
-
-.CustomSelect-list::-webkit-scrollbar {
-  background: transparent;
+  background-color: transparent !important;
 }
 
 .CustomSelect-list::-webkit-scrollbar-thumb {
-  background: #e5e6e9 !important;
+  background: #e5e6e9;
   border-radius: 5px;
+  width: 8px;
+  height: 60px;
 }
 
-.CustomSelect-item {
+.CustomSelect-option {
   box-sizing: border-box;
   display: flex;
   justify-content: flex-start;
@@ -77,16 +93,22 @@
   transition-duration: 0.5s;
 }
 
-.CustomSelect-item_current {
+.CustomSelect-option_current {
   background-color: #808dff;
 }
 
-.CustomSelect-item_hover:hover {
+.CustomSelect-option_hover:hover {
   background-color: #dbdfff;
 }
-.CustomSelect-item:focus {
+.CustomSelect-option_hover:focus {
   border: 1px solid #6f7eff;
   outline: none;
+  padding: 4px;
+}
+
+.CustomSelect-option_current:focus {
+  border: 1px solid #191F4D;
+  background-color: #dbdfff;
 }
 
 .CustomSelect-code {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import propTypes from 'prop-types';
 import {cn as bem} from '@bem-react/classname';
 import './style.css';
@@ -6,104 +6,113 @@ import arrow from "@src/components/custom-select/custom-select-arrow.svg";
 
 const cn = bem('CustomSelect');
 
-const CustomSelect = () => undefined;
+const CustomSelect = (
+  {
+    showSearch,
+    currentSearchValue,
+    currentCode,
+    currentTitle,
+    onSelect,
+    children,
+  }) => {
 
-CustomSelect.Container = ({children}) => (
-  <div className={cn('container')}>{children}</div>
-);
+  const [open, setOpen] = useState(false);
+  const [currentCodeValue, setCurrentCodeValue] = useState(currentCode);
+  const [currentTitleValue, setCurrentTitleValue] = useState(currentTitle);
+  const [searchValue, setSearchValue] = useState(currentSearchValue || '');
 
-CustomSelect.Control = ({children}) => (
-  <button className={cn('control')}>
-    {children}
-    <img className={cn('arrow')} src={arrow} alt='dropdown arrow icon'/>
-  </button>
-);
+  const extendedChildren = React.Children.map(children, child => {
+    if (child.props.title.toLowerCase().startsWith(searchValue.toLowerCase())) {
+      return React.cloneElement(child, {
+        onSelect: ({code, title}) => {
+          setCurrentCodeValue(code);
+          setCurrentTitleValue(title);
+          onSelect({code, title});
+        },
+        current: child.props.code === currentCodeValue
+      })
+    } else {
+      return null;
+    }
+  });
 
-CustomSelect.Dropdown = ({children}) => (
-  <div className={cn('dropdown')}>{children}</div>
-);
+  return (
+    <div className={cn('container')}>
+      <div className={cn('control')}
+           tabIndex='0'
+           onKeyDown={(evt) => {
+             if(evt.key === 'ArrowDown') setOpen(true);
+           }}
+           onClick={() => setOpen((value) => !value)}>
+        <div className={cn('option', {current: false, hover: false})} tabIndex='-1'>
+          <span className={cn('code')}>{currentCodeValue}</span>
+          <span className={cn('title')}>{currentTitleValue}</span>
+        </div>
+        <img className={cn('arrow')} src={arrow} alt='dropdown arrow icon'/>
+      </div>
+      {
+        open && <div className={cn('dropdown')}>
+        {
+          showSearch && <input className={cn('search')} type='text'
+                               placeholder='Поиск'
+                               tabIndex='0'
+                               value={searchValue}
+                               onChange={(evt) => setSearchValue(evt.target.value)}/>
+        }
+        <ul className={cn('list')}
+            onClick={() => setOpen(false)}
+            onKeyPress={(evt) => {
+              if(evt.key === 'Enter') setOpen(false);
+            }}>
+          {extendedChildren}
+        </ul>
+      </div>
+      }
+    </div>
+  )
+};
 
-CustomSelect.Search = ({onChange}) => (
-  <input className={cn('search')}
-         type='text'
-         placeholder='Поиск'
-         tabIndex='0'
-         onChange={(evt) => onChange(evt.target.value)}/>
-);
-
-CustomSelect.Item = ({code, title, current, hover}) => (
-  <li className={cn('item', {current, hover})} tabIndex='0'>
+CustomSelect.Option = ({code, title, current, onSelect}) => (
+  <li className={cn('option', {current, hover: true})}
+      tabIndex='0'
+      onKeyPress={(evt) => {
+        if (evt.key === 'Enter') onSelect({code, title});
+      }}
+      onClick={() => onSelect({code, title})}
+      role="option">
     <span className={cn('code')}>{code}</span>
     <span className={cn('title')}>{title}</span>
   </li>
 );
 
-CustomSelect.List = ({data, currentCode}) => (
-  <ul className={cn('list')}>
-    {data.map(item => (
-      <CustomSelect.Item title={item.title}
-                         code={item.code}
-                         current={item.code === currentCode}
-                         key={item.code}/>
-    ))}
-  </ul>
-);
-
 // PropTypes
-CustomSelect.Container.propTypes = {
+CustomSelect.propTypes = {
+  showSearch: propTypes.bool,
+  currentCode: propTypes.string,
+  currentTitle: propTypes.string,
   children: propTypes.node,
+  currentSearchValue: propTypes.string,
 }
 
-CustomSelect.Container.defaultProps = {
-  children: null,
+CustomSelect.defaultProps = {
+  showSearch: false,
+  currentCode: '',
+  currentTitle: '',
+  currentSearchValue: '',
 }
 
-CustomSelect.Control.propTypes = {
-  children: propTypes.node,
-}
-
-CustomSelect.Control.defaultProps = {
-  children: null,
-}
-
-CustomSelect.Dropdown.propTypes = {
-  children: propTypes.node,
-}
-
-CustomSelect.Dropdown.defaultProps = {
-  children: null,
-}
-
-CustomSelect.Search.propTypes = {
-  onChange: propTypes.func,
-}
-
-CustomSelect.Search.defaultProps = {
-  onChange: () => {},
-}
-
-CustomSelect.Item.propTypes = {
+CustomSelect.Option.propTypes = {
   code: propTypes.string,
   title: propTypes.string,
   current: propTypes.bool,
-  hover: propTypes.bool,
+  onSelect: propTypes.func,
 }
 
-CustomSelect.Item.defaultProps = {
+CustomSelect.Option.defaultProps = {
   code: '',
   title: '',
   current: false,
-  hover: true,
-}
-
-CustomSelect.List.propTypes = {
-  data: propTypes.array,
-  currentCode: propTypes.string,
-}
-
-CustomSelect.List.defaultProps = {
-  data: [],
-  currentCode: '',
+  onSelect: () => {},
 }
 
 // Export
