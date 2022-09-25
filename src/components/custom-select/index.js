@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback, useMemo} from 'react';
 import propTypes from 'prop-types';
 import {cn as bem} from '@bem-react/classname';
 import './style.css';
 import arrow from "@src/components/custom-select/custom-select-arrow.svg";
 import CustomScroll from "@src/components/custom-scroll";
+
 
 const cn = bem('CustomSelect');
 
@@ -22,6 +23,21 @@ const CustomSelect = (
   const [currentTitleValue, setCurrentTitleValue] = useState(currentTitle);
   const [searchValue, setSearchValue] = useState(currentSearchValue || '');
   const [shift, setShift] = useState(false);
+
+  const extendedChildren = React.Children.map(children, child => {
+    if (child.props.title.toLowerCase().startsWith(searchValue.toLowerCase())) {
+      return React.cloneElement(child, {
+        onSelect: ({code, title}) => {
+          setCurrentCodeValue(code);
+          setCurrentTitleValue(title);
+          onSelect({code, title});
+        },
+        current: child.props.code === currentCodeValue && child.props.title === currentTitleValue
+      })
+    } else {
+      return null;
+    }
+  });
 
   const onCustomSelectClose = (evt) => {
     if(evt.type === 'keyup' && evt.key === 'Shift') {
@@ -64,42 +80,40 @@ const CustomSelect = (
     }
   }
 
+  const callbacks = {
+    onCustomSelectClose: useCallback(onCustomSelectClose, [open, shift]),
+  };
+
+  const options = {
+    scrollParams: useMemo(() => ({
+      height: 120,
+      width: 230,
+      pinHeight: 60,
+      pinWidth: 8,
+    }), []),
+  }
+
   useEffect(() => {
     if(open) {
-      document.addEventListener('click', onCustomSelectClose);
-      document.addEventListener('keydown', onCustomSelectClose);
-      document.addEventListener('focus', onCustomSelectClose);
-      document.addEventListener('keyup', onCustomSelectClose);
-      document.addEventListener('focus', onCustomSelectClose);
+      document.addEventListener('click', callbacks.onCustomSelectClose);
+      document.addEventListener('keydown', callbacks.onCustomSelectClose);
+      document.addEventListener('focus', callbacks.onCustomSelectClose);
+      document.addEventListener('keyup', callbacks.onCustomSelectClose);
+      document.addEventListener('focus', callbacks.onCustomSelectClose);
     } else {
-      document.removeEventListener('click', onCustomSelectClose);
-      document.removeEventListener('keydown', onCustomSelectClose);
-      document.removeEventListener('focus', onCustomSelectClose);
-      document.removeEventListener('keyup', onCustomSelectClose);
+      document.removeEventListener('click', callbacks.onCustomSelectClose);
+      document.removeEventListener('keydown', callbacks.onCustomSelectClose);
+      document.removeEventListener('focus', callbacks.onCustomSelectClose);
+      document.removeEventListener('keyup', callbacks.onCustomSelectClose);
     }
 
     return () => {
-      document.removeEventListener('click', onCustomSelectClose);
-      document.removeEventListener('keydown', onCustomSelectClose);
-      document.removeEventListener('focus', onCustomSelectClose);
-      document.removeEventListener('keyup', onCustomSelectClose);
+      document.removeEventListener('click', callbacks.onCustomSelectClose);
+      document.removeEventListener('keydown', callbacks.onCustomSelectClose);
+      document.removeEventListener('focus', callbacks.onCustomSelectClose);
+      document.removeEventListener('keyup', callbacks.onCustomSelectClose);
     }
   }, [open, shift])
-
-  const extendedChildren = React.Children.map(children, child => {
-    if (child.props.title.toLowerCase().startsWith(searchValue.toLowerCase())) {
-      return React.cloneElement(child, {
-        onSelect: ({code, title}) => {
-          setCurrentCodeValue(code);
-          setCurrentTitleValue(title);
-          onSelect({code, title});
-        },
-        current: child.props.code === currentCodeValue && child.props.title === currentTitleValue
-      })
-    } else {
-      return null;
-    }
-  });
 
   return (
     <div className={cn('container')}
@@ -134,7 +148,11 @@ const CustomSelect = (
                                onChange={(evt) => setSearchValue(evt.target.value)}
                                aria-label="Поле поиска по опциям выпадающего списка"/>
         }
-        <CustomScroll showScroll={extendedChildren.length > 4}>
+        <CustomScroll showScroll={extendedChildren.length > 4}
+                      scrollHeight={options.scrollParams.height}
+                      scrollWidth={options.scrollParams.width}
+                      pinHeight={options.scrollParams.pinHeight}
+                      pinWidth={options.scrollParams.pinWidth}>
           <ul className={cn('list')}
               onClick={() => setOpen(false)}
               onKeyPress={(evt) => {

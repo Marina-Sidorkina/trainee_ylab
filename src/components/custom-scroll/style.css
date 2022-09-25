@@ -2,9 +2,22 @@
   position: relative;
   display: flex;
   justify-content: flex-end;
-  width: 230px;
-  height: 120px;
-  overflow-y: hidden;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.CustomScroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.CustomScroll::-webkit-scrollbar {
+  background: transparent;
+  width: 0;
+  height: 0;
+}
+
+.CustomScroll::-webkit-scrollbar-thumb {
+  background: transparent;
 }
 
 .CustomScroll-track {
@@ -13,32 +26,27 @@
   left: 0;
   display: flex;
   flex-direction: column;
-  width: 230px;
 }
 
 .CustomScroll-line {
   position: absolute;
   top: 0;
   right: 5px;
-  width: 8px;
-  height: 120px;
   background-color: transparent;
 }
 
-.CustomScroll-line.displayNone {
-  display: none;
-}
-
 .CustomScroll-pin {
+  display: block;
   position: absolute;
   top: 0;
   left: 0;
   z-index: 1;
 
-  width: 8px;
-  height: 60px;
   background-color: #e5e6e9;;
   border-radius: 5px;
   cursor: pointer;
 }
 
+.hidden {
+  display: none;
+}

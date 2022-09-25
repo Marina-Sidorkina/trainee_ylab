@@ -2,23 +2,35 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 import './style.css';
 import propTypes from "prop-types";
 
-const CustomScroll = ({showScroll, children}) => {
+const CustomScroll = (
+  {
+    showScroll,
+    scrollHeight,
+    scrollWidth,
+    pinHeight,
+    pinWidth,
+    children
+  }
+) => {
   const scroll = useRef(null);
   const track = useRef(null);
   const pin = useRef(null);
-  const percent = 60 / 100;
+  const movementLength = scrollHeight - pinHeight;
+  const percent = (movementLength) / 100;
   const [step, setStep] = useState(0);
+  const [start, setStart] = useState(0);
 
   useEffect(() => {
-    setStep((parseInt(getComputedStyle(track.current).getPropertyValue("height"), 10) - 120) / 100);
+    setStep((parseInt(getComputedStyle(track.current).getPropertyValue("height"), 10) - scrollHeight) / 100);
+    setStart(scroll.current.getBoundingClientRect().y);
   }, [])
 
   const checkMoveCoordinateValue = coordinate => {
     let value = coordinate;
     if (value < 0) {
       value = 0;
-    } else if (value > 60) {
-      value = 60;
+    } else if (value > movementLength) {
+      value = movementLength;
     }
     return value;
   };
@@ -52,20 +64,43 @@ const CustomScroll = ({showScroll, children}) => {
       scroll.current.addEventListener('mouseup', onMouseUp);
       scroll.current.addEventListener('mouseleave', onMouseLeave);
     }, [scroll.current]),
+    onScroll: useCallback(() => {
+      const dist = start - scroll.current.getBoundingClientRect().y;
+      let topValue = dist + ((dist / step) * percent);
+      if(topValue >= ((step * 100) + movementLength)) topValue = (step * 100) + movementLength;
+      pin.current.style.top = topValue + 'px';
+    }, [pin.current]),
   };
 
   return (
-    <div className="CustomScroll">
-      {showScroll && <div className="CustomScroll-line" ref={scroll}>
-        <div className="CustomScroll-pin" ref={pin} onMouseDown={callbacks.onMouseDown}/>
+    <div className="CustomScroll"
+         onScroll={callbacks.onScroll}
+         style = {{
+           height: scrollHeight.toString() + 'px',
+           width: scrollWidth.toString() + 'px'}}>
+      {showScroll && <div className="CustomScroll-line"
+                          ref={scroll}
+                          style = {{
+                            height: scrollHeight.toString() + 'px',
+                            width: pinWidth.toString() + 'px'}}>
+        <div className="CustomScroll-pin"
+             ref={pin} onMouseDown={callbacks.onMouseDown}
+             style = {{
+               height: pinHeight.toString() + 'px',
+               width: pinWidth.toString() + 'px',
+             }}/>
       </div>}
       <div className="CustomScroll-track"
            ref={track}
            onKeyDown={(evt) => {
              if(evt.key === 'Tab') {
-               pin.current.style.display = 'none'
-             }}}
-           style={showScroll ? {} : {top: '0'}}>
+               //pin.current.classList.add('hidden');
+             }
+           }}
+           style={{
+             ...showScroll ? {} : {top: '0'},
+             width: scrollWidth.toString() + 'px'
+            }}>
         {children}
       </div>
     </div>
@@ -75,9 +110,11 @@ const CustomScroll = ({showScroll, children}) => {
 // PropTypes
 CustomScroll.propTypes = {
   children: propTypes.node,
-}
-
-CustomScroll.defaultProps = {
+  showScroll: propTypes.bool.isRequired,
+  scrollHeight: propTypes.number.isRequired,
+  scrollWidth: propTypes.number.isRequired,
+  pinHeight: propTypes.number.isRequired,
+  pinWidth: propTypes.number.isRequired,
 }
 
 // Export
