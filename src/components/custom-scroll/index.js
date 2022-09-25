@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 import './style.css';
 import propTypes from "prop-types";
 
-const CustomScroll = ({children}) => {
+const CustomScroll = ({showScroll, children}) => {
   const scroll = useRef(null);
   const track = useRef(null);
   const pin = useRef(null);
@@ -55,15 +55,17 @@ const CustomScroll = ({children}) => {
   };
 
   return (
-    <div className="CustomScroll" onSelect={(evt) => evt.preventDefault()}>
-      <div className="CustomScroll-line" ref={scroll}>
+    <div className="CustomScroll">
+      {showScroll && <div className="CustomScroll-line" ref={scroll}>
         <div className="CustomScroll-pin" ref={pin} onMouseDown={callbacks.onMouseDown}/>
-      </div>
-      <div className="CustomScroll-track" ref={track}
+      </div>}
+      <div className="CustomScroll-track"
+           ref={track}
            onKeyDown={(evt) => {
              if(evt.key === 'Tab') {
                pin.current.style.display = 'none'
-             }}}>
+             }}}
+           style={showScroll ? {} : {top: '0'}}>
         {children}
       </div>
     </div>

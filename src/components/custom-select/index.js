@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import propTypes from 'prop-types';
 import {cn as bem} from '@bem-react/classname';
 import './style.css';
@@ -21,6 +21,70 @@ const CustomSelect = (
   const [currentCodeValue, setCurrentCodeValue] = useState(currentCode);
   const [currentTitleValue, setCurrentTitleValue] = useState(currentTitle);
   const [searchValue, setSearchValue] = useState(currentSearchValue || '');
+  const [shift, setShift] = useState(false);
+
+  const onCustomSelectClose = (evt) => {
+    if(evt.type === 'keyup' && evt.key === 'Shift') {
+      setShift(false)
+    }
+
+    if(evt.type === 'keydown' && evt.key === 'Shift') {
+      setShift(true)
+    }
+
+    if(evt.type === 'keydown' && evt.key === 'Escape') {
+      setOpen(false)
+    }
+
+    if(evt.type === 'keydown' && evt.key === 'Tab' && !shift
+      && !evt.target.parentNode.classList.contains('CustomSelect-container')
+      && evt.target === evt.target.parentNode.lastElementChild) {
+      evt.preventDefault();
+    }
+
+    if(evt.type === 'keydown' && evt.key === 'Tab' && shift
+      && !evt.target.parentNode.classList.contains('CustomSelect-container')
+      && evt.target === evt.target.parentNode.firstElementChild
+      && !evt.target.classList.contains('CustomSelect-option')) {
+      evt.preventDefault();
+    }
+
+    if(evt.type === 'click'
+      && !evt.target.classList.contains('CustomSelect-container')
+      && !evt.target.classList.contains('CustomSelect-search')
+      && !evt.target.classList.contains('CustomSelect-dropdown')
+      && !evt.target.classList.contains('CustomSelect-control')
+      && !evt.target.classList.contains('CustomSelect-option')
+      && !evt.target.classList.contains('CustomSelect-code')
+      && !evt.target.classList.contains('CustomSelect-title')
+      && !evt.target.classList.contains('CustomSelect-arrow')
+      && !evt.target.classList.contains('CustomScroll')
+      && !evt.target.classList.contains('CustomScroll-pin')) {
+      setOpen(false)
+    }
+  }
+
+  useEffect(() => {
+    if(open) {
+      document.addEventListener('click', onCustomSelectClose);
+      document.addEventListener('keydown', onCustomSelectClose);
+      document.addEventListener('focus', onCustomSelectClose);
+      document.addEventListener('keyup', onCustomSelectClose);
+      document.addEventListener('focus', onCustomSelectClose);
+    } else {
+      document.removeEventListener('click', onCustomSelectClose);
+      document.removeEventListener('keydown', onCustomSelectClose);
+      document.removeEventListener('focus', onCustomSelectClose);
+      document.removeEventListener('keyup', onCustomSelectClose);
+    }
+
+    return () => {
+      document.removeEventListener('click', onCustomSelectClose);
+      document.removeEventListener('keydown', onCustomSelectClose);
+      document.removeEventListener('focus', onCustomSelectClose);
+      document.removeEventListener('keyup', onCustomSelectClose);
+    }
+  }, [open, shift])
 
   const extendedChildren = React.Children.map(children, child => {
     if (child.props.title.toLowerCase().startsWith(searchValue.toLowerCase())) {
@@ -70,14 +134,15 @@ const CustomSelect = (
                                onChange={(evt) => setSearchValue(evt.target.value)}
                                aria-label="Поле поиска по опциям выпадающего списка"/>
         }
-        <CustomScroll>
+        <CustomScroll showScroll={extendedChildren.length > 4}>
           <ul className={cn('list')}
               onClick={() => setOpen(false)}
               onKeyPress={(evt) => {
                 if(evt.key === 'Enter') setOpen(false);
               }}
               role='list'
-              aria-labelledby='selectLabel'>
+              aria-labelledby='selectLabel'
+              onMouseMove={(evt) => evt.preventDefault()}>
             {extendedChildren}
           </ul>
         </CustomScroll>
