@@ -3,6 +3,7 @@ import propTypes from 'prop-types';
 import {cn as bem} from '@bem-react/classname';
 import './style.css';
 import arrow from "@src/components/custom-select/custom-select-arrow.svg";
+import CustomScroll from "@src/components/custom-scroll";
 
 const cn = bem('CustomSelect');
 
@@ -29,7 +30,7 @@ const CustomSelect = (
           setCurrentTitleValue(title);
           onSelect({code, title});
         },
-        current: child.props.code === currentCodeValue
+        current: child.props.code === currentCodeValue && child.props.title === currentTitleValue
       })
     } else {
       return null;
@@ -37,15 +38,24 @@ const CustomSelect = (
   });
 
   return (
-    <div className={cn('container')}>
+    <div className={cn('container')}
+         onKeyDown={(evt) => {
+           if(evt.key === 'Escape') {
+             evt.preventDefault();
+             setOpen(false)
+           }
+         }}>
       <div className={cn('control')}
            tabIndex='0'
            onKeyDown={(evt) => {
-             if(evt.key === 'ArrowDown') setOpen(true);
+             if (evt.key === 'ArrowDown') setOpen(true)
            }}
-           onClick={() => setOpen((value) => !value)}>
-        <div className={cn('option', {current: false, hover: false})} tabIndex='-1'>
-          <span className={cn('code')}>{currentCodeValue}</span>
+           onClick={() => setOpen((value) => !value)}
+           aria-label={`Выпадающий список. Чтобы открыть список, нажмите стрелку вниз.
+             Для перехода по элементам используйте кнопку tab`}>
+        <div className={cn('option', {current: false, hover: false})}
+             title={currentTitleValue}>
+          <span className={cn('code')}>{currentCodeValue.slice(0, 2).toUpperCase()}</span>
           <span className={cn('title')}>{currentTitleValue}</span>
         </div>
         <img className={cn('arrow')} src={arrow} alt='dropdown arrow icon'/>
@@ -57,15 +67,20 @@ const CustomSelect = (
                                placeholder='Поиск'
                                tabIndex='0'
                                value={searchValue}
-                               onChange={(evt) => setSearchValue(evt.target.value)}/>
+                               onChange={(evt) => setSearchValue(evt.target.value)}
+                               aria-label="Поле поиска по опциям выпадающего списка"/>
         }
-        <ul className={cn('list')}
-            onClick={() => setOpen(false)}
-            onKeyPress={(evt) => {
-              if(evt.key === 'Enter') setOpen(false);
-            }}>
-          {extendedChildren}
-        </ul>
+        <CustomScroll>
+          <ul className={cn('list')}
+              onClick={() => setOpen(false)}
+              onKeyPress={(evt) => {
+                if(evt.key === 'Enter') setOpen(false);
+              }}
+              role='list'
+              aria-labelledby='selectLabel'>
+            {extendedChildren}
+          </ul>
+        </CustomScroll>
       </div>
       }
     </div>
@@ -79,7 +94,10 @@ CustomSelect.Option = ({code, title, current, onSelect}) => (
         if (evt.key === 'Enter') onSelect({code, title});
       }}
       onClick={() => onSelect({code, title})}
-      role="option">
+      aria-label={`Опция выпадающего списка. Значение ${title}. Для выбора нажмите Enter`}
+      id={title}
+      title={title}
+      role='listitem'>
     <span className={cn('code')}>{code}</span>
     <span className={cn('title')}>{title}</span>
   </li>
