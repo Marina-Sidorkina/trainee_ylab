@@ -112,6 +112,7 @@ const CustomSelect = (
       document.removeEventListener('keydown', callbacks.onCustomSelectClose);
       document.removeEventListener('focus', callbacks.onCustomSelectClose);
       document.removeEventListener('keyup', callbacks.onCustomSelectClose);
+      setSearchValue('');
     }
   }, [open, shift])
 

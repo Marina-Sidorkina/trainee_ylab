@@ -20,11 +20,6 @@ const CustomScroll = (
   const [step, setStep] = useState(0);
   const [start, setStart] = useState(0);
 
-  useEffect(() => {
-    setStep((parseInt(getComputedStyle(track.current).getPropertyValue("height"), 10) - scrollHeight) / 100);
-    setStart(scroll.current.getBoundingClientRect().y);
-  }, [])
-
   const checkMoveCoordinateValue = coordinate => {
     let value = coordinate;
     if (value < 0) {
@@ -35,8 +30,8 @@ const CustomScroll = (
     return value;
   };
 
-  const setRangePinCoordinates = (shift, start) => {
-    pin.current.style.top = checkMoveCoordinateValue((pin.current.offsetTop - shift), start) + 'px';
+  const setCoordinates = (shift) => {
+    pin.current.style.top = checkMoveCoordinateValue(pin.current.offsetTop - shift) + 'px';
     track.current.style.top = '-' + ((pin.current.offsetTop / percent) * step) + 'px';
   };
 
@@ -45,7 +40,7 @@ const CustomScroll = (
       let startCoordinates = evt.clientY;
 
       const onMouseMove = (moveEvt) => {
-        setRangePinCoordinates(startCoordinates - moveEvt.clientY, startCoordinates);
+        setCoordinates(startCoordinates - moveEvt.clientY);
         startCoordinates = moveEvt.clientY;
       }
 
@@ -65,12 +60,21 @@ const CustomScroll = (
       scroll.current.addEventListener('mouseleave', onMouseLeave);
     }, [scroll.current]),
     onScroll: useCallback(() => {
-      const dist = start - scroll.current.getBoundingClientRect().y;
+      let dist = start - scroll.current.getBoundingClientRect().y;
+      if (dist <= 0) dist = 0;
+      if (dist >= step * 100) dist = step * 100;
       let topValue = dist + ((dist / step) * percent);
       if(topValue >= ((step * 100) + movementLength)) topValue = (step * 100) + movementLength;
       pin.current.style.top = topValue + 'px';
-    }, [pin.current]),
+    }, [pin.current, scroll.current]),
   };
+
+  useEffect(() => {
+    if(showScroll) setStart(scroll.current.getBoundingClientRect().y);
+    setStep((parseInt(getComputedStyle(track.current).getPropertyValue("height"), 10) - scrollHeight) / 100);
+    document.body.classList.add('noScroll');
+    return () => document.body.classList.remove('noScroll');
+  }, [showScroll])
 
   return (
     <div className="CustomScroll"
@@ -84,7 +88,8 @@ const CustomScroll = (
                             height: scrollHeight.toString() + 'px',
                             width: pinWidth.toString() + 'px'}}>
         <div className="CustomScroll-pin"
-             ref={pin} onMouseDown={callbacks.onMouseDown}
+             ref={pin}
+             onMouseDown={callbacks.onMouseDown}
              style = {{
                height: pinHeight.toString() + 'px',
                width: pinWidth.toString() + 'px',
@@ -92,11 +97,6 @@ const CustomScroll = (
       </div>}
       <div className="CustomScroll-track"
            ref={track}
-           onKeyDown={(evt) => {
-             if(evt.key === 'Tab') {
-               //pin.current.classList.add('hidden');
-             }
-           }}
            style={{
              ...showScroll ? {} : {top: '0'},
              width: scrollWidth.toString() + 'px'

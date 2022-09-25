@@ -31,7 +31,6 @@
 .CustomScroll-line {
   position: absolute;
   top: 0;
-  right: 5px;
   background-color: transparent;
 }
 
@@ -49,4 +48,9 @@
 
 .hidden {
   display: none;
+}
+
+.noScroll{
+  overflow: hidden;
+  padding-right: 16px;
 }
