@@ -71,6 +71,7 @@ const CustomScroll = (
   };
 
   useEffect(() => {
+    console.log(children.props.children.length);
     if(showScroll) setStart(scroll.current.getBoundingClientRect().y);
     setStep((parseInt(getComputedStyle(track.current).getPropertyValue("height"), 10) - scrollHeight) / 100);
     document.body.classList.add('noScroll');
@@ -81,7 +82,10 @@ const CustomScroll = (
     <div className="CustomScroll"
          onScroll={callbacks.onScroll}
          style = {{
-           height: scrollHeight.toString() + 'px',
+           height: children.props.children.length > 7
+             ? scrollHeight.toString() + 'px'
+             : (30 * children.props.children.length) + 'px',
+           maxHeight: scrollHeight.toString() + 'px',
            width: scrollWidth.toString() + 'px'}}>
       {showScroll && <div className="CustomScroll-line"
                           ref={scroll}
