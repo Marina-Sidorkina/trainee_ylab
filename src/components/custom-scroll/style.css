@@ -2,21 +2,28 @@
   position: relative;
   display: flex;
   justify-content: flex-end;
+}
+
+.CustomScroll-container {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
   overflow-y: scroll;
   overflow-x: hidden;
 }
-.CustomScroll::-webkit-scrollbar {
+
+.CustomScroll-container::-webkit-scrollbar {
   width: 0;
   height: 0;
 }
 
-.CustomScroll::-webkit-scrollbar {
+.CustomScroll-container::-webkit-scrollbar {
   background: transparent;
   width: 0;
   height: 0;
 }
 
-.CustomScroll::-webkit-scrollbar-thumb {
+.CustomScroll-container::-webkit-scrollbar-thumb {
   background: transparent;
 }
 
@@ -41,7 +48,7 @@
   left: 0;
   z-index: 1;
 
-  background-color: #e5e6e9;;
+  background-color: #e5e6e9;
   border-radius: 5px;
   cursor: pointer;
 }
@@ -53,4 +60,11 @@
 .noScroll{
   overflow: hidden;
   padding-right: 16px;
+}
+
+.noTextSelect {
+  user-select: none;
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
 }

@@ -87,7 +87,8 @@
   transition-duration: 1s;
 }
 
-.CustomSelect-option_current:hover .CustomSelect-title {
+.CustomSelect-option_current:hover .CustomSelect-title,
+.CustomSelect-option_current:focus .CustomSelect-title{
   color: #000000;
 }
 

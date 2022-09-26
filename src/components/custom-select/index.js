@@ -82,6 +82,7 @@ const CustomSelect = (
       width: 230,
       pinHeight: 60,
       pinWidth: 8,
+      optionHeight: 30
     }), []),
   }
 
@@ -145,7 +146,8 @@ const CustomSelect = (
                       scrollHeight={options.scrollParams.height}
                       scrollWidth={options.scrollParams.width}
                       pinHeight={options.scrollParams.pinHeight}
-                      pinWidth={options.scrollParams.pinWidth}>
+                      pinWidth={options.scrollParams.pinWidth}
+                      itemHeight={options.scrollParams.optionHeight}>
           <ul className={cn('list')}
               onClick={() => setOpen(false)}
               onKeyPress={(evt) => {
@@ -166,9 +168,7 @@ const CustomSelect = (
 CustomSelect.Option = ({code, title, current, onSelect}) => (
   <li className={cn('option', {current, hover: true})}
       tabIndex='0'
-      onKeyPress={(evt) => {
-        if (evt.key === 'Enter') onSelect({code, title});
-      }}
+      onKeyPress={(evt) => {if (evt.key === 'Enter') onSelect({code, title})}}
       onClick={() => onSelect({code, title})}
       aria-label={`Опция выпадающего списка. Значение ${title}. Для выбора нажмите Enter`}
       id={title}
