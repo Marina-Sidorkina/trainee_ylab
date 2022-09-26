@@ -47,12 +47,13 @@ const CustomScroll = (
       const onMouseUp = function () {
         scroll.current.removeEventListener('mousemove', onMouseMove);
         scroll.current.removeEventListener('mouseup', onMouseUp);
+        scroll.current.removeEventListener('mouseleave', onMouseLeave);
       };
 
       const onMouseLeave = function () {
         scroll.current.removeEventListener('mousemove', onMouseMove);
         scroll.current.removeEventListener('mouseup', onMouseUp);
-        scroll.current.removeEventListener('mouseup', onMouseLeave);
+        scroll.current.removeEventListener('mouseleave', onMouseLeave);
       };
 
       scroll.current.addEventListener('mousemove', onMouseMove);

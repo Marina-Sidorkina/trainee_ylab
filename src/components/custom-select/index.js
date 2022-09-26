@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback, useMemo} from 'react';
+import React, {useEffect, useState, useCallback, useMemo, useRef} from 'react';
 import propTypes from 'prop-types';
 import {cn as bem} from '@bem-react/classname';
 import './style.css';
@@ -23,6 +23,7 @@ const CustomSelect = (
   const [currentTitleValue, setCurrentTitleValue] = useState(currentTitle);
   const [searchValue, setSearchValue] = useState(currentSearchValue || '');
   const [shift, setShift] = useState(false);
+  const select = useRef();
 
   const extendedChildren = React.Children.map(children, child => {
     if (child.props.title.toLowerCase().startsWith(searchValue.toLowerCase())) {
@@ -66,16 +67,7 @@ const CustomSelect = (
     }
 
     if(evt.type === 'click'
-      && !evt.target.classList.contains('CustomSelect-container')
-      && !evt.target.classList.contains('CustomSelect-search')
-      && !evt.target.classList.contains('CustomSelect-dropdown')
-      && !evt.target.classList.contains('CustomSelect-control')
-      && !evt.target.classList.contains('CustomSelect-option')
-      && !evt.target.classList.contains('CustomSelect-code')
-      && !evt.target.classList.contains('CustomSelect-title')
-      && !evt.target.classList.contains('CustomSelect-arrow')
-      && !evt.target.classList.contains('CustomScroll')
-      && !evt.target.classList.contains('CustomScroll-pin')) {
+      && !select.current.contains(evt.target)) {
       setOpen(false)
     }
   }
@@ -117,7 +109,7 @@ const CustomSelect = (
   }, [open, shift])
 
   return (
-    <div className={cn('container')}
+    <div className={cn('container')} ref={select}
          onKeyDown={(evt) => {
            if(evt.key === 'Escape') {
              evt.preventDefault();
