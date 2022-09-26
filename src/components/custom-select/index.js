@@ -174,8 +174,8 @@ CustomSelect.Option = ({code, title, current, onSelect}) => (
       id={title}
       title={title}
       role='listitem'>
-    <span className={cn('code')}>{code}</span>
-    <span className={cn('title')}>{title}</span>
+    <span className={cn('code')}>{code.slice(0,2).toUpperCase()}</span>
+    <span className={cn('title')}>{title.length < 20 ? title : title.slice(0,20) + '...'}</span>
   </li>
 );
 
