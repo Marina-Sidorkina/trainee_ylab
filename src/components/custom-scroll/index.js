@@ -71,7 +71,6 @@ const CustomScroll = (
   };
 
   useEffect(() => {
-    console.log(children.props.children.length);
     if(showScroll) setStart(scroll.current.getBoundingClientRect().y);
     setStep((parseInt(getComputedStyle(track.current).getPropertyValue("height"), 10) - scrollHeight) / 100);
     document.body.classList.add('noScroll');

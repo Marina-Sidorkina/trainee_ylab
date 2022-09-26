@@ -81,6 +81,16 @@
   background-color: #808dff;
 }
 
+.CustomSelect-option_current .CustomSelect-title {
+  color: #ffffff;
+  transition-property: color;
+  transition-duration: 1s;
+}
+
+.CustomSelect-option_current:hover .CustomSelect-title {
+  color: #000000;
+}
+
 .CustomSelect-option_hover:hover {
   background-color: #dbdfff;
 }
