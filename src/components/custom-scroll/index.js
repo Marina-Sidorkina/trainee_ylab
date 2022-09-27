@@ -41,10 +41,7 @@ const CustomScroll = (
   const callbacks = {
     onMouseDown: useCallback((evt) => {
       if (evt.target === pin.current) {
-        const onMouseUp = () => pin.current.removeEventListener('mouseup', onMouseUp);
-
         callbacks.onClientMove(evt);
-        pin.current.addEventListener('mouseup', onMouseUp);
         document.body.classList.add('noTextSelect');
       }
     }, [pin.current]),
