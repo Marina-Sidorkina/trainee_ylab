@@ -41,22 +41,10 @@ const CustomScroll = (
   const callbacks = {
     onMouseDown: useCallback((evt) => {
       if (evt.target === pin.current) {
-        let startCoordinates = evt.clientY;
+        const onMouseUp = () => pin.current.removeEventListener('mouseup', onMouseUp);
 
-        const onMouseMove = (moveEvt) => {
-          setCoordinates(startCoordinates - moveEvt.clientY);
-          startCoordinates = moveEvt.clientY;
-        }
-
-        const onMouseUp = function () {
-          pin.current.removeEventListener('mousemove', onMouseMove);
-          pin.current.removeEventListener('mouseup', onMouseUp);
-          pin.current.removeEventListener('mouseleave', onMouseUp);
-        };
-
-        pin.current.addEventListener('mousemove', onMouseMove);
+        callbacks.onClientMove(evt);
         pin.current.addEventListener('mouseup', onMouseUp);
-        pin.current.addEventListener('mouseleave', onMouseUp);
         document.body.classList.add('noTextSelect');
       }
     }, [pin.current]),
@@ -64,6 +52,22 @@ const CustomScroll = (
       let dist = start - track.current.getBoundingClientRect().y;
       pin.current.style.top = (dist / step) * percent + 'px';
     }, [pin.current, track.current]),
+    onClientMove: useCallback((evt) => {
+      let startCoordinates = evt.clientY;
+
+      const onMouseMove = (moveEvt) => {
+        setCoordinates(startCoordinates - moveEvt.clientY);
+        startCoordinates = moveEvt.clientY;
+      }
+
+      const onMouseUp = function () {
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+      };
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    }, [pin.current]),
   };
 
   const options = {
