@@ -8,6 +8,8 @@ function useInfiniteScroll() {
     if (target.isIntersecting) setPage((prev) => prev + 1);
   }, []);
 
+  const refElement = <div ref={elementRef}/>
+
   useEffect(() => {
     const option = {
       root: null,
@@ -20,7 +22,7 @@ function useInfiniteScroll() {
 
   }, [callback]);
 
-  return { elementRef, page, setPage };
+  return { page, setPage, refElement };
 }
 
 export default useInfiniteScroll;

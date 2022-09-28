@@ -23,7 +23,7 @@ function CatalogList() {
     checkValue: state.catalog.checkValue,
   }));
 
-  let { page, elementRef, setPage } = useInfiniteScroll();
+  let { page, setPage, refElement } = useInfiniteScroll();
 
   const callbacks = {
     // Добавление в корзину
@@ -58,7 +58,7 @@ function CatalogList() {
         {select.waiting ?  <LoadMoreIndicator/> : null}
         <Pagination count={select.count} page={select.page} limit={select.limit} onChange={callbacks.onPaginate}/>
       </Spinner>
-      <div ref={elementRef}/>
+      {refElement}
     </>
   );
 }
