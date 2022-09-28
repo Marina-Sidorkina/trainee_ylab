@@ -32,7 +32,7 @@ function CatalogList() {
     // Пагианция
     onPaginate: useCallback(pageValue => {
       setPage(pageValue - 1);
-      setCheck(1)
+      setCheck(1);
       store.get('catalog').setParams({page: pageValue}, false, 'page');
     }, [select.page]),
     // Загрузка при скролле
@@ -48,12 +48,11 @@ function CatalogList() {
   }
 
   useEffect(() => {
-    const initial = check;
     if (check === 1) setCheck(2);
     if (check === 2) setCheck(0);
 
     if (page !== 0 && page !== select.page && (check === 2 || check === 0)) {
-      if (initial === 1 || initial === 0) callbacks.onloadMore(page);
+      callbacks.onloadMore(page);
     }
   }, [page]);
 
