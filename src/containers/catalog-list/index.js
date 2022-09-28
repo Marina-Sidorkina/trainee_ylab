@@ -7,6 +7,7 @@ import Pagination from "@src/components/navigation/pagination";
 import Spinner from "@src/components/elements/spinner";
 import Item from "@src/components/catalog/item";
 import useInfiniteScroll from "@src/hooks/use-infinite-scroll";
+import LoadMoreIndicator from "@src/components/elements/load-more-indicator";
 
 function CatalogList() {
 
@@ -46,7 +47,7 @@ function CatalogList() {
 
   useEffect(() => {
     if (page !== 0 && page !== select.page) {
-      setTimeout(() => callbacks.onloadMore(page), 2000);
+      callbacks.onloadMore(page)
     }
   }, [page]);
 
@@ -54,6 +55,7 @@ function CatalogList() {
     <>
       <Spinner active={select.waiting}>
         <List items={select.items} renderItem={renders.item}/>
+        {select.waiting ?  <LoadMoreIndicator/> : null}
         <Pagination count={select.count} page={select.page} limit={select.limit} onChange={callbacks.onPaginate}/>
       </Spinner>
       <div ref={elementRef}/>

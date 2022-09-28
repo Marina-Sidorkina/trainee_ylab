@@ -1,0 +1,7 @@
+.LoadMoreIndicator {
+  position: fixed;
+  z-index: 10;
+  bottom: 30px;
+  width: 150px;
+  left: 635px;
+}

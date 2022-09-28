@@ -1,10 +1,15 @@
 .Pagination{
+    position: fixed;
+    box-sizing: border-box;
+    bottom: 0;
+    width: 1024px;
     display: flex;
     list-style: none;
     justify-content: flex-end;
     padding: 24px 20px;
     font-size: 16px;
     margin: 0;
+    background-color: #ffffff;
 }
 
 .Pagination-item{

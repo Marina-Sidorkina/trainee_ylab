@@ -11,7 +11,7 @@ function useInfiniteScroll() {
   useEffect(() => {
     const option = {
       root: null,
-      rootMargin: '0px',
+      rootMargin: '40px',
       threshold: 1.0,
     };
 
