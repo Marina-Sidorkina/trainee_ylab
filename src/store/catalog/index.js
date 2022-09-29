@@ -22,7 +22,8 @@ class CatalogState extends StateModule {
         query: '',
         category: ''
       },
-      waiting: false
+      waiting: false,
+      initial: true
     };
   }
 
@@ -64,9 +65,10 @@ class CatalogState extends StateModule {
    * Устанвока параметров и загрузка списка товаров
    * @param params
    * @param historyReplace {Boolean} Заменить адрес (true) или сделаит новую запис в истории браузера (false)
+   * @param check {String} Какое событие вызывает изменение страницы
    * @returns {Promise<void>}
    */
-  async setParams(params = {}, historyReplace = false) {
+  async setParams(params = {}, historyReplace = false, check) {
     const newParams = {...this.getState().params, ...params};
 
     // Установка новых параметров и признака загрузки
@@ -93,9 +95,10 @@ class CatalogState extends StateModule {
     // Установка полученных данных и сброс признака загрузки
     this.setState({
       ...this.getState(),
-      items: json.result.items,
+      items: check === 'page' ? json.result.items : [...this.getState().items, ...json.result.items],
       count: json.result.count,
-      waiting: false
+      waiting: false,
+      initial: false
     }, 'Обновление списка товара');
 
     // Запоминаем параметры в URL, которые отличаются от начальных
