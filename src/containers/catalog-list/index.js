@@ -25,7 +25,6 @@ function CatalogList() {
 
   let { page, setPage, refElement } = useInfiniteScroll(select.initial);
   const [check, setCheck] = useState(0);
-  console.log(select.page);
 
   const callbacks = {
     // Добавление в корзину
@@ -49,7 +48,6 @@ function CatalogList() {
   }
 
   useEffect(() => {
-    console.log(select.initial);
     if (check === 1) setCheck(2);
     if (check === 2) setCheck(0);
 
