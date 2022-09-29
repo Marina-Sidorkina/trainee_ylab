@@ -51,7 +51,7 @@ function CatalogList() {
     if (check === 1) setCheck(2);
     if (check === 2) setCheck(0);
 
-    if (page !== 0 && page !== select.page && (check === 2 || check === 0) && !select.initial) {
+    if (page !== 0 && page !== select.page && check !== 1  && !select.initial) {
       callbacks.onloadMore(page);
     }
   }, [page]);
