@@ -20,11 +20,12 @@ function CatalogList() {
     limit: state.catalog.params.limit,
     count: state.catalog.count,
     waiting: state.catalog.waiting,
-    checkValue: state.catalog.checkValue,
+    initial: state.catalog.initial,
   }));
 
-  let { page, setPage, refElement } = useInfiniteScroll();
+  let { page, setPage, refElement } = useInfiniteScroll(select.initial);
   const [check, setCheck] = useState(0);
+  console.log(select.page);
 
   const callbacks = {
     // Добавление в корзину
@@ -48,10 +49,11 @@ function CatalogList() {
   }
 
   useEffect(() => {
+    console.log(select.initial);
     if (check === 1) setCheck(2);
     if (check === 2) setCheck(0);
 
-    if (page !== 0 && page !== select.page && (check === 2 || check === 0)) {
+    if (page !== 0 && page !== select.page && (check === 2 || check === 0) && !select.initial) {
       callbacks.onloadMore(page);
     }
   }, [page]);

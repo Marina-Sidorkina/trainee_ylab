@@ -1,7 +1,10 @@
 import React, {useState, useRef, useCallback, useEffect} from 'react';
+import qs from "@src/utils/search-params";
 
-function useInfiniteScroll() {
-  const [page, setPage] = useState(0);
+function useInfiniteScroll(initial) {
+  const urlParams = qs.parse(window.location.search);
+  const initialPage = urlParams.page && initial ? Number(urlParams.page) - 1 : 0
+  const [page, setPage] = useState(initialPage);
   const elementRef = useRef(null);
 
   const callback = useCallback(([target]) => {
@@ -13,7 +16,7 @@ function useInfiniteScroll() {
   useEffect(() => {
     const option = {
       root: null,
-      rootMargin: '40px',
+      rootMargin: '0px',
       threshold: 1.0,
     };
 

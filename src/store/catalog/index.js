@@ -23,6 +23,7 @@ class CatalogState extends StateModule {
         category: ''
       },
       waiting: false,
+      initial: true
     };
   }
 
@@ -97,6 +98,7 @@ class CatalogState extends StateModule {
       items: check === 'page' ? json.result.items : [...this.getState().items, ...json.result.items],
       count: json.result.count,
       waiting: false,
+      initial: false
     }, 'Обновление списка товара');
 
     // Запоминаем параметры в URL, которые отличаются от начальных
