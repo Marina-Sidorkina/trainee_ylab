@@ -11,7 +11,7 @@ import actionsModals from "@src/store-redux/modals/actions";
 
 function Basket() {
   const store = useStore();
-  const storeRedux = useStoreRedux();
+  //const storeRedux = useStoreRedux();
 
   const select = useSelector(state => ({
     items: state.basket.items,
@@ -24,8 +24,8 @@ function Basket() {
   const callbacks = {
     // Закрытие любой модалки
     closeModal: useCallback(() => {
-      //store.get('modals').close()
-      storeRedux.dispatch(actionsModals.close());
+      store.get('modals').close()
+      //storeRedux.dispatch(actionsModals.close());
     }, []),
     // Удаление из корзины
     removeFromBasket: useCallback(_id => store.get('basket').removeFromBasket(_id), [])

@@ -10,8 +10,8 @@ import actionsModals from '@src/store-redux/modals/actions';
 
 function ToolsContainer() {
 
-  //const store = useStore();
-  const storeRedux = useStoreRedux();
+  const store = useStore();
+  //const storeRedux = useStoreRedux();
 
   const select = useSelector(state => ({
     amount: state.basket.amount,
@@ -24,8 +24,8 @@ function ToolsContainer() {
   const callbacks = {
     // Открытие корзины
     openModalBasket: useCallback(() => {
-      //store.get('modals').open('basket');
-      storeRedux.dispatch(actionsModals.open('basket'));
+      store.get('modals').open('basket');
+      //storeRedux.dispatch(actionsModals.open('basket'));
     }, []),
   };
 

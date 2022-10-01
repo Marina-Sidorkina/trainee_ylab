@@ -6,10 +6,10 @@ import useInit from "@src/hooks/use-init";
 import useStore from "@src/hooks/use-store";
 import Protected from "@src/containers/protected";
 import Main from "./main";
-import Basket from "./basket";
 import Article from "./article";
 import Login from "./login";
 import Profile from "./profile";
+import ModalsContainer from "@src/containers/modals";
 
 /**
  * Приложение
@@ -24,7 +24,7 @@ function App() {
   })
 
   //const modal = useSelector(state => state.modals.name);
-  const modal = useSelectorRedux(state => state.modals.name);
+  //const modal = useSelectorRedux(state => state.modals.name);
 
   return (
     <>
@@ -34,7 +34,7 @@ function App() {
         <Route path={"/login"} element={<Login/>}/>
         <Route path={"/profile"} element={<Protected redirect={'/login'}><Profile/></Protected>}/>
       </Routes>
-      {modal === 'basket' && <Basket/>}
+      <ModalsContainer />
     </>
   );
 }

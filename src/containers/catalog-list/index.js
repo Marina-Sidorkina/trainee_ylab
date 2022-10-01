@@ -28,7 +28,10 @@ function CatalogList() {
 
   const callbacks = {
     // Добавление в корзину
-    addToBasket: useCallback(_id => store.get('basket').addToBasket(_id), []),
+    openModal: useCallback(id => {
+      store.get('basket').setItemId(id);
+      store.get('modals').open('addToBasket');
+    }, []),
     // Пагианция
     onPaginate: useCallback(pageValue => {
       setPage(pageValue - 1);
@@ -43,7 +46,7 @@ function CatalogList() {
 
   const renders = {
     item: useCallback(item => (
-      <Item item={item} onAdd={callbacks.addToBasket} link={`/articles/${item._id}`} labelAdd={t('article.add')}/>
+      <Item item={item} onAdd={callbacks.openModal} link={`/articles/${item._id}`} labelAdd={t('article.add')}/>
     ), [t]),
   }
 
