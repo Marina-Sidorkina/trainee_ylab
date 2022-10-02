@@ -9,18 +9,28 @@ import List from "@src/components/elements/list";
 import Pagination from "@src/components/navigation/pagination";
 import Item from "@src/components/catalog/item";
 import LayoutModal from "@src/components/layouts/layout-modal";
+import useInit from "@src/hooks/use-init";
 
-function CatalogModalContainer () {
+function CatalogModalContainer ({index}) {
   const store = useStore();
+  const catalogField = 'catalog_' + index;
+  const basketField = 'basket_' + index;
+
+  useInit(async () => {
+    if (!store.get(catalogField)) {
+      store.addNewModalModuleAndState(index);
+      await store.get(catalogField).resetParams();
+    }
+  }, [index]);
 
   const select = useSelector(state => ({
-    amount: state.basket.amount,
-    sum: state.basket.sum,
+    amount: state[basketField] ? state[basketField].amount : 0,
+    sum: state[basketField] ? state[basketField].sum : 0,
     lang: state.locale.lang,
-    items: state.catalog.items,
-    page: state.catalog.params.page,
-    limit: state.catalog.params.limit,
-    count: state.catalog.count,
+    items: state[catalogField] ? state[catalogField].items : [],
+    page: state[catalogField] ? state[catalogField].params.page : 0,
+    limit: state[catalogField] ? state[catalogField].params.limit : 0,
+    count: state[catalogField] ? state[catalogField].count : 0,
     modals: state.modals.list,
   }));
 
@@ -37,12 +47,12 @@ function CatalogModalContainer () {
     }, []),
     // Добавление в корзину
     openModal: useCallback(id => {
-      store.get('basket').setItemId(id);
+      store.get(basketField).setItemId(id);
       store.get('modals').addModalElement('addToBasket');
     }, []),
     // Переход по страницам
     onPaginate: useCallback(pageValue => {
-      store.get('catalog').setParams({page: pageValue}, false, 'page');
+      store.get(catalogField).setParams({page: pageValue}, false, 'page');
     }, [select.page]),
   };
 
@@ -60,8 +70,8 @@ function CatalogModalContainer () {
                  onClose={callbacks.closeCatalogModal}>
       <LayoutFlex flex="between" indent="big">
         <BasketSimple onOpen={callbacks.openModalBasket}
-                      amount={select.amount}
-                      sum={select.sum}
+                      amount={select.amount ? select.amount : 0}
+                      sum={select.sum ? select.sum : 0}
                       t={t}
                       button={false}/>
         <CatalogButton onClick={callbacks.openCatalogModal} title="Открыть новый каталог"/>

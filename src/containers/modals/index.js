@@ -12,7 +12,9 @@ function ModalsContainer() {
     <>
       {modal === 'basket' && <Basket />}
       {modalsList.length && modalsList.map((item, index) => {
-        return item === 'addToBasket' ? <AddItemModalContainer key={index}/> : <CatalogModalContainer key={index}/>
+        return item === 'addToBasket'
+          ? <AddItemModalContainer key={index} index={modalsList.filter(item => item === 'catalog').length}/>
+          : <CatalogModalContainer key={index} index={modalsList.filter(item => item === 'catalog').length}/>
       })}
     </>
   )

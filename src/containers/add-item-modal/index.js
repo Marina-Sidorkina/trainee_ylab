@@ -3,13 +3,14 @@ import LayoutAddItemModal from "@src/components/layouts/layout-add-item-modal";
 import useStore from "@src/hooks/use-store";
 import useSelector from "@src/hooks/use-selector";
 
-function AddItemModalContainer() {
+function AddItemModalContainer({index}) {
   const store = useStore();
   let onModalValueResolve;
   let onModalValueReject;
+  const basketField = index ? 'basket_' + index : 'basket';
 
   const select = useSelector(state => ({
-    currentItemId: state.basket.currentItemId,
+    currentItemId: state[basketField].currentItemId,
   }));
 
   const openModal = new Promise((resolve, reject) => {
@@ -20,14 +21,14 @@ function AddItemModalContainer() {
   useEffect(() => {
     openModal
       .then((value) => {
-        store.get('basket').addToBasket(select.currentItemId, value);
+        store.get(basketField).addToBasket(select.currentItemId, value);
         store.get('modals').deleteModalElement();
       })
       .catch(() => {
         store.get('modals').deleteModalElement();
         console.log('Пользователь отменил действие')
       })
-  }, [])
+  }, [index])
 
   const callbacks = {
     // Отменить добаление в корзину

@@ -79,6 +79,17 @@ class Store {
       this.listeners = this.listeners.filter(item => item !== callback);
     }
   }
+
+  /**
+   * Добавление новго модуля для нового модального окна со списком
+   * @param index {number} Индекс модального окна каталога
+   */
+  addNewModalModuleAndState(index) {
+    this.modules[`catalog_${index}`] = new modules['catalog'](this, {name: `catalog_${index}`, ...this.config.modules[`catalog_${index}`] || {}});
+    this.modules[`basket_${index}`] = new modules['basket'](this, {name: `basket_${index}`, ...this.config.modules[`catalog_${index}`] || {}});
+    this.state[`catalog_${index}`] = this.modules[`catalog_${index}`].initState();
+    this.state[`basket_${index}`] = this.modules[`basket_${index}`].initState();
+  }
 }
 
 export default Store;
