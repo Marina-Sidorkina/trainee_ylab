@@ -24,6 +24,7 @@ class BasketState extends StateModule{
    * @param amount {number} Количество товара
    */
   async addToBasket(_id, amount) {
+    console.log(_id);
     let sum = 0;
     // Ищем товар в корзие, чтобы увеличить его количество. Заодно получаем новый массив items
     let exists = false;
@@ -83,12 +84,21 @@ class BasketState extends StateModule{
    * Установить, для какого товара открыто модальное окно
    * @param id Код товара
    */
-
   setItemId(id) {
     this.setState({
       ...this.getState(),
       currentItemId: id
     }, 'Добавление id товара')
+  }
+
+   /**
+   * Добавление разных товаров в корзину
+   * @param indexes {Array} Массив с индексами товаров
+   */
+  async addSeveralItemsToBasket(indexes) {
+    while(indexes.length) {
+      await this.addToBasket(indexes.pop(), 1);
+    }
   }
 }
 

@@ -23,3 +23,28 @@
 .ArticleCard-value{
     font-weight: bold;
 }
+
+.ArticleCard-add,
+.ArticleCard-modal {
+  height: 30px;
+  border: 1px solid #083E6C;
+  border-radius: 5px;
+  background-color: #3AA4FF;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 15px;
+}
+
+.ArticleCard-add {
+  margin-right: 10px;
+}
+
+.ArticleCard-add:hover,
+.ArticleCard-modal:hover {
+  filter: brightness(1.1);
+}
+
+.ArticleCard-add:active,
+.ArticleCard-modal:hover {
+  filter: brightness(0.9);
+}
