@@ -55,7 +55,7 @@ function CatalogModalContainer () {
   }
 
   return (
-    <LayoutModal title={`Новый каталог. Модалка № ${select.modals.length}`}
+    <LayoutModal title={`Новый каталог. Модалка № ${select.modals.filter(item => item === 'catalog').length}`}
                  labelClose={'Закрыть'}
                  onClose={callbacks.closeCatalogModal}>
       <LayoutFlex flex="between" indent="big">
