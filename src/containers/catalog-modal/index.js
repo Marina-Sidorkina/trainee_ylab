@@ -31,7 +31,7 @@ function CatalogModalContainer () {
     openCatalogModal: useCallback(() => {
       store.get('modals').addModalElement('catalog');
     }, []),
-    // Открытие модального окна с каталогом
+    // Закрытие модального окна с каталогом
     closeCatalogModal: useCallback(() => {
       store.get('modals').deleteModalElement();
     }, []),
@@ -48,12 +48,16 @@ function CatalogModalContainer () {
 
   const renders = {
     item: useCallback(item => (
-      <Item item={item} onAdd={callbacks.openModal} link={`/articles/${item._id}`} labelAdd={t('article.add')}/>
+      <Item item={item} onAdd={callbacks.openModal}
+            link={`/articles/${item._id}`}
+            labelAdd={t('article.add')}/>
     ), [t]),
   }
 
   return (
-    <LayoutModal title={`Новый каталог. Модалка № ${select.modals.length}`} labelClose={'Закрыть'} onClose={callbacks.closeCatalogModal}>
+    <LayoutModal title={`Новый каталог. Модалка № ${select.modals.length}`}
+                 labelClose={'Закрыть'}
+                 onClose={callbacks.closeCatalogModal}>
       <LayoutFlex flex="between" indent="big">
         <BasketSimple onOpen={callbacks.openModalBasket}
                       amount={select.amount}
