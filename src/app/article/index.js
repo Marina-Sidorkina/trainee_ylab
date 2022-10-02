@@ -1,7 +1,6 @@
 import React, {useCallback} from "react";
 import {useStore as useStoreRedux, useSelector as useSelectorRedux, shallowEqual} from "react-redux";
 import useStore from "@src/hooks/use-store";
-import useSelector from "@src/hooks/use-selector";
 import {useParams} from "react-router-dom";
 import useInit from "@src/hooks/use-init";
 import useTranslate from "@src/hooks/use-translate";
@@ -41,7 +40,7 @@ function Article(){
     <Layout>
       <TopContainer/>
       <HeadContainer title={select.article.title || ''}/>
-      <ToolsContainer/>
+      <ToolsContainer article={true}/>
       <Spinner active={select.waiting}>
         <ArticleCard article={select.article} onAdd={callbacks.addToBasket} t={t}/>
       </Spinner>

@@ -7,7 +7,8 @@ class ModalsState extends StateModule{
 
   initState() {
     return {
-      name: null
+      name: null,
+      list: []
     };
   }
 
@@ -17,6 +18,7 @@ class ModalsState extends StateModule{
    */
   open(name){
     this.setState({
+      ...this.getState(),
       name
     }, `Открытие модалки ${name}`);
   }
@@ -26,8 +28,25 @@ class ModalsState extends StateModule{
    */
   close(){
     this.setState({
+      ...this.getState(),
       name: false
     }, `Закрытие модалки`);
+  }
+
+  addModalElement(name) {
+    this.setState({
+      ...this.getState(),
+      list: [...this.getState().list, name]
+    }, `Добавление элемента в список модалок`);
+  }
+
+  deleteModalElement() {
+    let newList = [...this.getState().list];
+    newList.pop();
+    this.setState({
+      ...this.getState(),
+      list: [...newList]
+    }, `Удаление элемента из списка модалок`);
   }
 }
 

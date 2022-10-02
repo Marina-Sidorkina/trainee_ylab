@@ -5,7 +5,6 @@ import useTranslate from "@src/hooks/use-translate";
 import Select from "@src/components/elements/select";
 import Input from "@src/components/elements/input";
 import LayoutFlex from "@src/components/layouts/layout-flex";
-import {categories} from "@src/store/exports";
 import listToTree from "@src/utils/list-to-tree";
 import treeToList from "@src/utils/tree-to-list";
 
@@ -24,13 +23,19 @@ function CatalogFilter() {
 
   const callbacks = {
     // Сортировка
-    onSort: useCallback(sort => store.get('catalog').setParams({sort}), []),
+    onSort: useCallback(sort => {
+      store.get('catalog').setParams({sort, page: 1}, true, 'page');
+    }, []),
     // Поиск
-    onSearch: useCallback(query => store.get('catalog').setParams({query, page: 1}), []),
+    onSearch: useCallback(query => {
+      store.get('catalog').setParams({query, page: 1}, true, 'page');
+    }, []),
     // Сброс
     onReset: useCallback(() => store.get('catalog').resetParams(), []),
     // Фильтр по категории
-    onCategory: useCallback(category => store.get('catalog').setParams({category}), []),
+    onCategory: useCallback(category => {
+      store.get('catalog').setParams({category, page: 1}, true, 'page');
+    }, []),
   };
 
   // Опции для полей

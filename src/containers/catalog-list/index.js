@@ -30,7 +30,7 @@ function CatalogList() {
     // Добавление в корзину
     openModal: useCallback(id => {
       store.get('basket').setItemId(id);
-      store.get('modals').open('addToBasket');
+      store.get('modals').addModalElement('addToBasket');
     }, []),
     // Пагианция
     onPaginate: useCallback(pageValue => {

@@ -46,7 +46,7 @@ class CatalogState extends StateModule {
     // Итоговые параметры из начальных, из URL и из переданных явно
     const newParams = {...this.initState().params, ...validParams, ...params};
     // Установка параметров и подгрузка данных
-    await this.setParams(newParams, true);
+    await this.setParams(newParams, true, 'page');
   }
 
   /**
@@ -58,7 +58,7 @@ class CatalogState extends StateModule {
     // Итоговые параметры из начальных, из URL и из переданных явно
     const newParams = {...this.initState().params, ...params};
     // Установк параметров и подгрузка данных
-    await this.setParams(newParams);
+    await this.setParams(newParams, true, 'page');
   }
 
   /**

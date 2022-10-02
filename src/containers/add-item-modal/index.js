@@ -13,7 +13,7 @@ function AddItemModalContainer() {
   }));
 
   const openModal = new Promise((resolve, reject) => {
-    onModalValueResolve = (value) => resolve(value);
+    onModalValueResolve = resolve;
     onModalValueReject = reject;
   });
 
@@ -21,10 +21,10 @@ function AddItemModalContainer() {
     openModal
       .then((value) => {
         store.get('basket').addToBasket(select.currentItemId, value);
-        store.get('modals').close();
+        store.get('modals').deleteModalElement();
       })
       .catch(() => {
-        store.get('modals').close();
+        store.get('modals').deleteModalElement();
         console.log('Пользователь отменил действие')
       })
   }, [])
