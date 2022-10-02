@@ -10,6 +10,8 @@ import Pagination from "@src/components/navigation/pagination";
 import Item from "@src/components/catalog/item";
 import LayoutModal from "@src/components/layouts/layout-modal";
 import useInit from "@src/hooks/use-init";
+import CatalogFilter from "@src/containers/catalog-filter";
+import propTypes from "prop-types";
 
 function CatalogModalContainer ({index}) {
   const store = useStore();
@@ -76,10 +78,19 @@ function CatalogModalContainer ({index}) {
                       button={false}/>
         <CatalogButton onClick={callbacks.openCatalogModal} title="Открыть новый каталог"/>
       </LayoutFlex>
+      <CatalogFilter index={index}/>
       <List items={select.items} renderItem={renders.item}/>
       <Pagination modal={true} count={select.count} page={select.page} limit={select.limit} onChange={callbacks.onPaginate}/>
     </LayoutModal>
   )
+}
+
+CatalogModalContainer.propTypes = {
+  index: propTypes.number,
+}
+
+CatalogModalContainer.defaultProps = {
+  index: 0,
 }
 
 export default React.memo(CatalogModalContainer);

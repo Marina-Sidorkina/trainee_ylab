@@ -7,15 +7,16 @@ import Input from "@src/components/elements/input";
 import LayoutFlex from "@src/components/layouts/layout-flex";
 import listToTree from "@src/utils/list-to-tree";
 import treeToList from "@src/utils/tree-to-list";
+import propTypes from "prop-types";
 
-function CatalogFilter() {
-
+function CatalogFilter({index}) {
   const store = useStore();
+  const catalogField = index ? 'catalog_' + index : 'catalog'
 
   const select = useSelector(state => ({
-    sort: state.catalog.params.sort,
-    query: state.catalog.params.query,
-    category: state.catalog.params.category,
+    sort: state[catalogField] ? state[catalogField].params.sort : '',
+    query: state[catalogField] ? state[catalogField].params.query : '',
+    category: state[catalogField] ? state[catalogField].params.category : '',
     categories: state.categories.items,
   }));
 
@@ -24,17 +25,17 @@ function CatalogFilter() {
   const callbacks = {
     // Сортировка
     onSort: useCallback(sort => {
-      store.get('catalog').setParams({sort, page: 1}, true, 'page');
+      store.get(catalogField).setParams({sort, page: 1}, true, 'page');
     }, []),
     // Поиск
     onSearch: useCallback(query => {
-      store.get('catalog').setParams({query, page: 1}, true, 'page');
+      store.get(catalogField).setParams({query, page: 1}, true, 'page');
     }, []),
     // Сброс
-    onReset: useCallback(() => store.get('catalog').resetParams(), []),
+    onReset: useCallback(() => store.get(catalogField).resetParams(), []),
     // Фильтр по категории
     onCategory: useCallback(category => {
-      store.get('catalog').setParams({category, page: 1}, true, 'page');
+      store.get(catalogField).setParams({category, page: 1}, true, 'page');
     }, []),
   };
 
@@ -64,6 +65,14 @@ function CatalogFilter() {
       <button onClick={callbacks.onReset}>{t('filter.reset')}</button>
     </LayoutFlex>
   );
+}
+
+CatalogFilter.propTypes = {
+  index: propTypes.number,
+}
+
+CatalogFilter.defaultProps = {
+  index: 0,
 }
 
 export default React.memo(CatalogFilter);

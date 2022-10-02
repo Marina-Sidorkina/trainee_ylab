@@ -2,6 +2,7 @@ import React, {useCallback, useEffect} from 'react';
 import LayoutAddItemModal from "@src/components/layouts/layout-add-item-modal";
 import useStore from "@src/hooks/use-store";
 import useSelector from "@src/hooks/use-selector";
+import propTypes from "prop-types";
 
 function AddItemModalContainer({index}) {
   const store = useStore();
@@ -41,6 +42,14 @@ function AddItemModalContainer({index}) {
     <LayoutAddItemModal onOkButtonClick={(value) => callbacks.onModalValueResolve(value)}
                         onCancelButtonClick={callbacks.onModalValueReject}/>
   )
+}
+
+AddItemModalContainer.propTypes = {
+  index: propTypes.number,
+}
+
+AddItemModalContainer.defaultProps = {
+  index: 0,
 }
 
 export default React.memo(AddItemModalContainer);
