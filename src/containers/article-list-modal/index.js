@@ -15,7 +15,7 @@ function ArticleListModal({onClose}) {
 
   useInit(async () => {
     store.addNewModalModuleAndState('basket');
-    await store.get('catalog_basket').resetParams();
+    await store.get('catalog_basket').initParams();
 
     return () => {
       store.deleteNewModalModuleAndState('basket')

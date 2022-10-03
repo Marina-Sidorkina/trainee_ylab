@@ -17,7 +17,7 @@ function CatalogModalContainer ({index}) {
 
   useInit(async () => {
     store.addNewModalModuleAndState(index);
-    await store.get(catalogField).resetParams();
+    await store.get(catalogField).initParams();
 
     return () => {
       store.deleteNewModalModuleAndState(index)

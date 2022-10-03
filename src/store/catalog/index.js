@@ -37,11 +37,12 @@ class CatalogState extends StateModule {
     // Параметры из URl. Их нужно валидирвать, приводить типы и брать толкьо нужные
     const urlParams = qs.parse(window.location.search);
     let validParams = {};
-    if (urlParams.page) validParams.page = Number(urlParams.page) || 1;
-    if (urlParams.limit) validParams.limit = Number(urlParams.limit) || 10;
-    if (urlParams.sort) validParams.sort = urlParams.sort;
-    if (urlParams.query) validParams.query = urlParams.query;
-    if (urlParams.category) validParams.category = urlParams.category;
+    const key = this.config.name
+    if (urlParams[key]?.page) validParams.page = Number(urlParams[key].page) || 1;
+    if (urlParams[key]?.limit) validParams.limit = Number(urlParams[key].limit) || 10;
+    if (urlParams[key]?.sort) validParams.sort = urlParams[key].sort;
+    if (urlParams[key]?.query) validParams.query = urlParams[key].query;
+    if (urlParams[key]?.category) validParams.category = urlParams[key].category;
 
     // Итоговые параметры из начальных, из URL и из переданных явно
     const newParams = {...this.initState().params, ...validParams, ...params};
@@ -102,7 +103,8 @@ class CatalogState extends StateModule {
     }, 'Обновление списка товара');
 
     // Запоминаем параметры в URL, которые отличаются от начальных
-    let queryString = qs.stringify(diff(newParams, this.initState().params));
+    const key = this.config.name
+    let queryString = qs.stringify(diff({[key]: newParams}, {[key]: this.initState().params}));
     const url = window.location.pathname + queryString + window.location.hash;
     if (historyReplace) {
       window.history.replaceState({}, '', url);
