@@ -5,7 +5,7 @@ import AddItemModalContainer from "@src/containers/add-item-modal";
 import CatalogModalContainer from "@src/containers/catalog-modal";
 
 function ModalsContainer() {
-  const modal = useSelector(state => state.modals.name);
+  const basket = useSelector(state => state.modals.basket);
   const modalsList = useSelector(state => state.modals.list);
 
   return (
@@ -15,7 +15,7 @@ function ModalsContainer() {
           ? <AddItemModalContainer key={index} />
           : <CatalogModalContainer key={index} index={modalsList.filter(item => item === 'catalog').length}/>
       })}
-      {modal === 'basket' && <Basket />}
+      {basket && <Basket />}
     </>
   )
 }

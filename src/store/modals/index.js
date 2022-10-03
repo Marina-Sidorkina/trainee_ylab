@@ -7,7 +7,8 @@ class ModalsState extends StateModule{
 
   initState() {
     return {
-      name: null,
+      basket: false,
+      basketCatalog: false,
       list: []
     };
   }
@@ -19,20 +20,23 @@ class ModalsState extends StateModule{
   open(name){
     this.setState({
       ...this.getState(),
-      name
+      [name]: true,
     }, `Открытие модалки ${name}`);
   }
 
   /**
-   * Закрытие модального окна
+   * Закрытие модального окна по названию
    */
-  close(){
+  close(name){
     this.setState({
       ...this.getState(),
-      name: false
+      [name]: false
     }, `Закрытие модалки`);
   }
 
+  /**
+   * Добавить элемент в массив модалок каталога
+   */
   addModalElement(name) {
     this.setState({
       ...this.getState(),
@@ -40,12 +44,25 @@ class ModalsState extends StateModule{
     }, `Добавление элемента в список модалок`);
   }
 
+  /**
+   * Удалить элемент из массива модалок каталога
+   */
   deleteModalElement() {
     let newList = [...this.getState().list];
     newList.pop();
     this.setState({
       ...this.getState(),
       list: [...newList]
+    }, `Удаление элемента из списка модалок`);
+  }
+
+  /**
+   * Сбросить массив модалок каталога
+   */
+  resetModalList() {
+    this.setState({
+      ...this.getState(),
+      list: []
     }, `Удаление элемента из списка модалок`);
   }
 }

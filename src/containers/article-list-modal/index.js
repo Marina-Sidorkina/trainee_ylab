@@ -27,7 +27,7 @@ function ArticleListModal({onClose}) {
     // Закрытие модального окна
     onModalClose: useCallback(() => {
       onClose(Object.keys(itemsChecked));
-      store.get('modals').close();
+      store.get('modals').close('basketCatalog');
     }, [itemsChecked, onClose]),
     // Закрытие модального окна
     onItemChange: useCallback((id, value) => {

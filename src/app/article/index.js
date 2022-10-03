@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from "react";
+import React, {useCallback} from "react";
 import {useStore as useStoreRedux, useSelector as useSelectorRedux, shallowEqual} from "react-redux";
 import useStore from "@src/hooks/use-store";
 import {useParams} from "react-router-dom";
@@ -11,31 +11,13 @@ import TopContainer from "@src/containers/top";
 import HeadContainer from "@src/containers/head";
 import ToolsContainer from "@src/containers/tools";
 import actionsArticle from '@src/store-redux/article/actions';
-import ArticleListModal from "@src/containers/article-list-modal";
-import useSelector from "@src/hooks/use-selector";
 
 function Article(){
   const store = useStore();
   const params = useParams();
   const storeRedux = useStoreRedux();
-  const modal = useSelector(state => state.modals.name);
-  let onModalValueResolve;
-
-  const openModal = new Promise((resolve) => {
-    onModalValueResolve = (values) => {
-      resolve(values)
-    };
-  });
-
-  useEffect(() => {
-    openModal
-      .then((values) => {
-        store.get('basket').addSeveralItemsToBasket(values);
-      })
-  }, [modal])
 
   useInit(async () => {
-    //await store.get('article').load(params.id);
     storeRedux.dispatch(actionsArticle.load(params.id));
   }, [params.id]);
 
@@ -49,8 +31,6 @@ function Article(){
   const callbacks = {
     // Добавление в корзину
     addToBasket: useCallback(_id => store.get('basket').addToBasket(_id), []),
-    // Открытие модального окна со списком
-    openModal: useCallback(() => store.get('modals').open('article-modal'), []),
   };
 
   return (
@@ -61,10 +41,8 @@ function Article(){
       <Spinner active={select.waiting}>
         <ArticleCard article={select.article}
                      onAdd={callbacks.addToBasket}
-                     t={t}
-                     onModalOpen={callbacks.openModal}/>
+                     t={t}/>
       </Spinner>
-      {modal === 'article-modal' && <ArticleListModal onClose={onModalValueResolve}/>}
     </Layout>
   )
 }

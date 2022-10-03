@@ -19,8 +19,10 @@ function CatalogModalContainer ({index}) {
     store.addNewModalModuleAndState(index);
     await store.get(catalogField).resetParams();
 
-    return () => store.deleteNewModalModuleAndState(index);
-  }, [index]);
+    return () => {
+      store.deleteNewModalModuleAndState(index)
+    };
+  }, []);
 
   const select = useSelector(state => ({
     amount: state.basket.amount,
@@ -53,13 +55,17 @@ function CatalogModalContainer ({index}) {
     onPaginate: useCallback(pageValue => {
       store.get(catalogField).setParams({page: pageValue}, false, 'page');
     }, [select.page]),
+    onLinkClick: useCallback(() => {
+      console.log('work');
+      store.get('modals').resetModalList();
+    }, []),
   };
 
   const renders = {
     item: useCallback(item => (
       <Item item={item} onAdd={callbacks.openModal}
             link={`/articles/${item._id}`}
-            labelAdd={t('article.add')}/>
+            labelAdd={t('article.add')} onLinkClick={callbacks.onLinkClick}/>
     ), [t]),
   }
 

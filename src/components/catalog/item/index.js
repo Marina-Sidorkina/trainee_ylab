@@ -15,7 +15,7 @@ function Item(props) {
   return (
     <div className={cn()}>
       <div className={cn('title')}>
-        {props.link ? <Link to={props.link}>{props.item.title}</Link> : props.item.title}
+        {props.link ? <Link to={props.link} onClick={props.onLinkClick}>{props.item.title}</Link> : props.item.title}
       </div>
       <div className={cn('right')}>
         <div className={cn('price')}>{numberFormat(props.item.price)} {props.labelCurr}</div>
