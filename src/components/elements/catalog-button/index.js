@@ -1,10 +1,13 @@
 import React from 'react';
 import propTypes from "prop-types";
 import './style.less';
+import {cn as bem} from "@bem-react/classname";
 
-function CatalogButton({onClick, title}) {
+function CatalogButton({onClick, title, modal}) {
+  const cn = bem('CatalogButton');
+
   return (
-    <button className='CatalogButton' type='button' onClick={onClick}>{title}</button>
+    <button className={cn({modal})} type='button' onClick={onClick}>{title}</button>
   )
 }
 

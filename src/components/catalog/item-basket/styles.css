@@ -38,3 +38,7 @@
     font-size: 18px;
     white-space: nowrap;
 }
+
+.ItemBasket-button {
+  cursor: pointer;
+}

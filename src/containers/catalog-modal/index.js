@@ -1,7 +1,5 @@
 import React, {useCallback} from 'react';
-import BasketSimple from "@src/components/catalog/basket-simple";
 import CatalogButton from "@src/components/elements/catalog-button";
-import LayoutFlex from "@src/components/layouts/layout-flex";
 import useStore from "@src/hooks/use-store";
 import useSelector from "@src/hooks/use-selector";
 import useTranslate from "@src/hooks/use-translate";
@@ -16,18 +14,17 @@ import propTypes from "prop-types";
 function CatalogModalContainer ({index}) {
   const store = useStore();
   const catalogField = 'catalog_' + index;
-  const basketField = 'basket_' + index;
 
   useInit(async () => {
-    if (!store.get(catalogField)) {
-      store.addNewModalModuleAndState(index);
-      await store.get(catalogField).resetParams();
-    }
+    store.addNewModalModuleAndState(index);
+    await store.get(catalogField).resetParams();
+
+    return () => store.deleteNewModalModuleAndState(index);
   }, [index]);
 
   const select = useSelector(state => ({
-    amount: state[basketField] ? state[basketField].amount : 0,
-    sum: state[basketField] ? state[basketField].sum : 0,
+    amount: state.basket.amount,
+    sum: state.basket.sum,
     lang: state.locale.lang,
     items: state[catalogField] ? state[catalogField].items : [],
     page: state[catalogField] ? state[catalogField].params.page : 0,
@@ -49,7 +46,7 @@ function CatalogModalContainer ({index}) {
     }, []),
     // Добавление в корзину
     openModal: useCallback(id => {
-      store.get(basketField).setItemId(id);
+      store.get('basket').setItemId(id);
       store.get('modals').addModalElement('addToBasket');
     }, []),
     // Переход по страницам
@@ -70,14 +67,7 @@ function CatalogModalContainer ({index}) {
     <LayoutModal title={`Новый каталог. Модалка № ${select.modals.filter(item => item === 'catalog').length}`}
                  labelClose={'Закрыть'}
                  onClose={callbacks.closeCatalogModal}>
-      <LayoutFlex flex="between" indent="big">
-        <BasketSimple onOpen={callbacks.openModalBasket}
-                      amount={select.amount ? select.amount : 0}
-                      sum={select.sum ? select.sum : 0}
-                      t={t}
-                      button={false}/>
-        <CatalogButton onClick={callbacks.openCatalogModal} title="Открыть новый каталог"/>
-      </LayoutFlex>
+      <CatalogButton onClick={callbacks.openCatalogModal} title="Открыть новый каталог" modal={true}/>
       <CatalogFilter index={index}/>
       <List items={select.items} renderItem={renders.item}/>
       <Pagination modal={true} count={select.count} page={select.page} limit={select.limit} onChange={callbacks.onPaginate}/>
