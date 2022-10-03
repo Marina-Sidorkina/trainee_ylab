@@ -82,7 +82,7 @@ class Store {
 
   /**
    * Добавление новго модуля и поля стейта для нового модального окна со списком
-   * @param index {number} Индекс модального окна каталога
+   * @param index {number || string} Индекс модального окна каталога
    */
   addNewModalModuleAndState(index) {
     this.modules[`catalog_${index}`] = new modules['catalog'](this, {name: `catalog_${index}`, ...this.config.modules[`catalog_${index}`] || {}});
@@ -91,7 +91,7 @@ class Store {
 
   /**
    * Удаление новго модуля и поля стейта для нового модального окна со списком
-   * @param index {number} Индекс модального окна каталога
+   * @param index {number || string} Индекс модального окна каталога
    */
   deleteNewModalModuleAndState(index) {
     delete this.modules[`catalog_${index}`];

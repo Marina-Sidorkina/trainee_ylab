@@ -70,7 +70,7 @@ function CatalogModalContainer ({index}) {
   }
 
   return (
-    <LayoutModal title={`Новый каталог. Модалка № ${select.modals.filter(item => item === 'catalog').length}`}
+    <LayoutModal title={`Новый каталог. Модалка № ${index}`}
                  labelClose={'Закрыть'}
                  onClose={callbacks.closeCatalogModal}>
       <CatalogButton onClick={callbacks.openCatalogModal} title="Открыть новый каталог" modal={true}/>

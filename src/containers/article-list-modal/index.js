@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import LayoutArticleListModal from "@src/components/layouts/layout-article-list-modal";
 import List from "@src/components/elements/list";
 import Pagination from "@src/components/navigation/pagination";
@@ -6,23 +6,33 @@ import useStore from "@src/hooks/use-store";
 import useSelector from "@src/hooks/use-selector";
 import useTranslate from "@src/hooks/use-translate";
 import ListModalItem from "@src/components/catalog/list-modal-item";
+import useInit from "@src/hooks/use-init";
 
 function ArticleListModal({onClose}) {
   const store = useStore();
   const {t} = useTranslate();
   const [itemsChecked, setItemsChecked] = useState({});
 
+  useInit(async () => {
+    store.addNewModalModuleAndState('basket');
+    await store.get('catalog_basket').resetParams();
+
+    return () => {
+      store.deleteNewModalModuleAndState('basket')
+    };
+  }, []);
+
   const select = useSelector(state => ({
-    items: state.catalog.items,
-    page: state.catalog.params.page,
-    limit: state.catalog.params.limit,
-    count: state.catalog.count,
+    items: state['catalog_basket'] ? state['catalog_basket'].items : [],
+    page: state['catalog_basket'] ? state['catalog_basket'].params.page : 0,
+    limit: state['catalog_basket'] ? state['catalog_basket'].params.limit : 0,
+    count: state['catalog_basket'] ? state['catalog_basket'].count : 0,
   }));
 
   const callbacks = {
     // Переход по страницам
     onPaginate: useCallback(pageValue => {
-      store.get('catalog').setParams({page: pageValue}, false, 'page');
+      store.get('catalog_basket').setParams({page: pageValue}, false, 'page');
     }, [select.page]),
     // Закрытие модального окна
     onModalClose: useCallback(() => {
@@ -47,10 +57,6 @@ function ArticleListModal({onClose}) {
       <ListModalItem item={item} onChange={callbacks.onItemChange}/>
     ), [t]),
   }
-
-  useEffect(() => {
-    store.get('catalog').resetParams();
-  }, [])
 
   return (
     <LayoutArticleListModal onClose={callbacks.onModalClose}>
