@@ -82,20 +82,21 @@ class Store {
 
   /**
    * Добавление новго модуля и поля стейта для нового модального окна со списком
-   * @param index {number || string} Индекс модального окна каталога
+   * @param fieldName {string} Имя нового поля стейта
+   * @param moduleName {string} Имя модуля, который нужно инициализировать
    */
-  addNewModalModuleAndState(index) {
-    this.modules[`catalog_${index}`] = new modules['catalog'](this, {name: `catalog_${index}`, ...this.config.modules[`catalog_${index}`] || {}});
-    this.state[`catalog_${index}`] = this.modules[`catalog_${index}`].initState();
+  addNewModalModuleAndState(fieldName, moduleName) {
+    this.modules[fieldName] = new modules[moduleName](this, {name: fieldName, ...this.config.modules[fieldName] || {}});
+    this.state[fieldName] = this.modules[fieldName].initState();
   }
 
   /**
    * Удаление новго модуля и поля стейта для нового модального окна со списком
-   * @param index {number || string} Индекс модального окна каталога
+   * @param fieldName {string} Имя поля стейта
    */
-  deleteNewModalModuleAndState(index) {
-    delete this.modules[`catalog_${index}`];
-    delete this.state[`catalog_${index}`];
+  deleteNewModalModuleAndState(fieldName) {
+    delete this.modules[fieldName];
+    delete this.state[fieldName];
   }
 }
 

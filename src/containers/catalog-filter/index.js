@@ -8,6 +8,7 @@ import LayoutFlex from "@src/components/layouts/layout-flex";
 import listToTree from "@src/utils/list-to-tree";
 import treeToList from "@src/utils/tree-to-list";
 import propTypes from "prop-types";
+import Button from "@src/components/elements/button";
 
 function CatalogFilter({index}) {
   const store = useStore();
@@ -62,7 +63,7 @@ function CatalogFilter({index}) {
       <Select onChange={callbacks.onCategory} value={select.category} options={options.categories}/>
       <Select onChange={callbacks.onSort} value={select.sort} options={options.sort}/>
       <Input onChange={callbacks.onSearch} value={select.query} placeholder={'Поиск'} theme="big"/>
-      <button onClick={callbacks.onReset}>{t('filter.reset')}</button>
+      <Button onClick={callbacks.onReset} title={t('filter.reset')}/>
     </LayoutFlex>
   );
 }

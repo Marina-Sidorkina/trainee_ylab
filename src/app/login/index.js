@@ -10,7 +10,7 @@ import TopContainer from "@src/containers/top";
 import HeadContainer from "@src/containers/head";
 import useStore from "@src/hooks/use-store";
 import useSelector from "@src/hooks/use-selector";
-import Spinner from "@src/components/elements/spinner";
+import Button from "@src/components/elements/button";
 
 function Login() {
   const {t} = useTranslate();
@@ -64,7 +64,7 @@ function Login() {
           </Field>
           <Field error={select.errors?.other}/>
           <Field>
-            <button disabled={select.waiting} type="submit">{t('auth.signIn')}</button>
+            <Button submit={true} title={t('auth.signIn')}/>
           </Field>
         </form>
       </LayoutFlex>

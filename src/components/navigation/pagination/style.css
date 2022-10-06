@@ -10,6 +10,7 @@
     font-size: 16px;
     margin: 0;
     background-color: #ffffff;
+    border-top: 1px solid #374258;
 }
 
 .Pagination_modal {
@@ -23,18 +24,21 @@
   font-size: 16px;
   margin: 0;
   background-color: transparent;
+  border-top: none;
 }
 
 .Pagination-item{
-    display: block;
-    padding: 2px 4px 2px 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 0;
     cursor: pointer;
-    height: 20px;
+    height: 23px;
     min-width: 20px;
     box-sizing: border-box;
     text-align: center;
     line-height: 18px;
+    border-radius: 5px;
 }
 
 .Pagination-item:hover{
@@ -43,7 +47,7 @@
 
 .Pagination-item_active,
 .Pagination-item_active:hover{
-    background: #0087E9;
+    background: #374258;
     color: #fff;
 }
 

@@ -40,5 +40,18 @@
 }
 
 .ItemBasket-button {
+  border: 1px solid #374258;
+  background-color: #666f88;
+  border-radius: 5px;
   cursor: pointer;
+  color: #ffffff;
+  margin-top: 2px;
+}
+
+.ItemBasket-button:hover {
+  filter: brightness(1.1);
+}
+
+.ItemBasket-button:active {
+  filter: brightness(0.9);
 }

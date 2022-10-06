@@ -3,6 +3,7 @@
   width: 240px;
   min-height: 30px;
   background-color: #ffffff;
+  border: 1px solid #374258;
 }
 
 .CustomSelect-control {
@@ -45,12 +46,13 @@
 
 .CustomSelect-dropdown {
   position: absolute;
-  z-index: 1;
   content: "";
   box-sizing: border-box;
   max-height: 163px;
   width: 240px;
   padding: 5px;
+  margin-left: -1px;
+  margin-top: 1px;
   box-shadow: 0 8px 8px rgba(60, 60, 63, 0.25);
   background-color: #ffffff;
 }

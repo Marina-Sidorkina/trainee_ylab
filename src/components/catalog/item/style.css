@@ -41,4 +41,13 @@
 
 .Item-button {
   cursor: pointer;
+  border: 1px solid #374258;
+  background-color: #666f88;
+  border-radius: 5px;
+  color: white;
+  margin-top: 3px;
+}
+
+.Item-button:hover {
+  filter: brightness(1.1);
 }

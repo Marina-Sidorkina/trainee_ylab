@@ -13,14 +13,15 @@ import propTypes from "prop-types";
 
 function CatalogModalContainer ({index}) {
   const store = useStore();
-  const catalogField = 'catalog_' + index;
+  const fieldName = 'catalog_' + index;
+  const moduleName = 'catalog';
 
   useInit(async () => {
-    store.addNewModalModuleAndState(index);
-    await store.get(catalogField).initParams();
+    store.addNewModalModuleAndState(fieldName, moduleName);
+    await store.get(fieldName).initParams();
 
     return () => {
-      store.deleteNewModalModuleAndState(index)
+      store.deleteNewModalModuleAndState(fieldName)
     };
   }, []);
 
@@ -28,10 +29,10 @@ function CatalogModalContainer ({index}) {
     amount: state.basket.amount,
     sum: state.basket.sum,
     lang: state.locale.lang,
-    items: state[catalogField] ? state[catalogField].items : [],
-    page: state[catalogField] ? state[catalogField].params.page : 0,
-    limit: state[catalogField] ? state[catalogField].params.limit : 0,
-    count: state[catalogField] ? state[catalogField].count : 0,
+    items: state[fieldName] ? state[fieldName].items : [],
+    page: state[fieldName] ? state[fieldName].params.page : 0,
+    limit: state[fieldName] ? state[fieldName].params.limit : 0,
+    count: state[fieldName] ? state[fieldName].count : 0,
     modals: state.modals.list,
   }));
 
@@ -53,7 +54,7 @@ function CatalogModalContainer ({index}) {
     }, []),
     // Переход по страницам
     onPaginate: useCallback(pageValue => {
-      store.get(catalogField).setParams({page: pageValue}, false, 'page');
+      store.get(fieldName).setParams({page: pageValue}, false, 'page');
     }, [select.page]),
     onLinkClick: useCallback(() => {
       console.log('work');

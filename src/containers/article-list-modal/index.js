@@ -12,21 +12,23 @@ function ArticleListModal({onClose}) {
   const store = useStore();
   const {t} = useTranslate();
   const [itemsChecked, setItemsChecked] = useState({});
+  const fieldName = 'catalog_basket';
+  const moduleName = 'catalog';
 
   useInit(async () => {
-    store.addNewModalModuleAndState('basket');
-    await store.get('catalog_basket').initParams();
+    store.addNewModalModuleAndState(fieldName, moduleName);
+    await store.get(fieldName).initParams();
 
     return () => {
-      store.deleteNewModalModuleAndState('basket')
+      store.deleteNewModalModuleAndState(fieldName)
     };
   }, []);
 
   const select = useSelector(state => ({
-    items: state['catalog_basket'] ? state['catalog_basket'].items : [],
-    page: state['catalog_basket'] ? state['catalog_basket'].params.page : 0,
-    limit: state['catalog_basket'] ? state['catalog_basket'].params.limit : 0,
-    count: state['catalog_basket'] ? state['catalog_basket'].count : 0,
+    items: state[fieldName] ? state[fieldName].items : [],
+    page: state[fieldName] ? state[fieldName].params.page : 0,
+    limit: state[fieldName] ? state[fieldName].params.limit : 0,
+    count: state[fieldName] ? state[fieldName].count : 0,
   }));
 
   const callbacks = {
@@ -35,8 +37,12 @@ function ArticleListModal({onClose}) {
       store.get('catalog_basket').setParams({page: pageValue}, false, 'page');
     }, [select.page]),
     // Закрытие модального окна
-    onModalClose: useCallback(() => {
+    onItemsAdd: useCallback(() => {
       onClose(Object.keys(itemsChecked));
+      store.get('modals').close('basketCatalog');
+    }, [itemsChecked, onClose]),
+    // Закрытие модального окна
+    onModalClose: useCallback(() => {
       store.get('modals').close('basketCatalog');
     }, [itemsChecked, onClose]),
     // Закрытие модального окна
@@ -59,7 +65,7 @@ function ArticleListModal({onClose}) {
   }
 
   return (
-    <LayoutArticleListModal onClose={callbacks.onModalClose}>
+    <LayoutArticleListModal onClose={callbacks.onModalClose} onItemsAdd={callbacks.onItemsAdd}>
       <List items={select.items} renderItem={renders.item}/>
       <Pagination modal={true} count={select.count} page={select.page} limit={select.limit} onChange={callbacks.onPaginate}/>
     </LayoutArticleListModal>
