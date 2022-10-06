@@ -33,7 +33,7 @@ function Pagination(props) {
   };
 
   return (
-    <ul className={cn()}>
+    <ul className={cn({modal: props.modal})}>
       {items.map((num, i) => num
         ? (
           <li key={i} className={cn('item', {active: num === props.page})} onClick={clickHandler(num)}>
@@ -51,7 +51,8 @@ Pagination.propTypes = {
   limit: propTypes.number,
   count: propTypes.number,
   onChange: propTypes.func,
-  indent: propTypes.number
+  indent: propTypes.number,
+  modal: propTypes.bool,
 }
 
 Pagination.defaultProps = {
@@ -61,6 +62,7 @@ Pagination.defaultProps = {
   indent: 1,
   onChange: () => {
   },
+  modal: false,
 }
 
 export default React.memo(Pagination);

@@ -28,19 +28,19 @@ function ArticleCard({article, onAdd}) {
         <div className={cn('label')}>Цена:</div>
         <div className={cn('value')}>{numberFormat(article.price)} ₽</div>
       </div>
-      <button onClick={() => onAdd(article._id)}>Добавить</button>
+      <button className={cn('add')} onClick={() => onAdd(article._id)}>Добавить</button>
     </div>
   )
 }
 
 ArticleCard.propTypes = {
   article: propTypes.object.isRequired,
-  onAdd: propTypes.func
+  onAdd: propTypes.func,
 }
 
 ArticleCard.defaultProps = {
   article: {},
-  onAdd: () => {}
+  onAdd: () => {},
 }
 
 export default React.memo(ArticleCard);

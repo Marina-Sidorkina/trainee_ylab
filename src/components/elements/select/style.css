@@ -1,4 +1,13 @@
 .Select{
-    font-size: 16px;
-    padding: 3px 2px 2px;
+  font-size: 16px;
+  padding: 3px 2px 2px;
+  border: 1px solid #374258;
+  border-radius: 2px;
+  cursor: pointer;
+  height: 30px;
+  color: #374258;
+}
+
+.Select:hover {
+  filter: brightness(1.05);
 }

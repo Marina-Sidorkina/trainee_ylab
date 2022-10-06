@@ -11,6 +11,7 @@
     display: block;
     padding: 2px 4px 3px 2px;
     margin: 0 2px;
+    color: #374258;
 }
 
 .Menu-item:first-child {
@@ -21,4 +22,12 @@
 .Menu-item:last-child {
     margin-right: 0;
     padding-right: 0;
+}
+
+.Menu-link {
+  color: #374258;
+}
+
+.Menu-link:hover {
+  filter: brightness(1.5);
 }

@@ -4,6 +4,7 @@ import useTranslate from "@src/hooks/use-translate";
 import LayoutFlex from "@src/components/layouts/layout-flex";
 import useSelector from "@src/hooks/use-selector";
 import useStore from "@src/hooks/use-store";
+import Button from "@src/components/elements/button";
 
 function TopContainer() {
 
@@ -34,8 +35,8 @@ function TopContainer() {
     <LayoutFlex flex="end" indent="small">
       {select.exists && <Link to="/profile">{select.user.profile.name}</Link>}
       {select.exists
-        ? <button onClick={callbacks.onSignOut}>{t('session.signOut')}</button>
-        : <button onClick={callbacks.onSignIn}>{t('session.signIn')}</button>
+        ? <Button onClick={callbacks.onSignOut} title={t('session.signOut')}/>
+        : <Button onClick={callbacks.onSignIn} title={t('session.signIn')}/>
       }
     </LayoutFlex>
   );

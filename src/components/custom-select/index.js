@@ -150,7 +150,7 @@ const CustomSelect = (
                       itemHeight={options.scrollParams.optionHeight}>
           <ul className={cn('list')}
               onClick={() => setOpen(false)}
-              onKeyPress={(evt) => {
+              onKeyDown={(evt) => {
                 if(evt.key === 'Enter') setOpen(false);
               }}
               role='list'
@@ -168,7 +168,7 @@ const CustomSelect = (
 CustomSelect.Option = ({code, title, current, onSelect}) => (
   <li className={cn('option', {current, hover: true})}
       tabIndex='0'
-      onKeyPress={(evt) => {if (evt.key === 'Enter') onSelect({code, title})}}
+      onKeyDown={(evt) => {if (evt.key === 'Enter') onSelect({code, title})}}
       onClick={() => onSelect({code, title})}
       aria-label={`Опция выпадающего списка. Значение ${title}. Для выбора нажмите Enter`}
       id={title}

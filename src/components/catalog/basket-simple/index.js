@@ -5,7 +5,7 @@ import numberFormat from "@src/utils/number-format";
 import './styles.css';
 
 
-function BasketSimple({sum, amount, onOpen, t}) {
+function BasketSimple({sum, amount, onOpen, t, button}) {
   const cn = bem('BasketSimple');
   return (
     <div className={cn()}>
@@ -16,7 +16,7 @@ function BasketSimple({sum, amount, onOpen, t}) {
         : t('basket.empty')
       }
       </span>
-      <button className='BasketSimple__button' onClick={onOpen}>{t('basket.open')}</button>
+      {button && <button className='BasketSimple__button' onClick={onOpen}>{t('basket.open')}</button>}
     </div>
   )
 }
@@ -25,14 +25,16 @@ BasketSimple.propTypes = {
   onOpen: propTypes.func.isRequired,
   sum: propTypes.number,
   amount: propTypes.number,
-  t: propTypes.func
+  t: propTypes.func,
+  button: propTypes.bool,
 }
 
 BasketSimple.defaultProps = {
   onOpen: () => {},
   sum: 0,
   amount: 0,
-  t: (text) => text
+  t: (text) => text,
+  button: true,
 }
 
 export default React.memo(BasketSimple);

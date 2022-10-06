@@ -79,6 +79,25 @@ class Store {
       this.listeners = this.listeners.filter(item => item !== callback);
     }
   }
+
+  /**
+   * Добавление новго модуля и поля стейта для нового модального окна со списком
+   * @param fieldName {string} Имя нового поля стейта
+   * @param moduleName {string} Имя модуля, который нужно инициализировать
+   */
+  addNewModalModuleAndState(fieldName, moduleName) {
+    this.modules[fieldName] = new modules[moduleName](this, {name: fieldName, ...this.config.modules[fieldName] || {}});
+    this.state[fieldName] = this.modules[fieldName].initState();
+  }
+
+  /**
+   * Удаление новго модуля и поля стейта для нового модального окна со списком
+   * @param fieldName {string} Имя поля стейта
+   */
+  deleteNewModalModuleAndState(fieldName) {
+    delete this.modules[fieldName];
+    delete this.state[fieldName];
+  }
 }
 
 export default Store;

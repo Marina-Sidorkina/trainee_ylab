@@ -9,17 +9,17 @@ function Item(props) {
   const cn = bem('Item');
 
   const callbacks = {
-    onAdd: useCallback((e) => props.onAdd(props.item._id), [props.onAdd, props.item])
+    onAdd: useCallback(() => props.onAdd(props.item._id), [props.onAdd, props.item])
   };
 
   return (
     <div className={cn()}>
       <div className={cn('title')}>
-        {props.link ? <Link to={props.link}>{props.item.title}</Link> : props.item.title}
+        {props.link ? <Link to={props.link} onClick={props.onLinkClick}>{props.item.title}</Link> : props.item.title}
       </div>
       <div className={cn('right')}>
         <div className={cn('price')}>{numberFormat(props.item.price)} {props.labelCurr}</div>
-        <button onClick={callbacks.onAdd}>{props.labelAdd}</button>
+        <button className={cn('button')} onClick={callbacks.onAdd}>{props.labelAdd}</button>
       </div>
     </div>
   )

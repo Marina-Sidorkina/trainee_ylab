@@ -3,9 +3,9 @@
 
 }
 .List-item{
-    border-bottom: 1px dashed #ccc;
+    border-bottom: 1px dashed #374258;
 }
 
 .List-item:first-child{
-    border-top: 1px dashed #ccc;
+    border-top: 1px dashed #374258;
 }
