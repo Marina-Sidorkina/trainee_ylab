@@ -49,7 +49,7 @@ function Login() {
     <Layout>
       <TopContainer/>
       <HeadContainer/>
-      <ToolsContainer/>
+      <ToolsContainer article={true}/>
 
       <LayoutFlex>
         <form onSubmit={callbacks.onSubmit}>
