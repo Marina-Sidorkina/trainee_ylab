@@ -1,7 +1,5 @@
 import React from 'react';
-import {useSelector as useSelectorRedux} from 'react-redux'
 import {Routes, Route} from "react-router-dom";
-import useSelector from "@src/hooks/use-selector";
 import useInit from "@src/hooks/use-init";
 import useStore from "@src/hooks/use-store";
 import Protected from "@src/containers/protected";
@@ -10,6 +8,7 @@ import Article from "./article";
 import Login from "./login";
 import Profile from "./profile";
 import ModalsContainer from "@src/containers/modals";
+import Chat from "@src/app/chat";
 
 /**
  * Приложение
@@ -23,9 +22,6 @@ function App() {
     await store.get('session').remind();
   })
 
-  //const modal = useSelector(state => state.modals.name);
-  //const modal = useSelectorRedux(state => state.modals.name);
-
   return (
     <>
       <Routes>
@@ -33,6 +29,7 @@ function App() {
         <Route path={"/articles/:id"} element={<Article/>}/>
         <Route path={"/login"} element={<Login/>}/>
         <Route path={"/profile"} element={<Protected redirect={'/login'}><Profile/></Protected>}/>
+        <Route path={"/chat"} element={<Protected redirect={'/login'}><Chat/></Protected>}/>
       </Routes>
       <ModalsContainer />
     </>

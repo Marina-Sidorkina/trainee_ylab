@@ -26,7 +26,7 @@ function Profile(){
     <Layout>
       <TopContainer/>
       <HeadContainer/>
-      <ToolsContainer/>
+      <ToolsContainer article={true}/>
       <Spinner active={select.waiting}>
         <ProfileCard data={select.profile}/>
       </Spinner>

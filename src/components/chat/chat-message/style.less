@@ -1,0 +1,131 @@
+.ChatMessage {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  width: 1004px;
+  min-height: 50px;
+  margin-bottom: 10px;
+
+  &-image {
+    display: block;
+    width: 27px;
+    height: 27px;
+    margin-bottom: 32px;
+    margin-right: 20px;
+    background-color: transparent;
+
+    &_src {
+      border-radius: 50%;
+    }
+  }
+
+  &-message {
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    min-height: 100px;
+    background-color: white;
+    border: 1px solid #374258;
+    border-radius: 30px;
+    word-wrap: break-word;
+    padding: 30px 10px;
+
+    &:before {
+      content: ' ';
+      position: absolute;
+      width: 0;
+      height: 0;
+      left: -32px;
+      bottom: 30px;
+      border: 16px solid;
+      border-color: transparent #374258 transparent transparent ;
+    }
+
+    &:after {
+      content: ' ';
+      position: absolute;
+      width: 0;
+      height: 0;
+      left: -30.5px;
+      bottom: 30px;
+      border: 16px solid;
+      border-color: transparent #fff transparent transparent;
+    }
+  }
+
+  &-text {
+    width: 250px;
+    color: #3D4251;
+    font-size: 17px;
+    word-wrap: break-word;
+  }
+
+  &-info {
+    position: absolute;
+    top: 5px;
+    width: 250px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+  }
+
+  &-user {
+    font-size: 15px;
+    color: #d35e35;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+
+  &-date {
+    font-size: 12px;
+    color: grey;
+    margin-bottom: 1.5px;
+  }
+
+  &-check {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    left: 185px;
+    top: -1px;
+  }
+}
+
+
+.ChatMessage_self {
+  justify-content: flex-end;
+
+  & .ChatMessage-image {
+    order: 1;
+    margin-right: 0;
+    margin-left: 20px;
+  }
+
+  & .ChatMessage-message {
+    &:before {
+      content: ' ';
+      position: absolute;
+      width: 0;
+      height: 0;
+      left: 299px;
+      bottom: 30px;
+      border: 16px solid;
+      border-color: transparent transparent transparent #374258;
+    }
+
+    &:after {
+      content: ' ';
+      position: absolute;
+      width: 0;
+      height: 0;
+      left: 297.5px;
+      bottom: 30px;
+      border: 16px solid;
+      border-color: transparent transparent transparent #fff;
+    }
+  }
+}
