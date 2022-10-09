@@ -7,7 +7,7 @@ class WSService {
   constructor(services, config = {}) {
     this.services = services;
     this.config = {
-      chatUrl: config.chatUrl
+      chatUrl: config.chatURL
     }
     this._state = null;
   }
@@ -16,7 +16,7 @@ class WSService {
    * Управление соединением WS
    */
   initSocket(token, onMessage) {
-    this._state = new WebSocket('ws://example.front.ylab.io/chat');
+    this._state = new WebSocket(this.config.chatUrl);
 
     this._state.onopen = () => {
       this._state.send(JSON.stringify({
