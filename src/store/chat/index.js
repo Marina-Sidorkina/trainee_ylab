@@ -7,7 +7,6 @@ class ChatState extends StateModule {
   initState() {
     return {
       items: [],
-      socket: null,
       lastMethod: '',
       current: null,
       waiting: false,
