@@ -12,6 +12,8 @@ function ChatContainer() {
   const store = useStore();
   // Отмечаем последнее новое сообщений
   const lastMessage = useRef();
+  // Ссылка на блок с сообщениями
+  const listBlock = useRef();
   // Стейт для проверки задвоения подгрузки старых сообщений
   const [check, setCheck] = useState();
 
@@ -28,10 +30,23 @@ function ChatContainer() {
   }));
 
   // Контролируем, нужно ли проскроллить до последнего добавленного сообщения
-  // @todo Подумать, как избежать прокрутки вниз, если просматривается не последнее сообщение
   useEffect(() => {
-    if (lastMessage.current && select.lastMethod === 'post') lastMessage.current.scrollIntoView();
-    if (select.items.length === 10) lastMessage.current.scrollIntoView();
+    let lastMessageCoordinate = 0;
+
+    // Проверяем, находится ли последнее новое сообщение в поле видимости
+    // Ориентируемся на координату верхней точки сообщения относительно нижнего края блока с сообщениями
+    // Если сообщение полностью скрыто - скролл на новое сообщение не сработает
+    if(listBlock.current && lastMessage.current) {
+      const lastMessageTop = lastMessage.current.getBoundingClientRect().top;
+      const listBlockBottom = listBlock.current.getBoundingClientRect().bottom;
+      lastMessageCoordinate = listBlockBottom - lastMessageTop;
+    }
+
+    if ((lastMessage.current && select.lastMethod === 'post' && lastMessageCoordinate >= 0)
+      || select.items.length === 10) {
+      lastMessage.current.scrollIntoView()
+    }
+
   }, [select.items]);
 
   // Установка соединения WS
@@ -68,6 +83,7 @@ function ChatContainer() {
       <ChatList items={select.items}
                 renderItem={renders.item}
                 lastMessageRef={lastMessage}
+                listBlockRef={listBlock}
                 onScroll={callbacks.onScroll}/>
       <ChatInput placeholder={t('message.placeholder')}
                  onSubmit={callbacks.sendMessage}

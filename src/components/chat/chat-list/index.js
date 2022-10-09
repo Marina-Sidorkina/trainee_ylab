@@ -3,12 +3,13 @@ import {cn as bem} from "@bem-react/classname";
 import './style.less';
 import PropTypes from "prop-types";
 
-function ChatList({items, renderItem, lastMessageRef, onScroll}) {
+function ChatList({items, renderItem, lastMessageRef, onScroll, listBlockRef}) {
   const cn = bem('ChatList');
 
   return (
     <div className={cn()}
-         onScroll={(evt) => onScroll(evt.target.scrollTop)}>
+         onScroll={(evt) => onScroll(evt.target.scrollTop)}
+         ref={listBlockRef}>
       {items.map((item, id) =>
         <div className={cn('item')}
              key={item._key}
@@ -24,6 +25,7 @@ ChatList.propTypes = {
   renderItem: PropTypes.func,
   lastMessageRef: PropTypes.object,
   onScroll: PropTypes.func,
+  listBlockRef: PropTypes.object,
 }
 
 ChatList.defaultProps = {
@@ -31,6 +33,7 @@ ChatList.defaultProps = {
   items: [],
   lastMessageRef: null,
   onScroll: () => {},
+  listBlockRef: {},
 }
 
 export default React.memo(ChatList);
