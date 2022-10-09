@@ -44,7 +44,7 @@ function ChatContainer() {
 
   // Установка соединения WS
   useEffect(() => {
-    store.get('chat').initSocket(select.token);
+    store.get('chat').initChat(select.token);
   }, [select.token]);
 
   const callbacks = {

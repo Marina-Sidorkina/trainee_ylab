@@ -1,6 +1,7 @@
 import Store from "./store";
 import APIService from "./api";
 import createStoreRedux from "./store-redux";
+import WSService from "@src/ws";
 
 class Services {
 
@@ -39,6 +40,18 @@ class Services {
     }
     return this._storeRedux;
   }
+
+  /**
+   * Сервис для WebSocket
+   * @returns {WSService}
+   */
+  get ws(){
+    if (!this._ws) {
+      this._ws = new WSService(this, this.config.ws);
+    }
+    return this._ws;
+  }
+
 }
 
 export default Services;
