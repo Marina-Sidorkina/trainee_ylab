@@ -16,6 +16,9 @@ function ChatContainer() {
   const listBlock = useRef();
   // Стейт для проверки задвоения подгрузки старых сообщений
   const [check, setCheck] = useState();
+  // Стейт для проверки, находится ли самое новое сообщение в поле видимости
+  // Ориентируемся на координату верхней точки сообщения относительно нижнего края блока с сообщениями
+  const [messageCoordinate, setMessageCoordinate] = useState(0);
 
   const select = useSelector(state => ({
     token: state.session.token,
@@ -31,22 +34,12 @@ function ChatContainer() {
 
   // Контролируем, нужно ли проскроллить до последнего добавленного сообщения
   useEffect(() => {
-    let lastMessageCoordinate = 0;
-
-    // Проверяем, находится ли последнее новое сообщение в поле видимости
-    // Ориентируемся на координату верхней точки сообщения относительно нижнего края блока с сообщениями
-    // Если сообщение полностью скрыто - скролл на новое сообщение не сработает
-    if(listBlock.current && lastMessage.current) {
-      const lastMessageTop = lastMessage.current.getBoundingClientRect().top;
-      const listBlockBottom = listBlock.current.getBoundingClientRect().bottom;
-      lastMessageCoordinate = listBlockBottom - lastMessageTop;
-    }
-
-    if ((lastMessage.current && select.lastMethod === 'post' && lastMessageCoordinate >= 0)
+    // Скролл до нового сообщения
+    // Если последнее сообщение полностью скрыто - скролл на новое сообщение не сработает
+    if ((lastMessage.current && select.lastMethod === 'post' && messageCoordinate >= 0)
       || select.items.length === 10) {
       lastMessage.current.scrollIntoView()
     }
-
   }, [select.items]);
 
   // Установка соединения WS
@@ -61,8 +54,17 @@ function ChatContainer() {
     }, [select.username, select.userID]),
     // Отслеживаем скролл до самого старого сообщения для загрузки нового блока сообщений
     onScroll: useCallback(value => {
+      const listBlockCoordinate = listBlock.current.getBoundingClientRect().bottom;
+      const lastMessageCoordinate = lastMessage.current.getBoundingClientRect().top;
+
+      // Проверяем, пришел сролл до 0 от положительного или от отрицательного значения
+      // Т.о. исключаем задвоение подгрузки при возвращении scrollTop из отрицательного значения
       if (value === 0 && check > 0) store.get('chat').loadPrevious();
+
+      // Запоминаеи последнее значение scrollTop у блока с сообщениями для проверки задвоения
       setCheck(value);
+      // Запоминаем координату верхней точки сообщения относительно нижнего края блока с сообщениями
+      setMessageCoordinate(listBlockCoordinate - lastMessageCoordinate);
     }, [check]),
   };
 
