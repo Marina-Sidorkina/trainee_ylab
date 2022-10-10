@@ -11,6 +11,7 @@ class ChatState extends StateModule {
       current: null,
       waiting: false,
       lastMessageId: null,
+      self: false,
     };
   }
 
@@ -27,6 +28,8 @@ class ChatState extends StateModule {
    * @param  data {Object} полученный с сервера объект с данными
    */
   onMessage = (data) => {
+    this.setSelf(false);
+
     this.setState({
       ...this.getState(),
       lastMethod: data.method
@@ -126,6 +129,17 @@ class ChatState extends StateModule {
    */
   loadPrevious() {
     this.services.ws.request('old', {fromId: this.getState().lastMessageId})
+  }
+
+  /**
+   * Устанавливаем контрольное значение для отслеживание собственного сообщения
+   * @param self {boolean}
+   */
+  setSelf(self) {
+    this.setState({
+      ...this.getState(),
+      self,
+    }, `Контрольное значение для отслеживание собственного сообщения`);
   }
 }
 

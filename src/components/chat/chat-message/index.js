@@ -23,7 +23,7 @@ function ChatMessage({self, user, date, text, src, waiting}) {
                   d="M21,11h0a1,1,0,0,0-1,1,8,8,0,0,1-8,8h0A8,8,0,0,1,6.33,6.36,7.93,7.93,0,0,1,12,4a8.79,8.79,0,0,1,1.9.22,1,1,0,1,0,.47-1.94A10.54,10.54,0,0,0,12,2,10,10,0,0,0,5,19.09,9.93,9.93,0,0,0,12,22h0A10,10,0,0,0,22,12,1,1,0,0,0,21,11Z"/>
           </svg> : null}
         </div>
-        <div className={cn('text')}>{text}</div>
+        <div className={cn('text')} dangerouslySetInnerHTML={{__html: text}} />
       </div>
     </div>
   )

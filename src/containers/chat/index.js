@@ -30,6 +30,7 @@ function ChatContainer() {
     waiting: state.chat.waiting,
     current: state.chat.current,
     lastMessageId: state.chat.lastMessageId,
+    self: state.chat.self,
   }));
 
   // Контролируем, нужно ли проскроллить до последнего добавленного сообщения
@@ -37,7 +38,7 @@ function ChatContainer() {
     // Скролл до нового сообщения
     // Если последнее сообщение полностью скрыто - скролл на новое сообщение не сработает
     if ((lastMessage.current && select.lastMethod === 'post' && messageCoordinate >= 0)
-      || select.items.length === 10) {
+      || select.items.length === 10 || select.self) {
       lastMessage.current.scrollIntoView()
     }
   }, [select.items]);
@@ -50,7 +51,8 @@ function ChatContainer() {
   const callbacks = {
     // Добавляем моковое сообщение и ждем подтверждение отправки на сервер
     sendMessage: useCallback(text => {
-      store.get('chat').createNewMessage(text, select.username, select.userID)
+      store.get('chat').setSelf(true);
+      store.get('chat').createNewMessage(text, select.username, select.userID);
     }, [select.username, select.userID]),
     // Отслеживаем скролл до самого старого сообщения для загрузки нового блока сообщений
     onScroll: useCallback(value => {
