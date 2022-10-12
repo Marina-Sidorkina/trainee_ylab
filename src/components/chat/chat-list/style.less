@@ -1,0 +1,22 @@
+.ChatList {
+  box-sizing: border-box;
+  width: 1024px;
+  height: calc(100vh - 271px);
+  border-top: 1px solid #374258;
+  padding: 10px;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    box-sizing: border-box;
+    width: 8px;
+    background-color: #666f88;
+    border-radius: 5px;
+    border: 1px solid #374258;
+    margin-right: 20px;
+  };
+}

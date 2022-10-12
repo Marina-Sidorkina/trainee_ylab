@@ -1,6 +1,7 @@
 {
   "title": "Магазин",
   "menu.main": "Главная",
+  "menu.chat": "Чат",
   "basket.title": "Корзина",
   "basket.open": "Перейти",
   "basket.close": "Закрыть",
@@ -22,5 +23,7 @@
   "auth.password": "Пароль",
   "auth.signIn": "Войти",
   "session.signIn": "Вход",
-  "session.signOut": "Выход"
+  "session.signOut": "Выход",
+  "message.placeholder": "Сообщение...",
+  "message.button": "Отправить"
 }

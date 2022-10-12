@@ -1,0 +1,52 @@
+.ChatInput {
+  box-sizing: border-box;
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  bottom: 10px;
+  left: calc(50% - 512px);
+  width: 1024px;
+  height: 70px;
+  margin: 0 auto;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-top: 1px solid #374258;
+  background-color: #f5f5f5;
+
+  &-field {
+    box-sizing: border-box;
+    width: 890px;
+    height: 50px;
+    background-color: #f5f5f5;
+    border: none;
+    font-size: 18px;
+    padding: 13px 10px 13px 10px;
+    color: #666f88;
+    resize: none;
+
+    &:focus {
+      outline: none;
+      border: 1px solid #666f88;
+      border-radius: 5px;
+      padding: 12px 9px 12px 9px;
+    }
+  }
+
+  &-submit {
+    height: 30px;
+    width: 90px;
+    border: 1px solid #374258;
+    background-color: #666f88;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #ffffff;
+    font-size: 15px;
+
+    &:disabled {
+      filter: brightness(1.4);
+      cursor: not-allowed;
+    }
+  }
+}
