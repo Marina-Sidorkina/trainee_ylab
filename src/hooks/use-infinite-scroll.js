@@ -3,7 +3,7 @@ import qs from "@src/utils/search-params";
 
 function useInfiniteScroll(initial) {
   const urlParams = qs.parse(window.location.search);
-  const initialPage = urlParams.page && initial ? Number(urlParams.page) - 1 : 0
+  const initialPage = urlParams.catalog?.page && initial ? Number(urlParams.catalog?.page) - 1 : 0;
   const [page, setPage] = useState(initialPage);
   const elementRef = useRef(null);
 

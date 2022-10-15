@@ -59,6 +59,13 @@ function CatalogList() {
     }
   }, [page]);
 
+  useEffect(() => {
+    if (select.page === 1 && !select.initial) {
+      setPage(0);
+      setCheck(1);
+    }
+  }, [select.page])
+
   return (
     <>
       <Spinner active={select.waiting}>
