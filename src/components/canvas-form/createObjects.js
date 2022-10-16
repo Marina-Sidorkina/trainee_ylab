@@ -1,21 +1,28 @@
+// Отношение разрешения дисплея текущего устройства в физических пикселях
+// к разрешению в логических (CSS) пикселях
 const pxl = window.devicePixelRatio;
 
+// Объект с функциями создания фигур на канвасе
 const options = {
+  // Квадрат (закрашенный)
   fillRectangle: (ctx, rgba, x, y) => {
     ctx.fillStyle = rgba;
     ctx.fillRect (x, y, 100 * pxl, 100 * pxl);
   },
+  // Квадрат (контур)
   strokeRectangle: (ctx, rgba, x, y) => {
     ctx.strokeStyle = rgba;
     ctx.lineWidth = 3;
     ctx.strokeRect(x, y, 150 * pxl, 150 * pxl);
   },
+  // Круг
   fillCircle: (ctx, rgba, x, y) => {
     ctx.fillStyle = rgba;
     ctx.beginPath();
     ctx.arc(x,y,50 * pxl,0,Math.PI*2,true);
     ctx.fill();
   },
+  // Окружность
   strokeCircle: (ctx, rgba, x, y) => {
     ctx.strokeStyle = rgba;
     ctx.lineWidth = 3;
@@ -23,6 +30,7 @@ const options = {
     ctx.arc(x, y,90 * pxl,0,Math.PI*2,true);
     ctx.stroke();
   },
+  // Треугольник (закрашенный)
   fillTriangle: (ctx, rgba, x, y) => {
     ctx.fillStyle = rgba;
     ctx.beginPath();
@@ -31,6 +39,7 @@ const options = {
     ctx.lineTo(x + 100, y);
     ctx.fill();
   },
+  // Треугольник (контур)
   strokeTriangle: (ctx, rgba, x, y) => {
     ctx.strokeStyle = rgba;
     ctx.lineWidth = 3;
@@ -43,6 +52,7 @@ const options = {
   }
 }
 
+// Вызов одной из функций отрисовки фигур на канвасе в соответствии с переданными данными
 export default function createObjects(ctx, {type, rgba, x, y}, movedY, movedX, offsetY, offsetX) {
   const newValueY = y - offsetY;
   const newValueX = x - offsetX;

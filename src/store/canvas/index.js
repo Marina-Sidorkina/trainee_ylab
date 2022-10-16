@@ -19,6 +19,12 @@ class CanvasState extends StateModule{
     };
   }
 
+  /**
+   * Создание нового объекта
+   * @param type {string} Тип фигуры, которую нужно создать
+   * ('fillRectangle', 'strokeRectangle', 'fillCircle', 'strokeCircle', 'fillTriangle', 'strokeTriangle')
+   * @param canvas {object} Элемент канваса для определения ширины и высоты
+   */
   createObject(type, canvas) {
     const {x, y} = createCoordinates(canvas);
     const rgba = getRandomColor();
@@ -31,6 +37,9 @@ class CanvasState extends StateModule{
     }, 'Добавление еще одного объекта для отрисовки');
   }
 
+  /**
+   * Удаление всех объектов
+   */
   deleteObjects() {
     this.setState({
       ...this.getState(),
@@ -40,6 +49,10 @@ class CanvasState extends StateModule{
     }, 'Удаление всех объектов');
   }
 
+  /**
+   * Установка смещения по вертикали
+   * @param offsetY {number}
+   */
   addOffsetY(offsetY) {
     const pxl = window.devicePixelRatio;
 
@@ -49,6 +62,10 @@ class CanvasState extends StateModule{
     }, 'Запись смещения по Y');
   }
 
+  /**
+   * Установка смещения по горизонтали
+   * @param offsetX {number}
+   */
   addOffsetX(offsetX) {
     const pxl = window.devicePixelRatio;
 

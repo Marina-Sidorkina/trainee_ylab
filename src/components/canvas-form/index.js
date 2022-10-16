@@ -28,27 +28,36 @@ function CanvasForm(
   const [ctx, setCtx] = useState(null)
 
   useEffect(() => {
+    // Получаем контекст канваса
     setCtx(canvas.current.getContext('2d'));
+    // Приведение в соответсвие размера области отрисовки с областью элемента в пикселях
     resize(canvas.current);
   }, [])
 
   useEffect(() => {
     if (ctx) {
+      // Очищение канваса
       ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
+      // Отрисовка элементов канваса на основе данных из массива объектов в сторе
       objects.forEach((item) => createObjects(ctx, item, movedY, movedX, offsetY, offsetX));
     }
   }, [objects, movedY, movedX, ctx]);
 
   const callbacks = {
+    // Слушаем событие перемещения при нажатии на кнопку мыши
     onMouseDown: useCallback(evt => {
+      // Стартовые координаты X и Y курсора мыши
       let startY = evt.clientY;
       let startX = evt.clientX;
+      // Переменные для записи смещения по осям X и Y для отправки в стор на событие mouseUp
       let offsetForY;
       let offsetForX;
 
       const onMouseMove = (evt) => {
+        // Сохраняем в локальный стейт смещение по осям X и Y
         setMovedY(startY - evt.clientY);
         setMovedX(startX - evt.clientX);
+        // Запись смещения по осям X и Y для отправки в стор на событие mouseUp
         offsetForY = startY - evt.clientY;
         offsetForX = startX - evt.clientX;
       };
@@ -56,6 +65,7 @@ function CanvasForm(
       const onMouseUp = () => {
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
+        // Отправка в стор последнего значения смещения по осям X и Y
         addOffsetY(offsetForY);
         addOffsetX(offsetForX);
       }
@@ -96,7 +106,11 @@ function CanvasForm(
         </div>
       </div>
       <canvas ref={canvas}
-              onMouseDown={callbacks.onMouseDown}></canvas>
+              onMouseDown={callbacks.onMouseDown}
+              onWheel={(evt) => {
+                document.addEventListener('wheel', (evt) => evt.preventDefault())
+                console.log(evt);
+              }}></canvas>
     </div>
   )
 }

@@ -1,3 +1,4 @@
+// Подгоняем размер буфера отрисовки под размер HTML-элемента канваса
 export default function resize(canvas) {
   const realToCSSPixels = window.devicePixelRatio;
   // получаем размер HTML-элемента canvas
