@@ -13,7 +13,9 @@ class CanvasState extends StateModule{
    */
   initState() {
     return {
-      objects: []
+      objects: [],
+      offsetY: 0,
+      offsetX: 0,
     };
   }
 
@@ -33,7 +35,27 @@ class CanvasState extends StateModule{
     this.setState({
       ...this.getState(),
       objects: [],
+      offsetY: 0,
+      offsetX: 0,
     }, 'Удаление всех объектов');
+  }
+
+  addOffsetY(offsetY) {
+    const pxl = window.devicePixelRatio;
+
+    this.setState({
+      ...this.getState(),
+      offsetY: this.getState().offsetY + (offsetY * pxl),
+    }, 'Запись смещения по Y');
+  }
+
+  addOffsetX(offsetX) {
+    const pxl = window.devicePixelRatio;
+
+    this.setState({
+      ...this.getState(),
+      offsetX: this.getState().offsetX + (offsetX * pxl),
+    }, 'Запись смещения по X');
   }
 }
 

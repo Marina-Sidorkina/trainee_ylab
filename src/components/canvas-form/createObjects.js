@@ -43,6 +43,8 @@ const options = {
   }
 }
 
-export default function createObjects(ctx, {type, rgba, x, y})  {
-  options[type](ctx, rgba, x, y);
+export default function createObjects(ctx, {type, rgba, x, y}, movedY, movedX, offsetY, offsetX) {
+  const newValueY = y - offsetY;
+  const newValueX = x - offsetX;
+  options[type](ctx, rgba, newValueX - (movedX * pxl), newValueY - (movedY * pxl));
 }

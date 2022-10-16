@@ -10,10 +10,11 @@ function CanvasContainer() {
 
   const select = useSelector(state => ({
     objects: state.canvas.objects,
+    offsetY: state.canvas.offsetY,
+    offsetX: state.canvas.offsetX,
   }));
 
   const callbacks = {
-    // Добавление в корзину
     onFillRectangleAdd: useCallback((canvas) => {
       store.get('canvas').createObject('fillRectangle', canvas);
     }, [select.objects]),
@@ -34,7 +35,13 @@ function CanvasContainer() {
     }, [select.objects]),
     onReset: useCallback(() => {
       store.get('canvas').deleteObjects();
-    }, [select.objects]),
+    }, [select.objects, select.offsetY, select.offsetX]),
+    addOffsetY: useCallback((value) => {
+      store.get('canvas').addOffsetY(value);
+    }, [select.offsetY]),
+    addOffsetX: useCallback((value) => {
+      store.get('canvas').addOffsetX(value);
+    }, [select.offsetX]),
   };
 
   return (
@@ -46,7 +53,11 @@ function CanvasContainer() {
                 onFillTriangleAdd={callbacks.onFillTriangleAdd}
                 onStrokeTriangleAdd={callbacks.onStrokeTriangleAdd}
                 onReset={callbacks.onReset}
-                resetTitle={t('filter.reset')}/>
+                resetTitle={t('filter.reset')}
+                offsetY={select.offsetY}
+                addOffsetY={callbacks.addOffsetY}
+                offsetX={select.offsetX}
+                addOffsetX={callbacks.addOffsetX}/>
   )
 }
 

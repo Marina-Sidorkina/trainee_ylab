@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {cn as bem} from "@bem-react/classname";
 import './style.less';
 import PropTypes from "prop-types";
@@ -15,17 +15,56 @@ function CanvasForm(
     onFillTriangleAdd,
     onStrokeTriangleAdd,
     onReset,
-    resetTitle
+    resetTitle,
+    offsetY,
+    addOffsetY,
+    offsetX,
+    addOffsetX
   }) {
   const cn = bem('CanvasForm');
   const canvas = useRef();
+  const [movedY, setMovedY] = useState(0);
+  const [movedX, setMovedX] = useState(0);
+  const [ctx, setCtx] = useState(null)
 
   useEffect(() => {
-    const ctx = canvas.current.getContext('2d');
+    setCtx(canvas.current.getContext('2d'));
     resize(canvas.current);
-    ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
-    objects.forEach((item) => createObjects(ctx, item));
-  }, [objects])
+  }, [])
+
+  useEffect(() => {
+    if (ctx) {
+      ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
+      objects.forEach((item) => createObjects(ctx, item, movedY, movedX, offsetY, offsetX));
+    }
+  }, [objects, movedY, movedX, ctx]);
+
+  const callbacks = {
+    onMouseDown: useCallback(evt => {
+      let startY = evt.clientY;
+      let startX = evt.clientX;
+      let offsetForY;
+      let offsetForX;
+
+      const onMouseMove = (evt) => {
+        setMovedY(startY - evt.clientY);
+        setMovedX(startX - evt.clientX);
+        offsetForY = startY - evt.clientY;
+        offsetForX = startX - evt.clientX;
+      };
+
+      const onMouseUp = () => {
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+        addOffsetY(offsetForY);
+        addOffsetX(offsetForX);
+      }
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+
+    }, [movedY, offsetY, movedX, offsetX]),
+  };
 
   return (
     <div className={cn()}>
@@ -56,7 +95,8 @@ function CanvasForm(
                   onClick={onReset}>{resetTitle}</button>
         </div>
       </div>
-      <canvas ref={canvas}></canvas>
+      <canvas ref={canvas}
+              onMouseDown={callbacks.onMouseDown}></canvas>
     </div>
   )
 }
