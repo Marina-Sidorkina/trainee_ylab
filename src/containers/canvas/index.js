@@ -42,6 +42,9 @@ function CanvasContainer() {
     addOffsetX: useCallback((value) => {
       store.get('canvas').addOffsetX(value);
     }, [select.offsetX]),
+    onWheel: useCallback((evt) => {
+      store.get('canvas').onWheelMove(evt.deltaY);
+    }, []),
   };
 
   return (
@@ -57,7 +60,8 @@ function CanvasContainer() {
                 offsetY={select.offsetY}
                 addOffsetY={callbacks.addOffsetY}
                 offsetX={select.offsetX}
-                addOffsetX={callbacks.addOffsetX}/>
+                addOffsetX={callbacks.addOffsetX}
+                onWheel={callbacks.onWheel}/>
   )
 }
 

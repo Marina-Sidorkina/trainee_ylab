@@ -19,7 +19,8 @@ function CanvasForm(
     offsetY,
     addOffsetY,
     offsetX,
-    addOffsetX
+    addOffsetX,
+    onWheel
   }) {
   const cn = bem('CanvasForm');
   const canvas = useRef();
@@ -32,8 +33,9 @@ function CanvasForm(
     setCtx(canvas.current.getContext('2d'));
     // Приведение в соответсвие размера области отрисовки с областью элемента в пикселях
     resize(canvas.current);
-  }, [])
+  }, []);
 
+  // Отрисовка при добавлении фигур и при перетаскивании мышкой
   useEffect(() => {
     if (ctx) {
       // Очищение канваса
@@ -41,7 +43,17 @@ function CanvasForm(
       // Отрисовка элементов канваса на основе данных из массива объектов в сторе
       objects.forEach((item) => createObjects(ctx, item, movedY, movedX, offsetY, offsetX));
     }
-  }, [objects, movedY, movedX, ctx]);
+  }, [objects, movedY, movedX]);
+
+  // Отрисовка при смещении по колесику мышки
+  useEffect(() => {
+    if (ctx) {
+      // Очищение канваса
+      ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
+      // Отрисовка элементов канваса на основе данных из массива объектов в сторе
+      objects.forEach((item) => createObjects(ctx, item, 0, 0, offsetY, offsetX));
+    }
+  }, [offsetY, offsetX]);
 
   const callbacks = {
     // Слушаем событие перемещения при нажатии на кнопку мыши
@@ -50,8 +62,8 @@ function CanvasForm(
       let startY = evt.clientY;
       let startX = evt.clientX;
       // Переменные для записи смещения по осям X и Y для отправки в стор на событие mouseUp
-      let offsetForY;
-      let offsetForX;
+      let offsetForY = 0;
+      let offsetForX = 0;
 
       const onMouseMove = (evt) => {
         // Сохраняем в локальный стейт смещение по осям X и Y
@@ -107,10 +119,7 @@ function CanvasForm(
       </div>
       <canvas ref={canvas}
               onMouseDown={callbacks.onMouseDown}
-              onWheel={(evt) => {
-                document.addEventListener('wheel', (evt) => evt.preventDefault())
-                console.log(evt);
-              }}></canvas>
+              onWheel={onWheel}></canvas>
     </div>
   )
 }

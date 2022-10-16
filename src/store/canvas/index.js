@@ -74,6 +74,18 @@ class CanvasState extends StateModule{
       offsetX: this.getState().offsetX + (offsetX * pxl),
     }, 'Запись смещения по X');
   }
+
+  /**
+   * Обработка перемещения при прокручивании колесика мыши
+   * @param delta {number}
+   */
+  onWheelMove(delta) {
+    if (delta > 0){
+      this.addOffsetY(10);
+    } else {
+      this.addOffsetY(-10);
+    }
+  }
 }
 
 export default CanvasState;
