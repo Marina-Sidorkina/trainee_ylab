@@ -7,8 +7,8 @@ export default function createCoordinates(canvas) {
   const displayWidth  = Math.floor(canvas.clientWidth  * realToCSSPixels);
   const displayHeight = Math.floor(canvas.clientHeight * realToCSSPixels);
 
-   return {
-     x: generateRandomNumber(0, displayWidth),
-     y: generateRandomNumber(0, displayHeight),
-   }
+  return {
+   x: generateRandomNumber(0, displayWidth),
+   y: generateRandomNumber(0, displayHeight),
+  }
 }

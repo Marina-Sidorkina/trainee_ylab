@@ -53,7 +53,7 @@ const options = {
 }
 
 // Вызов одной из функций отрисовки фигур на канвасе в соответствии с переданными данными
-export default function createObjects(ctx, {type, rgba, x, y}, movedY, movedX, offsetY, offsetX) {
+export default function createObjects(ctx, {type, rgba, x, y, offsetX, offsetY}, movedY, movedX) {
   const newValueY = y - offsetY;
   const newValueX = x - offsetX;
   options[type](ctx, rgba, newValueX - (movedX * pxl), newValueY - (movedY * pxl));

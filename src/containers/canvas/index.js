@@ -10,8 +10,6 @@ function CanvasContainer() {
 
   const select = useSelector(state => ({
     objects: state.canvas.objects,
-    offsetY: state.canvas.offsetY,
-    offsetX: state.canvas.offsetX,
   }));
 
   const callbacks = {
@@ -35,16 +33,13 @@ function CanvasContainer() {
     }, [select.objects]),
     onReset: useCallback(() => {
       store.get('canvas').deleteObjects();
-    }, [select.objects, select.offsetY, select.offsetX]),
-    addOffsetY: useCallback((value) => {
-      store.get('canvas').addOffsetY(value);
-    }, [select.offsetY]),
-    addOffsetX: useCallback((value) => {
-      store.get('canvas').addOffsetX(value);
-    }, [select.offsetX]),
+    }, [select.objects]),
     onWheel: useCallback((evt) => {
       store.get('canvas').onWheelMove(evt.deltaY);
     }, []),
+    addOffset: useCallback((offsetX, offsetY) => {
+      store.get('canvas').addOffset(offsetX, offsetY);
+    }, [select.objects]),
   };
 
   return (
@@ -57,11 +52,8 @@ function CanvasContainer() {
                 onStrokeTriangleAdd={callbacks.onStrokeTriangleAdd}
                 onReset={callbacks.onReset}
                 resetTitle={t('filter.reset')}
-                offsetY={select.offsetY}
-                addOffsetY={callbacks.addOffsetY}
-                offsetX={select.offsetX}
-                addOffsetX={callbacks.addOffsetX}
-                onWheel={callbacks.onWheel}/>
+                onWheel={callbacks.onWheel}
+                addOffset={callbacks.addOffset}/>
   )
 }
 

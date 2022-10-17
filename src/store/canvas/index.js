@@ -14,8 +14,6 @@ class CanvasState extends StateModule{
   initState() {
     return {
       objects: [],
-      offsetY: 0,
-      offsetX: 0,
     };
   }
 
@@ -28,11 +26,13 @@ class CanvasState extends StateModule{
   createObject(type, canvas) {
     const {x, y} = createCoordinates(canvas);
     const rgba = getRandomColor();
+    const offsetY = 0;
+    const offsetX = 0;
 
     this.setState({
       ...this.getState(),
       objects: [...this.getState().objects, {
-        type, rgba, x, y,
+        type, rgba, x, y, offsetX, offsetY
       }],
     }, 'Добавление еще одного объекта для отрисовки');
   }
@@ -44,35 +44,7 @@ class CanvasState extends StateModule{
     this.setState({
       ...this.getState(),
       objects: [],
-      offsetY: 0,
-      offsetX: 0,
     }, 'Удаление всех объектов');
-  }
-
-  /**
-   * Установка смещения по вертикали
-   * @param offsetY {number}
-   */
-  addOffsetY(offsetY) {
-    const pxl = window.devicePixelRatio;
-
-    this.setState({
-      ...this.getState(),
-      offsetY: this.getState().offsetY + (offsetY * pxl),
-    }, 'Запись смещения по Y');
-  }
-
-  /**
-   * Установка смещения по горизонтали
-   * @param offsetX {number}
-   */
-  addOffsetX(offsetX) {
-    const pxl = window.devicePixelRatio;
-
-    this.setState({
-      ...this.getState(),
-      offsetX: this.getState().offsetX + (offsetX * pxl),
-    }, 'Запись смещения по X');
   }
 
   /**
@@ -81,10 +53,32 @@ class CanvasState extends StateModule{
    */
   onWheelMove(delta) {
     if (delta > 0){
-      this.addOffsetY(10);
+      this.addOffset(0, 7);
     } else {
-      this.addOffsetY(-10);
+      this.addOffset(0, -7);
     }
+  }
+
+  /**
+   * Добавление смещения по оси x и y для каждого объекта
+   * @param offsetX {number}
+   * @param offsetY {number}
+   */
+  addOffset(offsetX, offsetY) {
+    const pxl = window.devicePixelRatio;
+
+    const newObjects = this.getState().objects.slice().map((item) => {
+      return {
+        ...item,
+        offsetX: item.offsetX + (offsetX * pxl),
+        offsetY: item.offsetY + (offsetY * pxl),
+      }
+    })
+
+    this.setState({
+      ...this.getState(),
+      objects: newObjects
+    }, 'Запись смещений по x и y для каждого объекта');
   }
 }
 

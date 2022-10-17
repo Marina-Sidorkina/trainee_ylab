@@ -6,27 +6,14 @@ import createObjects from "@src/components/canvas-form/createObjects";
 import resize from "@src/utils/canvas/resize";
 
 function CanvasForm(
-  {
-    objects,
-    onFillRectangleAdd,
-    onStrokeRectangleAdd,
-    onFillCircleAdd,
-    onStrokeCircleAdd,
-    onFillTriangleAdd,
-    onStrokeTriangleAdd,
-    onReset,
-    resetTitle,
-    offsetY,
-    addOffsetY,
-    offsetX,
-    addOffsetX,
-    onWheel
+  {objects, onFillRectangleAdd, onStrokeRectangleAdd, onFillCircleAdd, onStrokeCircleAdd,
+    onFillTriangleAdd, onStrokeTriangleAdd, onReset, resetTitle, onWheel, addOffset
   }) {
   const cn = bem('CanvasForm');
   const canvas = useRef();
   const [movedY, setMovedY] = useState(0);
   const [movedX, setMovedX] = useState(0);
-  const [ctx, setCtx] = useState(null)
+  const [ctx, setCtx] = useState(null);
 
   useEffect(() => {
     // Получаем контекст канваса
@@ -41,19 +28,19 @@ function CanvasForm(
       // Очищение канваса
       ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
       // Отрисовка элементов канваса на основе данных из массива объектов в сторе
-      objects.forEach((item) => createObjects(ctx, item, movedY, movedX, offsetY, offsetX));
+      objects.forEach((item) => createObjects(ctx, item, movedY, movedX));
     }
-  }, [objects, movedY, movedX]);
+  }, [movedY, movedX]);
 
-  // Отрисовка при смещении по колесику мышки
+  // Отрисовка при добавлении объектов
   useEffect(() => {
     if (ctx) {
       // Очищение канваса
       ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
       // Отрисовка элементов канваса на основе данных из массива объектов в сторе
-      objects.forEach((item) => createObjects(ctx, item, 0, 0, offsetY, offsetX));
+      objects.forEach((item) => createObjects(ctx, item, 0, 0));
     }
-  }, [offsetY, offsetX]);
+  }, [objects]);
 
   const callbacks = {
     // Слушаем событие перемещения при нажатии на кнопку мыши
@@ -78,14 +65,13 @@ function CanvasForm(
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
         // Отправка в стор последнего значения смещения по осям X и Y
-        addOffsetY(offsetForY);
-        addOffsetX(offsetForX);
+        addOffset(offsetForX, offsetForY);
       }
 
       document.addEventListener('mousemove', onMouseMove);
       document.addEventListener('mouseup', onMouseUp);
 
-    }, [movedY, offsetY, movedX, offsetX]),
+    }, [movedY, movedX]),
   };
 
   return (
@@ -134,6 +120,8 @@ CanvasForm.propTypes = {
   onStrokeTriangleAdd: PropTypes.func,
   onReset: PropTypes.func,
   resetTitle: PropTypes.string,
+  onWheel: PropTypes.func,
+  addOffset: PropTypes.func,
 }
 
 CanvasForm.defaultProps = {
@@ -145,7 +133,9 @@ CanvasForm.defaultProps = {
   onFillTriangleAdd: () => {},
   onStrokeTriangleAdd: () => {},
   onReset: () => {},
-  resetTitle: ''
+  resetTitle: '',
+  onWheel: () => {},
+  addOffset: () => {},
 }
 
 export default React.memo(CanvasForm);
