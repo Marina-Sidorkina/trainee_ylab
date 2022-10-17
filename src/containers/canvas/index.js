@@ -10,6 +10,7 @@ function CanvasContainer() {
 
   const select = useSelector(state => ({
     objects: state.canvas.objects,
+    scale: state.canvas.scale,
   }));
 
   const callbacks = {
@@ -35,7 +36,7 @@ function CanvasContainer() {
       store.get('canvas').deleteObjects();
     }, [select.objects]),
     onWheel: useCallback((evt) => {
-      store.get('canvas').onWheelMove(evt.deltaY);
+      store.get('canvas').onWheelMove(evt.deltaY, evt.shiftKey);
     }, []),
     addOffset: useCallback((offsetX, offsetY) => {
       store.get('canvas').addOffset(offsetX, offsetY);
@@ -53,7 +54,8 @@ function CanvasContainer() {
                 onReset={callbacks.onReset}
                 resetTitle={t('filter.reset')}
                 onWheel={callbacks.onWheel}
-                addOffset={callbacks.addOffset}/>
+                addOffset={callbacks.addOffset}
+                scale={select.scale}/>
   )
 }
 

@@ -14,6 +14,7 @@ class CanvasState extends StateModule{
   initState() {
     return {
       objects: [],
+      scale: 1
     };
   }
 
@@ -44,18 +45,35 @@ class CanvasState extends StateModule{
     this.setState({
       ...this.getState(),
       objects: [],
+      scale: 1
     }, 'Удаление всех объектов');
   }
 
   /**
    * Обработка перемещения при прокручивании колесика мыши
    * @param delta {number}
+   * @param shiftKey {boolean}
    */
-  onWheelMove(delta) {
-    if (delta > 0){
-      this.addOffset(0, 7);
+  onWheelMove(delta, shiftKey) {
+    if (!shiftKey) {
+      if (delta > 0){
+        this.addOffset(0, 7);
+      } else {
+        this.addOffset(0, -7);
+      }
     } else {
-      this.addOffset(0, -7);
+      if (delta > 0){
+        this.setState({
+          ...this.getState(),
+          scale: this.getState().scale >= 2 ? this.getState().scale: this.getState().scale + 0.1
+        }, 'Увеличение масштаба');
+      }
+      if (delta <= 0)  {
+        this.setState({
+          ...this.getState(),
+          scale: this.getState().scale <= 1 ? this.getState().scale : this.getState().scale - 0.1
+        }, 'Уменьшение масштаба');
+      }
     }
   }
 

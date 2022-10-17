@@ -9,7 +9,7 @@ import CanvasControls from "@src/components/canvas-controls";
 function Canvas(
   {
     objects, onFillRectangleAdd, onStrokeRectangleAdd, onFillCircleAdd, onStrokeCircleAdd,
-    onFillTriangleAdd, onStrokeTriangleAdd, onReset, resetTitle, onWheel, addOffset
+    onFillTriangleAdd, onStrokeTriangleAdd, onReset, resetTitle, onWheel, addOffset, scale
   }) {
   const cn = bem('Canvas');
   const canvas = useRef();
@@ -30,9 +30,9 @@ function Canvas(
       // Очищение канваса
       ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
       // Отрисовка элементов канваса на основе данных из массива объектов в сторе
-      objects.forEach((item) => createObjects(ctx, item, movedY, movedX));
+      objects.forEach((item) => createObjects(ctx, item, movedY, movedX, scale));
     }
-  }, [movedY, movedX]);
+  }, [movedY, movedX, scale]);
 
   // Отрисовка при добавлении объектов + вертикальный scroll
   useEffect(() => {
@@ -40,9 +40,9 @@ function Canvas(
       // Очищение канваса
       ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
       // Отрисовка элементов канваса на основе данных из массива объектов в сторе
-      objects.forEach((item) => createObjects(ctx, item, 0, 0));
+      objects.forEach((item) => createObjects(ctx, item, 0, 0, scale));
     }
-  }, [objects]);
+  }, [objects, scale]);
 
   const callbacks = {
     // Слушаем событие перемещения при нажатии на кнопку мыши
