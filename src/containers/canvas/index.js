@@ -1,5 +1,5 @@
 import React, {useCallback} from "react";
-import CanvasForm from "@src/components/canvas-form";
+import Canvas from "@src/components/canvas";
 import useStore from "@src/hooks/use-store";
 import useSelector from "@src/hooks/use-selector";
 import useTranslate from "@src/hooks/use-translate";
@@ -43,7 +43,7 @@ function CanvasContainer() {
   };
 
   return (
-    <CanvasForm objects={select.objects}
+    <Canvas objects={select.objects}
                 onFillRectangleAdd={callbacks.onFillRectangleAdd}
                 onStrokeRectangleAdd={callbacks.onStrokeRectangleAdd}
                 onFillCircleAdd={callbacks.onFillCircleAdd}

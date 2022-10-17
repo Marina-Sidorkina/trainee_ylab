@@ -2,14 +2,16 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {cn as bem} from "@bem-react/classname";
 import './style.less';
 import PropTypes from "prop-types";
-import createObjects from "@src/components/canvas-form/createObjects";
+import createObjects from "@src/components/canvas/createObjects";
 import resize from "@src/utils/canvas/resize";
+import CanvasControls from "@src/components/canvas-controls";
 
-function CanvasForm(
-  {objects, onFillRectangleAdd, onStrokeRectangleAdd, onFillCircleAdd, onStrokeCircleAdd,
+function Canvas(
+  {
+    objects, onFillRectangleAdd, onStrokeRectangleAdd, onFillCircleAdd, onStrokeCircleAdd,
     onFillTriangleAdd, onStrokeTriangleAdd, onReset, resetTitle, onWheel, addOffset
   }) {
-  const cn = bem('CanvasForm');
+  const cn = bem('Canvas');
   const canvas = useRef();
   const [movedY, setMovedY] = useState(0);
   const [movedX, setMovedX] = useState(0);
@@ -32,7 +34,7 @@ function CanvasForm(
     }
   }, [movedY, movedX]);
 
-  // Отрисовка при добавлении объектов
+  // Отрисовка при добавлении объектов + вертикальный scroll
   useEffect(() => {
     if (ctx) {
       // Очищение канваса
@@ -76,41 +78,21 @@ function CanvasForm(
 
   return (
     <div className={cn()}>
-      <div className={cn('controls')}>
-        <div className={cn('options')}>
-          <button className={cn('fillRectangle')}
-                  type='button'
-                  onClick={() =>{onFillRectangleAdd(canvas.current)}} />
-          <button className={cn('strokeRectangle')}
-                  type='button'
-                  onClick={() =>{onStrokeRectangleAdd(canvas.current)}} />
-          <button className={cn('fillCircle')}
-                  type='button'
-                  onClick={() =>{onFillCircleAdd(canvas.current)}} />
-          <button className={cn('strokeCircle')}
-                  type='button'
-                  onClick={() =>{onStrokeCircleAdd(canvas.current)}} />
-          <button className={cn('triangle')}
-                  type='button'
-                  onClick={() =>{onFillTriangleAdd(canvas.current)}}>{'▲'}</button>
-          <button className={cn('triangle')}
-                  type='button'
-                  onClick={() =>{onStrokeTriangleAdd(canvas.current)}}>{'△'}</button>
-        </div>
-        <div className={cn('buttons')}>
-          <button className={cn('reset')}
-                  type='button'
-                  onClick={onReset}>{resetTitle}</button>
-        </div>
-      </div>
-      <canvas ref={canvas}
-              onMouseDown={callbacks.onMouseDown}
-              onWheel={onWheel}></canvas>
+      <CanvasControls onFillRectangleAdd={onFillRectangleAdd}
+                      onStrokeRectangleAdd={onStrokeRectangleAdd}
+                      onFillCircleAdd={onFillCircleAdd}
+                      onStrokeCircleAdd={onStrokeCircleAdd}
+                      onFillTriangleAdd={onFillTriangleAdd}
+                      onStrokeTriangleAdd={onStrokeTriangleAdd}
+                      onReset={onReset}
+                      resetTitle={resetTitle}
+                      canvas={canvas.current}/>
+      <canvas ref={canvas} onMouseDown={callbacks.onMouseDown} onWheel={onWheel}></canvas>
     </div>
   )
 }
 
-CanvasForm.propTypes = {
+Canvas.propTypes = {
   objects: PropTypes.array,
   onFillRectangleAdd: PropTypes.func,
   onStrokeRectangleAdd: PropTypes.func,
@@ -124,7 +106,7 @@ CanvasForm.propTypes = {
   addOffset: PropTypes.func,
 }
 
-CanvasForm.defaultProps = {
+Canvas.defaultProps = {
   objects: [],
   onFillRectangleAdd: () => {},
   onStrokeRectangleAdd: () => {},
@@ -138,4 +120,4 @@ CanvasForm.defaultProps = {
   addOffset: () => {},
 }
 
-export default React.memo(CanvasForm);
+export default React.memo(Canvas);
