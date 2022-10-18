@@ -6,35 +6,39 @@ const pxl = window.devicePixelRatio;
 const options = {
   // Квадрат (закрашенный)
   fillRectangle: (ctx, rgba, x, y, scale) => {
+    ctx.save();
     const width = 100 * pxl;
     const height = 100 * pxl;
     ctx.fillStyle = rgba;
     ctx.scale(scale, scale);
     ctx.fillRect (x, y, width, height);
-    ctx.resetTransform();
+    ctx.restore();
   },
   // Квадрат (контур)
   strokeRectangle: (ctx, rgba, x, y, scale) => {
+    ctx.save();
     const width = 150 * pxl;
     const height = 150 * pxl;
     ctx.strokeStyle = rgba;
     ctx.lineWidth = 3;
     ctx.scale(scale, scale);
     ctx.strokeRect(x, y, width, height);
-    ctx.resetTransform();
+    ctx.restore();
   },
   // Круг
   fillCircle: (ctx, rgba, x, y, scale) => {
+    ctx.save();
     const radius = 50 * pxl;
     ctx.fillStyle = rgba;
     ctx.beginPath();
     ctx.scale(scale, scale);
     ctx.arc(x,y,radius,0,Math.PI*2,true);
     ctx.fill();
-    ctx.resetTransform();
+    ctx.restore();
   },
   // Окружность
   strokeCircle: (ctx, rgba, x, y, scale) => {
+    ctx.save();
     const radius = 90 * pxl;
     ctx.strokeStyle = rgba;
     ctx.lineWidth = 3;
@@ -42,10 +46,11 @@ const options = {
     ctx.scale(scale, scale);
     ctx.arc(x, y, radius,0,Math.PI*2,true);
     ctx.stroke();
-    ctx.resetTransform();
+    ctx.restore();
   },
   // Треугольник (закрашенный)
   fillTriangle: (ctx, rgba, x, y, scale) => {
+    ctx.save();
     ctx.fillStyle = rgba;
     ctx.scale(scale, scale);
     ctx.beginPath();
@@ -53,10 +58,11 @@ const options = {
     ctx.lineTo(x + 100, y);
     ctx.lineTo(x + 100, y - 100);
     ctx.fill();
-    ctx.resetTransform();
+    ctx.restore();
   },
   // Треугольник (контур)
   strokeTriangle: (ctx, rgba, x, y, scale) => {
+    ctx.save();
     ctx.strokeStyle = rgba;
     ctx.lineWidth = 3;
     ctx.scale(scale, scale);
@@ -66,7 +72,7 @@ const options = {
     ctx.lineTo(x + 250, y - 250);
     ctx.lineTo(x, y);
     ctx.stroke();
-    ctx.resetTransform();
+    ctx.restore();
   }
 }
 
