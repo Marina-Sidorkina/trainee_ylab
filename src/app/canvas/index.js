@@ -2,7 +2,7 @@ import React from "react";
 import ToolsContainer from "@src/containers/tools";
 import Layout from "@src/components/layouts/layout";
 import HeadContainer from "@src/containers/head";
-import CanvasContainer from "@src/containers/canvas";
+import CanvasOOPContainer from "@src/containers/canvas-oop";
 
 function Canvas() {
 
@@ -10,7 +10,7 @@ function Canvas() {
     <Layout>
       <HeadContainer title={'Canvas'} showLanguage={false}/>
       <ToolsContainer article={true} showBasket={false}/>
-      <CanvasContainer />
+      <CanvasOOPContainer />
     </Layout>
   )
 }
