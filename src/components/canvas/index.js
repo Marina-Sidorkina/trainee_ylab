@@ -8,8 +8,8 @@ import CanvasControls from "@src/components/canvas-controls";
 
 function Canvas(
   {
-    objects, onFillRectangleAdd, onStrokeRectangleAdd, onFillCircleAdd, onStrokeCircleAdd,
-    onFillTriangleAdd, onStrokeTriangleAdd, onReset, resetTitle, onWheel, addOffset, scale
+    objects, onFillRectangleAdd, onStrokeRectangleAdd, onFillCircleAdd, onStrokeCircleAdd, setMouseMoving,
+    onFillTriangleAdd, onStrokeTriangleAdd, onReset, resetTitle, onWheel, addOffset, scale, addFalling
   }) {
   const cn = bem('Canvas');
   const canvas = useRef();
@@ -44,6 +44,15 @@ function Canvas(
     }
   }, [objects, scale]);
 
+  useEffect(() => {
+
+    const showLoadingProcess = () => {
+      addFalling(-3, canvas.current);
+      requestAnimationFrame(showLoadingProcess);
+    }
+    requestAnimationFrame(showLoadingProcess);
+  }, [ctx])
+
   const callbacks = {
     // Слушаем событие перемещения при нажатии на кнопку мыши
     onMouseDown: useCallback(evt => {
@@ -53,6 +62,7 @@ function Canvas(
       // Переменные для записи смещения по осям X и Y для отправки в стор на событие mouseUp
       let offsetForY = 0;
       let offsetForX = 0;
+      setMouseMoving(true)
 
       const onMouseMove = (evt) => {
         // Сохраняем в локальный стейт смещение по осям X и Y
@@ -68,6 +78,7 @@ function Canvas(
         document.removeEventListener('mouseup', onMouseUp);
         // Отправка в стор последнего значения смещения по осям X и Y
         addOffset(offsetForX, offsetForY);
+        setMouseMoving(false)
       }
 
       document.addEventListener('mousemove', onMouseMove);
@@ -87,7 +98,12 @@ function Canvas(
                       onReset={onReset}
                       resetTitle={resetTitle}
                       canvas={canvas.current}/>
-      <canvas ref={canvas} onMouseDown={callbacks.onMouseDown} onWheel={onWheel}></canvas>
+      <canvas ref={canvas}
+              onMouseDown={callbacks.onMouseDown}
+              onWheel={(evt) => {
+                setMouseMoving(true);
+                onWheel(evt);
+              }}></canvas>
     </div>
   )
 }

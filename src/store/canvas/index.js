@@ -1,6 +1,7 @@
 import StateModule from "@src/store/module";
 import createCoordinates from "@src/utils/canvas/createCoordinates";
 import getRandomColor from "@src/utils/canvas/getRandomColor";
+import checkFall from "@src/utils/canvas/checkFall";
 
 /**
  * Состояние рисунка на canvas
@@ -14,7 +15,8 @@ class CanvasState extends StateModule{
   initState() {
     return {
       objects: [],
-      scale: 1
+      scale: 1,
+      mouseMoving: false,
     };
   }
 
@@ -65,13 +67,13 @@ class CanvasState extends StateModule{
       if (delta > 0){
         this.setState({
           ...this.getState(),
-          scale: this.getState().scale >= 2 ? this.getState().scale: this.getState().scale + 0.1
+          scale: this.getState().scale >= 2 ? this.getState().scale: this.getState().scale + 0.1,
         }, 'Увеличение масштаба');
       }
       if (delta <= 0)  {
         this.setState({
           ...this.getState(),
-          scale: this.getState().scale <= 1 ? this.getState().scale : this.getState().scale - 0.1
+          scale: this.getState().scale <= 1 ? this.getState().scale : this.getState().scale - 0.1,
         }, 'Уменьшение масштаба');
       }
     }
@@ -97,6 +99,32 @@ class CanvasState extends StateModule{
       ...this.getState(),
       objects: newObjects
     }, 'Запись смещений по x и y для каждого объекта');
+  }
+
+  addFalling(offsetY) {
+    if (!this.getState().mouseMoving) {
+      const pxl = window.devicePixelRatio;
+
+      const newObjects = this.getState().objects.slice().map((item) => {
+        const check = item.offsetY + (offsetY * pxl);
+        return {
+          ...item,
+          offsetY: checkFall(item.type, item.y, check)
+        }
+      });
+
+      this.setState({
+        ...this.getState(),
+        objects: newObjects
+      }, 'Обработка падения фигур');
+    }
+  }
+
+  setMouseMoving(mouseMoving) {
+    this.setState({
+      ...this.getState(),
+      mouseMoving
+    }, 'Установка флага для анимации');
   }
 }
 

@@ -41,6 +41,12 @@ function CanvasContainer() {
     addOffset: useCallback((offsetX, offsetY) => {
       store.get('canvas').addOffset(offsetX, offsetY);
     }, [select.objects]),
+    addFalling: useCallback((offsetY) => {
+      store.get('canvas').addFalling(offsetY);
+    }, []),
+    setMouseMoving: useCallback((value) => {
+      store.get('canvas').setMouseMoving(value);
+    }, []),
   };
 
   return (
@@ -55,7 +61,9 @@ function CanvasContainer() {
                 resetTitle={t('filter.reset')}
                 onWheel={callbacks.onWheel}
                 addOffset={callbacks.addOffset}
-                scale={select.scale}/>
+                scale={select.scale}
+                addFalling={callbacks.addFalling}
+                setMouseMoving={callbacks.setMouseMoving}/>
   )
 }
 
