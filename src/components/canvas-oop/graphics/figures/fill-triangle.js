@@ -23,8 +23,21 @@ class FillTriangle {
   /**
    * @param ctx {CanvasRenderingContext2D}
    * @param metrics {Object}
+   * @param action {Object}
    */
-  draw(ctx, metrics){
+  draw(ctx, metrics, action) {
+
+    if (action.name === 'mouseMove' && action.active) {
+      this.x = this.x - action.scrollX * this.pxl;
+      this.y = this.y - action.scrollY * this.pxl;
+      this.time = performance.now();
+    }
+
+    if (action.name === 'scroll') {
+      this.y = this.y - metrics.scrollY;
+      this.time = performance.now();
+    }
+
     ctx.save();
     ctx.fillStyle = this.color;
     ctx.scale(metrics.scale, metrics.scale);

@@ -11,13 +11,14 @@ class Graphics {
     this.elements = [];
 
     this.metrics = {
-      zoom: 1,
-      scrollX: 0,
-      scrollY: 0
+      scale: 1,
+      scrollY: 0,
     }
+
     this.action = {};
     this.needDraw = true;
     this.pxl = window.devicePixelRatio;
+    this.timer = null;
   }
 
   /**
@@ -36,9 +37,18 @@ class Graphics {
     this.draw();
 
     window.addEventListener('resize', this.resize);
+    this.canvas.addEventListener('mousedown', this.onMouseDown);
+    document.addEventListener('mousemove', this.onMouseMove);
+    document.addEventListener('mouseup', this.onMouseUp);
+    this.canvas.addEventListener('mousewheel', this.onMouseWheel);
   }
 
   unmount() {
+    window.removeEventListener('resize', this.resize);
+    this.canvas.removeEventListener('mousedown', this.onMouseDown);
+    document.removeEventListener('mousemove', this.onMouseMove);
+    document.removeEventListener('mouseup', this.onMouseUp);
+    this.canvas.removeEventListener('mousewheel', this.onMouseWheel);
     this.root.removeChild(this.canvas);
   }
 
@@ -65,22 +75,76 @@ class Graphics {
     if (type === 'strokeTriangle') this.elements = [...this.elements, new StrokeTriangle({x, y, color})];
   }
 
-  resetElements() {
+  reset() {
     this.elements = [];
+    this.metrics = {
+      scale: 1,
+      scrollY: 0,
+    }
+  }
+
+  scale({scale, delta}) {
+    if (typeof scale != 'undefined') this.metrics.scale = scale;
+    if (typeof delta != 'undefined') this.metrics.scale += delta;
+    this.needDraw = true;
+  }
+
+  onMouseDown = (evt) => {
+    this.action = {
+      name: 'mouseMove',
+      startY: evt.clientY,
+      startX: evt.clientX,
+      scrollX: this.metrics.scrollX,
+      scrollY: this.metrics.scrollY,
+    }
+  }
+
+  onMouseMove = (evt) => {
+    if (this.action.name === 'mouseMove') {
+      this.needDraw = false;
+      this.action.active = true;
+      this.action.scrollX = this.action.startX - evt.clientX;
+      this.action.scrollY = this.action.startY - evt.clientY;
+      this.action.startY =  evt.clientY;
+      this.action.startX = evt.clientX;
+    }
+  }
+
+  onMouseUp = () => {
+    this.action.name = null;
+    this.needDraw = true;
+  }
+
+  onMouseWheel = (evt) => {
+    if (evt.shiftKey){
+      const delta = evt.deltaY > 0 ? 0.1 : -0.1;
+      this.scale({delta});
+    } else {
+      this.needDraw = false;
+      this.action.name = 'scroll';
+
+      if (evt.deltaY > 0) this.metrics.scrollY = 7;
+      if (evt.deltaY < 0) this.metrics.scrollY = -7;
+
+      clearTimeout(this.timer);
+      this.timer = setTimeout(() => {
+        this.needDraw = true;
+        this.action.name = null;
+      }, 100);
+    }
   }
 
   draw = () => {
-    if (this.needDraw) {
-      const time = performance.now();
+    const time = performance.now();
 
-      this.ctx.fillStyle = '#ffffff';
-      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-      for (const element of this.elements) {
-        element.animate(time, this.bottom);
-        element.draw(this.ctx, this.metrics);
-      }
+    for (const element of this.elements) {
+      if (this.needDraw) element.animate(time, this.bottom, this.metrics);
+      element.draw(this.ctx, this.metrics, this.action);
     }
+
     requestAnimationFrame(this.draw);
   }
 }

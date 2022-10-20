@@ -22,7 +22,7 @@ function CanvasOOP({objects, onFigureAdd, onReset, resetTitle}) {
   const callbacks = {
     onReset: useCallback(() => {
       onReset();
-      graphics.resetElements();
+      graphics.reset();
     }, []),
   };
 
