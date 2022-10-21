@@ -161,7 +161,6 @@ class Graphics {
 
     this.metrics.scaleScrollX = this.metrics.scale === 1 ? 0 : centerNew.x - center.x;
     this.metrics.scaleScrollY = this.metrics.scale === 1 ? 0 : centerNew.y - center.y;
-    console.log(this.metrics.scaleScrollX, this.metrics.scaleScrollY);
   }
 
   scroll = (evt) => {
