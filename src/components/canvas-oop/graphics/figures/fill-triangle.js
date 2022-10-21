@@ -18,7 +18,6 @@ class FillTriangle extends Base {
 
     ctx.save();
     ctx.fillStyle = this.color;
-    ctx.scale(metrics.scale, metrics.scale);
     ctx.beginPath();
     ctx.moveTo(this.x, this.y);
     ctx.lineTo(this.x + this.side, this.y);

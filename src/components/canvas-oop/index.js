@@ -12,7 +12,10 @@ function CanvasOOP({objects, onFigureAdd, onReset, resetTitle}) {
 
   useEffect(()=>{
     graphics.mount(dom.current);
-    return () => graphics.unmount();
+    return () => {
+      graphics.unmount();
+      onReset();
+    };
   }, []);
 
   useEffect(() => {

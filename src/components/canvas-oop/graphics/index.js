@@ -11,8 +11,10 @@ class Graphics {
     this.elements = [];
 
     this.metrics = {
-      scale: 1,
       scrollY: 0,
+      scale: 1,
+      scaleScrollX: 0,
+      scaleScrollY: 0,
     }
 
     this.action = {};
@@ -44,6 +46,7 @@ class Graphics {
   }
 
   unmount() {
+    this.reset();
     window.removeEventListener('resize', this.resize);
     this.canvas.removeEventListener('mousedown', this.onMouseDown);
     document.removeEventListener('mousemove', this.onMouseMove);
@@ -119,26 +122,10 @@ class Graphics {
 
   onMouseWheel = (evt) => {
     if (evt.shiftKey) {
-      this.scale(evt);
+      this.scale(evt,  {center: {x: evt.offsetX, y: evt.offsetY}});
     } else {
       this.scroll(evt)
     }
-  }
-
-  scale = (evt) => {
-    let delta;
-    if (evt.deltaY > 0) delta = this.metrics.scale >= 2 ? this.metrics.scale : this.metrics.scale + 0.1;
-    if (evt.deltaY <= 0)  delta = this.metrics.scale <= 1 ? this.metrics.scale : this.metrics.scale - 0.1;
-    this.metrics.scale = delta;
-    this.needAnimation = true;
-  }
-
-  scroll = (evt) => {
-    this.needAnimation = false;
-    this.action.name = 'scroll';
-
-    if (evt.deltaY > 0) this.metrics.scrollY = 7;
-    if (evt.deltaY < 0) this.metrics.scrollY = -7;
 
     clearTimeout(this.timer);
     this.timer = setTimeout(() => {
@@ -147,17 +134,56 @@ class Graphics {
     }, 100);
   }
 
+  scale = (evt, {center}) => {
+    this.needAnimation = false;
+    this.action.name = 'scale';
+    let delta;
+
+    if (evt.deltaY > 0) delta = this.metrics.scale >= 5 ? 0 : 0.1;
+    if (evt.deltaY <= 0)  delta = this.metrics.scale <= 1 ? 0 : - 0.1;
+
+    const centerOld = {
+      x: center.x + this.metrics.scaleScrollX,
+      y: center.y + this.metrics.scaleScrollY
+    };
+
+    const centerReal = {
+      x: centerOld.x / this.metrics.scale,
+      y: centerOld.y / this.metrics.scale
+    }
+
+    this.metrics.scale += delta;
+
+    const centerNew = {
+      x: centerReal.x * this.metrics.scale,
+      y: centerReal.y * this.metrics.scale
+    }
+
+    this.metrics.scaleScrollX = centerNew.x - center.x;
+    this.metrics.scaleScrollY = centerNew.y - center.y;
+  }
+
+  scroll = (evt) => {
+    this.needAnimation = false;
+    this.action.name = 'scroll';
+
+    if (evt.deltaY > 0) this.metrics.scrollY = 7;
+    if (evt.deltaY < 0) this.metrics.scrollY = -7;
+  }
+
   draw = () => {
     const time = performance.now();
-
+    this.ctx.save();
     this.ctx.fillStyle = '#ffffff';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.translate(-this.metrics.scaleScrollX  * this.pxl, -this.metrics.scaleScrollY  * this.pxl);
+    this.ctx.scale(this.metrics.scale, this.metrics.scale);
 
     for (const element of this.elements) {
       if (this.needAnimation) element.animate(time, this.bottom, this.metrics);
       element.draw(this.ctx, this.metrics, this.action);
     }
-
+    this.ctx.restore();
     requestAnimationFrame(this.draw);
   }
 }

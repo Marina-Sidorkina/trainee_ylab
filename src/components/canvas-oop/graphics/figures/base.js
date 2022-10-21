@@ -7,6 +7,8 @@ class Base {
     this.time = performance.now();
     this.pxl = window.devicePixelRatio;
     this.bottomOffset = 0;
+    this.scaleX = 1;
+    this.scaleY = 1;
   }
 
   /**
@@ -36,6 +38,10 @@ class Base {
 
     if (action.name === 'scroll') {
       this.y = this.y - metrics.scrollY;
+      this.time = performance.now();
+    }
+
+    if (action.name === 'scale') {
       this.time = performance.now();
     }
   }

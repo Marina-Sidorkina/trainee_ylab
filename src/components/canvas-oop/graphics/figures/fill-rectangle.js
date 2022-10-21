@@ -19,7 +19,6 @@ class FillRectangle extends Base {
 
     ctx.save();
     ctx.fillStyle = this.color;
-    ctx.scale(metrics.scale, metrics.scale);
     ctx.fillRect (this.x, this.y, this.width, this.height);
     ctx.restore();
   }

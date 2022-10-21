@@ -20,7 +20,6 @@ class StrokeRectangle extends Base {
     ctx.save();
     ctx.strokeStyle = this.color;
     ctx.lineWidth = 3;
-    ctx.scale(metrics.scale, metrics.scale);
     ctx.strokeRect(this.x, this.y, this.width, this.height);
     ctx.restore();
   }

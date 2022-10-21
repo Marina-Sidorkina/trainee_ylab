@@ -20,7 +20,6 @@ class StrokeCircle extends Base {
     ctx.strokeStyle = this.color;
     ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.scale(metrics.scale, metrics.scale);
     ctx.arc(this.x, this.y, this.radius,0,Math.PI*2,true);
     ctx.stroke();
     ctx.restore();

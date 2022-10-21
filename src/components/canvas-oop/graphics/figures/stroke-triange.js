@@ -19,7 +19,6 @@ class StrokeTriangle extends Base {
     ctx.save();
     ctx.lineWidth = 3;
     ctx.fillStyle = this.color;
-    ctx.scale(metrics.scale, metrics.scale);
     ctx.beginPath();
     ctx.moveTo(this.x, this.y);
     ctx.lineTo(this.x + this.side, this.y);
