@@ -45,11 +45,9 @@ class Base {
     }
 
     if (this.type === 'fillRectangle' || this.type === 'strokeRectangle') {
-      const leftX = this.x;
       const rightX = this.x + this.width;
-      const topY = this.y;
       const bottomY = this.y + this.height;
-      return x <= rightX && x >= leftX && y >= topY && y <= bottomY;
+      return x <= rightX && x >= this.x && y >= this.y && y <= bottomY;
     }
   }
 

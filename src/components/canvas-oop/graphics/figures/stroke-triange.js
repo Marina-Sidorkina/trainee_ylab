@@ -18,8 +18,8 @@ class StrokeTriangle extends Base {
     this.processAction(action, metrics);
 
     ctx.save();
-    ctx.lineWidth = 3;
-    ctx.fillStyle = this.color;
+    ctx.strokeStyle = action.index === this.index ? 'green' : this.color;
+    ctx.lineWidth = action.index === this.index ? 5 : 3;
     ctx.beginPath();
     ctx.moveTo(this.x, this.y);
     ctx.lineTo(this.x + this.side, this.y);

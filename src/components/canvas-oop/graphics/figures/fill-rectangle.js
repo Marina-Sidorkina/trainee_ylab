@@ -19,7 +19,7 @@ class FillRectangle extends Base {
     this.processAction(action, metrics);
 
     ctx.save();
-    ctx.fillStyle = this.color;
+    ctx.fillStyle = action.index === this.index ? 'green' : this.color;
     ctx.fillRect (this.x, this.y, this.width, this.height);
     ctx.restore();
   }

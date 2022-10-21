@@ -18,10 +18,11 @@ class FillCircle extends Base {
     this.processAction(action, metrics);
 
     ctx.save();
-    ctx.fillStyle = this.color;
+    ctx.fillStyle = action.index === this.index ? 'green' : this.color;
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius,0,Math.PI*2,true);
     ctx.fill();
+    if (action.index === this.index) ctx.stroke();
     ctx.restore();
   }
 }
