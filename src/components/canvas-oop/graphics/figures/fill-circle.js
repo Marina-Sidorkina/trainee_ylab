@@ -19,7 +19,6 @@ class FillCircle extends Base {
     ctx.save();
     ctx.fillStyle = this.color;
     ctx.beginPath();
-    ctx.scale(this.scaleX, this.scaleY);
     ctx.arc(this.x, this.y, this.radius,0,Math.PI*2,true);
     ctx.fill();
     ctx.restore();

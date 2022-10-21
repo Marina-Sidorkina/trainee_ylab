@@ -7,8 +7,6 @@ class Base {
     this.time = performance.now();
     this.pxl = window.devicePixelRatio;
     this.bottomOffset = 0;
-    this.scaleX = 1;
-    this.scaleY = 1;
   }
 
   /**
