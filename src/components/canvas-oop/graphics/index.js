@@ -67,15 +67,16 @@ class Graphics {
       this.canvas.width  = displayWidth;
       this.canvas.height = displayHeight;
     }
+    this.bottom = Math.floor(this.canvas.clientHeight * this.pxl);
   }
 
-  addElement({type, x, y, color}) {
-    if (type === 'fillRectangle') this.elements = [...this.elements, new FillRectangle({x, y, color})];
-    if (type === 'strokeRectangle') this.elements = [...this.elements, new StrokeRectangle({x, y, color})];
-    if (type === 'fillCircle') this.elements = [...this.elements, new FillCircle({x, y, color})];
-    if (type === 'strokeCircle') this.elements = [...this.elements, new StrokeCircle({x, y, color})];
-    if (type === 'fillTriangle') this.elements = [...this.elements, new FillTriangle({x, y, color})];
-    if (type === 'strokeTriangle') this.elements = [...this.elements, new StrokeTriangle({x, y, color})];
+  addElement({type, x, y, color}, index) {
+    if (type === 'fillRectangle') this.elements = [...this.elements, new FillRectangle({x, y, color}, index)];
+    if (type === 'strokeRectangle') this.elements = [...this.elements, new StrokeRectangle({x, y, color}, index)];
+    if (type === 'fillCircle') this.elements = [...this.elements, new FillCircle({x, y, color}, index)];
+    if (type === 'strokeCircle') this.elements = [...this.elements, new StrokeCircle({x, y, color}, index)];
+    if (type === 'fillTriangle') this.elements = [...this.elements, new FillTriangle({x, y, color}, index)];
+    if (type === 'strokeTriangle') this.elements = [...this.elements, new StrokeTriangle({x, y, color}, index)];
   }
 
   reset() {
@@ -96,12 +97,15 @@ class Graphics {
       startX: evt.clientX,
       scrollX: this.metrics.scrollX,
       scrollY: this.metrics.scrollY,
+      clickX: evt.offsetX * this.pxl,
+      clickY: evt.offsetY * this.pxl,
+      click: true,
     }
+    this.checkElementCoordinates();
   }
 
   onMouseMove = (evt) => {
     if (this.action.name === 'mouseMove') {
-      this.needAnimation = false;
       this.action.active = true;
       this.action.scrollX = this.action.startX - evt.clientX;
       this.action.scrollY = this.action.startY - evt.clientY;
@@ -111,6 +115,7 @@ class Graphics {
   }
 
   onMouseUp = () => {
+    if (this.action.active) this.action.index = -1;
     this.action.name = null;
     this.action.active = false;
     this.action.scrollX = null;
@@ -161,6 +166,11 @@ class Graphics {
     if (evt.deltaY < 0) this.metrics.scrollY = -7;
   }
 
+  checkElementCoordinates() {
+    const check = this.elements.map(item => item.checkClick({x: this.action.clickX, y: this.action.clickY}));
+    this.action.index = check.lastIndexOf(true);
+  }
+
   draw = () => {
     const time = performance.now();
     this.ctx.save();
@@ -170,7 +180,9 @@ class Graphics {
     this.ctx.scale(this.metrics.scale, this.metrics.scale);
 
     for (const element of this.elements) {
-      if (this.needAnimation) element.animate(time, this.bottom, this.metrics);
+      if (this.needAnimation && this.action.index !== element.index) {
+        element.animate(time, this.bottom, this.metrics)
+      }
       element.draw(this.ctx, this.metrics, this.action);
     }
 

@@ -19,7 +19,7 @@ function CanvasOOP({objects, onFigureAdd, onReset, resetTitle}) {
   }, []);
 
   useEffect(() => {
-    if (graphics && objects.length) graphics.addElement(objects[objects.length - 1]);
+    if (graphics && objects.length) graphics.addElement(objects[objects.length - 1], objects.length - 1);
   }, [objects]);
 
   const callbacks = {

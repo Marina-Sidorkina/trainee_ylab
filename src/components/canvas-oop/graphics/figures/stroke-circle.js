@@ -2,8 +2,9 @@ import Base from "@src/components/canvas-oop/graphics/figures/base";
 
 class StrokeCircle extends Base {
 
-  constructor({x, y, color}){
-    super({x, y, color});
+  constructor({x, y, color}, index){
+    super({x, y, color}, index);
+    this.type = 'strokeCircle';
     this.radius = 90 * this.pxl;
     this.bottomOffset =  90 * this.pxl; //radius
   }

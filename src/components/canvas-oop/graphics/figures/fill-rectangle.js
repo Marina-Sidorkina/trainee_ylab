@@ -2,8 +2,9 @@ import Base from "@src/components/canvas-oop/graphics/figures/base";
 
 class FillRectangle extends Base {
 
-  constructor({x, y, color}){
-    super({x, y, color});
+  constructor({x, y, color}, index){
+    super({x, y, color}, index);
+    this.type = 'fillRectangle';
     this.width = 100 * this.pxl;
     this.height = 100 * this.pxl;
     this.bottomOffset =  100 * this.pxl; // height

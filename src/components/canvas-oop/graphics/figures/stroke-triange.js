@@ -2,8 +2,9 @@ import Base from "@src/components/canvas-oop/graphics/figures/base";
 
 class StrokeTriangle extends Base {
 
-  constructor({x, y, color}){
-    super({x, y, color});
+  constructor({x, y, color}, index){
+    super({x, y, color}, index);
+    this.type = 'strokeTriangle';
     this.side = 125 * this.pxl;
     this.bottomOffset = 0;
   }

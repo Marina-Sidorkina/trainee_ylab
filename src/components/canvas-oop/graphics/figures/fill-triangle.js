@@ -2,8 +2,9 @@ import Base from "@src/components/canvas-oop/graphics/figures/base";
 
 class FillTriangle extends Base {
 
-  constructor({x, y, color}){
-    super({x, y, color});
+  constructor({x, y, color}, index){
+    super({x, y, color}, index);
+    this.type = 'fillTriangle';
     this.side = 50 * this.pxl;
     this.bottomOffset = 0;
   }
