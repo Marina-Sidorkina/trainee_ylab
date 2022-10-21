@@ -1,26 +1,12 @@
-class FillRectangle {
+import Base from "@src/components/canvas-oop/graphics/figures/base";
+
+class FillRectangle extends Base {
 
   constructor({x, y, color}){
-    this.x = x;
-    this.y = y;
-    this.a = 9.8;
-    this.color = color;
-    this.time = performance.now();
-    this.pxl = window.devicePixelRatio;
+    super({x, y, color});
     this.width = 100 * this.pxl;
     this.height = 100 * this.pxl;
-    this.offsetX = 0;
-    this.offsetY = 0;
-  }
-
-  animate(time, bottom){
-    const dt = (time - this.time) / 1000;
-
-    if (this.y < bottom - this.height) {
-      this.y += this.a * dt * dt / 2;
-    } else {
-      this.y = bottom - this.height;
-    }
+    this.bottomOffset =  100 * this.pxl; // height
   }
 
   /**
@@ -29,17 +15,7 @@ class FillRectangle {
    * @param action {Object}
    */
   draw(ctx, metrics, action) {
-
-    if (action.name === 'mouseMove' && action.active) {
-      this.x = this.x - action.scrollX * this.pxl;
-      this.y = this.y - action.scrollY * this.pxl;
-      this.time = performance.now();
-    }
-
-    if (action.name === 'scroll') {
-      this.y = this.y - metrics.scrollY;
-      this.time = performance.now();
-    }
+    this.processAction(action, metrics);
 
     ctx.save();
     ctx.fillStyle = this.color;

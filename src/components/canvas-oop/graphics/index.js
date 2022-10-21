@@ -16,7 +16,7 @@ class Graphics {
     }
 
     this.action = {};
-    this.needDraw = true;
+    this.needAnimation = true;
     this.pxl = window.devicePixelRatio;
     this.timer = null;
   }
@@ -32,7 +32,7 @@ class Graphics {
     this.root.appendChild(this.canvas);
     this.bottom = Math.floor(this.canvas.clientHeight * this.pxl)
 
-    this.needDraw = true;
+    this.needAnimation = true;
     this.resize();
     this.draw();
 
@@ -81,12 +81,9 @@ class Graphics {
       scale: 1,
       scrollY: 0,
     }
-  }
-
-  scale({scale, delta}) {
-    if (typeof scale != 'undefined') this.metrics.scale = scale;
-    if (typeof delta != 'undefined') this.metrics.scale += delta;
-    this.needDraw = true;
+    this.action = {};
+    this.needAnimation = true;
+    this.timer = null;
   }
 
   onMouseDown = (evt) => {
@@ -101,7 +98,7 @@ class Graphics {
 
   onMouseMove = (evt) => {
     if (this.action.name === 'mouseMove') {
-      this.needDraw = false;
+      this.needAnimation = false;
       this.action.active = true;
       this.action.scrollX = this.action.startX - evt.clientX;
       this.action.scrollY = this.action.startY - evt.clientY;
@@ -112,26 +109,42 @@ class Graphics {
 
   onMouseUp = () => {
     this.action.name = null;
-    this.needDraw = true;
+    this.action.active = false;
+    this.action.scrollX = null;
+    this.action.scrollY = null;
+    this.action.startY =  null;
+    this.action.startX = null;
+    this.needAnimation = true;
   }
 
   onMouseWheel = (evt) => {
-    if (evt.shiftKey){
-      const delta = evt.deltaY > 0 ? 0.1 : -0.1;
-      this.scale({delta});
+    if (evt.shiftKey) {
+      this.scale(evt);
     } else {
-      this.needDraw = false;
-      this.action.name = 'scroll';
-
-      if (evt.deltaY > 0) this.metrics.scrollY = 7;
-      if (evt.deltaY < 0) this.metrics.scrollY = -7;
-
-      clearTimeout(this.timer);
-      this.timer = setTimeout(() => {
-        this.needDraw = true;
-        this.action.name = null;
-      }, 100);
+      this.scroll(evt)
     }
+  }
+
+  scale = (evt) => {
+    let delta;
+    if (evt.deltaY > 0) delta = this.metrics.scale >= 2 ? this.metrics.scale : this.metrics.scale + 0.1;
+    if (evt.deltaY <= 0)  delta = this.metrics.scale <= 1 ? this.metrics.scale : this.metrics.scale - 0.1;
+    this.metrics.scale = delta;
+    this.needAnimation = true;
+  }
+
+  scroll = (evt) => {
+    this.needAnimation = false;
+    this.action.name = 'scroll';
+
+    if (evt.deltaY > 0) this.metrics.scrollY = 7;
+    if (evt.deltaY < 0) this.metrics.scrollY = -7;
+
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      this.needAnimation = true;
+      this.action.name = null;
+    }, 100);
   }
 
   draw = () => {
@@ -141,7 +154,7 @@ class Graphics {
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
     for (const element of this.elements) {
-      if (this.needDraw) element.animate(time, this.bottom, this.metrics);
+      if (this.needAnimation) element.animate(time, this.bottom, this.metrics);
       element.draw(this.ctx, this.metrics, this.action);
     }
 
