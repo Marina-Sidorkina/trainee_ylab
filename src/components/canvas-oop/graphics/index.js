@@ -142,21 +142,11 @@ class Graphics {
     if (evt.deltaY > 0) delta = this.metrics.scale >= 5 ? 0 : 0.1;
     if (evt.deltaY <= 0)  delta = this.metrics.scale <= 1 ? 0 : - 0.1;
 
-    const centerOld = {
-      x: center.x + this.metrics.scaleScrollX,
-      y: center.y + this.metrics.scaleScrollY
-    };
-
-    const centerReal = {
-      x: centerOld.x / this.metrics.scale,
-      y: centerOld.y / this.metrics.scale
-    }
-
     this.metrics.scale += delta;
 
     const centerNew = {
-      x: centerReal.x * this.metrics.scale,
-      y: centerReal.y * this.metrics.scale
+      x: center.x * this.metrics.scale,
+      y: center.y * this.metrics.scale
     }
 
     this.metrics.scaleScrollX = this.metrics.scale === 1 ? 0 : centerNew.x - center.x;
@@ -183,6 +173,7 @@ class Graphics {
       if (this.needAnimation) element.animate(time, this.bottom, this.metrics);
       element.draw(this.ctx, this.metrics, this.action);
     }
+
     this.ctx.restore();
     requestAnimationFrame(this.draw);
   }
