@@ -22,7 +22,6 @@ class FillCircle extends Base {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius,0,Math.PI*2,true);
     ctx.fill();
-    if (action.index === this.index) ctx.stroke();
     ctx.restore();
   }
 }
