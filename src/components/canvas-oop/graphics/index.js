@@ -180,9 +180,8 @@ class Graphics {
     this.ctx.scale(this.metrics.scale, this.metrics.scale);
 
     for (const element of this.elements) {
-      const check = this.needAnimation && this.action.index !== element.index;
-      this.action.check = check;
-      if (check) element.animate(time, this.bottom, this.metrics);
+      this.action.check = this.needAnimation && this.action.index !== element.index;
+      if (this.action.check) element.animate(time, this.bottom, this.metrics);
       element.draw(this.ctx, this.metrics, this.action);
     }
 
