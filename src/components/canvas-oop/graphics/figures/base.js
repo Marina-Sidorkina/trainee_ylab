@@ -9,6 +9,7 @@ class Base {
     this.time = performance.now();
     this.bottomOffset = 0;
     this.updateFigureStoreData = updateFigureStoreData;
+    this.follow = false;
   }
 
   changeCoordinates({x, y}) {
@@ -24,8 +25,10 @@ class Base {
     const dt = (time - this.time) / 1000;
 
     if (this.y < bottom - this.bottomOffset) {
+      this.follow = true;
       this.y += this.a * dt * dt / 2;
     } else {
+      this.follow = false;
       this.y = bottom - this.bottomOffset;
     }
   }
@@ -77,7 +80,7 @@ class Base {
   }
 
   processUpdate(action) {
-    if (action.index === this.index) {
+    if (action.index === this.index || action.follow === this.index) {
       this.updateFigureStoreData(this.index, this.x / this.pxl, this.y / this.pxl);
     }
   }

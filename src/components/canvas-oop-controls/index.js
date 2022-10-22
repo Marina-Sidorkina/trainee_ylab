@@ -4,15 +4,15 @@ import './style.less';
 import PropTypes from "prop-types";
 import {useThrottle} from '@react-hook/throttle'
 
-function CanvasOOPControls({onFigureAdd, onReset, resetTitle, index, x, y, onValuesSubmit}) {
+function CanvasOOPControls({onFigureAdd, onReset, resetTitle, x, y, onValuesSubmit}) {
   const cn = bem('CanvasControls');
-  const [xValue, setXValue] = useThrottle(0, 10);
-  const [yValue, setYValue] = useThrottle(0, 10);
+  const [xValue, setXValue] = useThrottle('', 10);
+  const [yValue, setYValue] = useThrottle('', 10);
 
   useEffect(() => {
     setXValue(x);
     setYValue(y);
-  }, [index, x, y])
+  }, [x, y])
 
   const callbacks = {
     onXChange: useCallback((evt) => {
@@ -53,13 +53,13 @@ function CanvasOOPControls({onFigureAdd, onReset, resetTitle, index, x, y, onVal
         <input type='number'
                id='x-coordinate'
                className={cn('x-input')}
-               value={index !== -1 ? xValue : ''}
+               value={xValue !== '' ? xValue : ''}
                onChange={callbacks.onXChange}/>
         <label htmlFor='y-coordinate' className={cn('y-label')}>Y : </label>
         <input type='number'
                id='y-coordinate'
                className={cn('y-input')}
-               value={index !== -1 ? yValue : ''}
+               value={yValue !== '' ? yValue : ''}
                onChange={callbacks.onYChange}/>
         <button className={cn('submit')}
                 type='button'
@@ -78,7 +78,6 @@ CanvasOOPControls.propTypes = {
   onFigureAdd: PropTypes.func,
   onReset: PropTypes.func,
   resetTitle: PropTypes.string,
-  index: PropTypes.number,
   x: PropTypes.number,
   y: PropTypes.number,
   onValuesSubmit: PropTypes.func,

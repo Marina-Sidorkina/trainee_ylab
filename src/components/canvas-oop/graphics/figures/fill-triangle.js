@@ -19,7 +19,7 @@ class FillTriangle extends Base {
     this.processUpdate(action);
 
     ctx.save();
-    ctx.fillStyle = action.index === this.index ? 'green' : this.color;
+    ctx.fillStyle = action.index === this.index || action.follow === this.index ? 'green' : this.color;
     ctx.beginPath();
     ctx.moveTo(this.x, this.y);
     ctx.lineTo(this.x + this.side, this.y);

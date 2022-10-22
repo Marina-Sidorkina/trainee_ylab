@@ -172,6 +172,7 @@ class Graphics {
                     .map(item => item.checkClick({x: this.action.clickX, y: this.action.clickY}));
 
     this.action.index = check.lastIndexOf(true);
+    this.action.follow = check.lastIndexOf(true);
   }
 
   changeFigureCoordinates(x, y) {
@@ -192,7 +193,9 @@ class Graphics {
 
     for (const element of this.elements) {
       this.action.check = this.needAnimation && this.action.index !== element.index;
+
       if (this.action.check) element.animate(time, this.bottom, this.metrics);
+
       element.draw(this.ctx, this.metrics, this.action);
     }
 

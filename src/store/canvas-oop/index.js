@@ -45,6 +45,11 @@ class CanvasOOPState extends StateModule{
     this.setState({
       ...this.getState(),
       objects: [],
+      figure: {
+        index: -1,
+        x: 0,
+        y: 0,
+      },
     }, 'Удаление всех объектов');
   }
 

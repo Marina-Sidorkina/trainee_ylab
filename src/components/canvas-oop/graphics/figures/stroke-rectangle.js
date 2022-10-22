@@ -20,8 +20,8 @@ class StrokeRectangle extends Base {
     this.processUpdate(action);
 
     ctx.save();
-    ctx.strokeStyle = action.index === this.index ? 'green' : this.color;
-    ctx.lineWidth = action.index === this.index ? 5 : 3;
+    ctx.strokeStyle = action.index === this.index || action.follow === this.index ? 'green' : this.color;
+    ctx.lineWidth = action.index === this.index || action.follow === this.index ? 5 : 3;
     ctx.strokeRect(this.x, this.y, this.width, this.height);
     ctx.restore();
   }
