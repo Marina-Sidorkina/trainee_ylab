@@ -10,6 +10,9 @@ function CanvasOOPContainer() {
 
   const select = useSelector(state => ({
     objects: state.canvasOOP.objects,
+    index: state.canvasOOP.figure.index,
+    x: state.canvasOOP.figure.x,
+    y: state.canvasOOP.figure.y,
   }));
 
   const callbacks = {
@@ -19,13 +22,20 @@ function CanvasOOPContainer() {
     onReset: useCallback(() => {
       store.get('canvasOOP').deleteObjects();
     }, []),
+    updateFigureStoreData: useCallback((index, x, y) => {
+      store.get('canvasOOP').updateFigureStoreData(index, x, y);
+    }, []),
   };
 
   return (
     <CanvasOOP objects={select.objects}
                onFigureAdd={callbacks.onFigureAdd}
                onReset={callbacks.onReset}
-               resetTitle={t('filter.reset')}/>
+               resetTitle={t('filter.reset')}
+               updateFigureStoreData={callbacks.updateFigureStoreData}
+               index={select.index}
+               x={select.x}
+               y={select.y}/>
   )
 }
 

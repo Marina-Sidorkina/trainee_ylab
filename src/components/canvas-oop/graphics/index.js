@@ -7,7 +7,7 @@ import StrokeTriangle from "@src/components/canvas-oop/graphics/figures/stroke-t
 
 class Graphics {
 
-  constructor() {
+  constructor(updateFigureStoreData) {
     this.elements = [];
 
     this.metrics = {
@@ -21,6 +21,7 @@ class Graphics {
     this.needAnimation = true;
     this.pxl = window.devicePixelRatio;
     this.timer = null;
+    this.updateFigureStoreData = updateFigureStoreData;
   }
 
   /**
@@ -71,12 +72,12 @@ class Graphics {
   }
 
   addElement({type, x, y, color}, index) {
-    if (type === 'fillRectangle') this.elements = [...this.elements, new FillRectangle({x, y, color}, index)];
-    if (type === 'strokeRectangle') this.elements = [...this.elements, new StrokeRectangle({x, y, color}, index)];
-    if (type === 'fillCircle') this.elements = [...this.elements, new FillCircle({x, y, color}, index)];
-    if (type === 'strokeCircle') this.elements = [...this.elements, new StrokeCircle({x, y, color}, index)];
-    if (type === 'fillTriangle') this.elements = [...this.elements, new FillTriangle({x, y, color}, index)];
-    if (type === 'strokeTriangle') this.elements = [...this.elements, new StrokeTriangle({x, y, color}, index)];
+    if (type === 'fillRectangle') this.elements = [...this.elements, new FillRectangle({x, y, color}, index, this.updateFigureStoreData)];
+    if (type === 'strokeRectangle') this.elements = [...this.elements, new StrokeRectangle({x, y, color}, index, this.updateFigureStoreData)];
+    if (type === 'fillCircle') this.elements = [...this.elements, new FillCircle({x, y, color}, index, this.updateFigureStoreData)];
+    if (type === 'strokeCircle') this.elements = [...this.elements, new StrokeCircle({x, y, color}, index, this.updateFigureStoreData)];
+    if (type === 'fillTriangle') this.elements = [...this.elements, new FillTriangle({x, y, color}, index, this.updateFigureStoreData)];
+    if (type === 'strokeTriangle') this.elements = [...this.elements, new StrokeTriangle({x, y, color}, index, this.updateFigureStoreData)];
   }
 
   reset() {
@@ -167,8 +168,18 @@ class Graphics {
   }
 
   checkElementCoordinates() {
-    const check = this.elements.map(item => item.checkClick({x: this.action.clickX, y: this.action.clickY}));
+    const check = this.elements
+                    .map(item => item.checkClick({x: this.action.clickX, y: this.action.clickY}));
+
     this.action.index = check.lastIndexOf(true);
+  }
+
+  changeFigureCoordinates(x, y) {
+    if (this.elements[this.action.index]) {
+      this.elements[this.action.index].changeCoordinates({x, y});
+      this.needAnimation = true;
+      this.action.index = -1;
+    }
   }
 
   draw = () => {

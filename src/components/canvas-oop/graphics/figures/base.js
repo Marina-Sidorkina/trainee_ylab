@@ -1,13 +1,19 @@
 class Base {
-  constructor({x, y, color}, index) {
-    this.x = x;
-    this.y = y;
+  constructor({x, y, color}, index, updateFigureStoreData) {
+    this.pxl = window.devicePixelRatio;
+    this.x = x * this.pxl;
+    this.y = y * this.pxl;
     this.color = color;
     this.a = 9.8;
     this.index = index;
     this.time = performance.now();
-    this.pxl = window.devicePixelRatio;
     this.bottomOffset = 0;
+    this.updateFigureStoreData = updateFigureStoreData;
+  }
+
+  changeCoordinates({x, y}) {
+    this.x = x * this.pxl;
+    this.y = y * this.pxl;
   }
 
   /**
@@ -68,6 +74,12 @@ class Base {
     }
 
     if (action.name === 'scale' || !action.check) this.time = performance.now();
+  }
+
+  processUpdate(action) {
+    if (action.index === this.index) {
+      this.updateFigureStoreData(this.index, this.x / this.pxl, this.y / this.pxl);
+    }
   }
 }
 

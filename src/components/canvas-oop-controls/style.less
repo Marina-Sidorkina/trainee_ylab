@@ -106,4 +106,65 @@
       filter: brightness(0.9);
     }
   }
+
+  &-coordinates {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    & label {
+      display: block;
+      height: 30px;
+      margin-right: 5px;
+      color: #374258;
+      font-size: 17px;
+      line-height: 30px;
+      font-weight: bold;
+      font-family: Charter, sans-serif;
+    }
+
+    & input {
+      box-sizing: border-box;
+      display: block;
+      width: 100px;
+      height: 30px;
+      margin-right: 15px;
+      padding: 0 5px;
+      border: 1px solid #374258;
+      border-radius: 5px;
+      font-size: 17px;
+      line-height: 30px;
+      font-weight: normal;
+      color: #374258;
+      font-family: Charter, sans-serif;
+
+      &:focus {
+        border: 1px solid #d35e35;
+        outline: none;
+      }
+    }
+  }
+
+  &-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    font-size: 25px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0;
+    margin-left: -5px;
+
+    &:hover {
+      color: #d35e35;
+    }
+
+    &:active {
+      color: #666f88;
+    }
+  }
 }

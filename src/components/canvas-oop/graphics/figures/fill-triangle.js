@@ -2,8 +2,8 @@ import Base from "@src/components/canvas-oop/graphics/figures/base";
 
 class FillTriangle extends Base {
 
-  constructor({x, y, color}, index){
-    super({x, y, color}, index);
+  constructor({x, y, color}, index, updateFigureStoreData){
+    super({x, y, color}, index, updateFigureStoreData);
     this.type = 'fillTriangle';
     this.side = 50 * this.pxl;
     this.bottomOffset = 0;
@@ -16,6 +16,7 @@ class FillTriangle extends Base {
    */
   draw(ctx, metrics, action) {
     this.processAction(action, metrics);
+    this.processUpdate(action);
 
     ctx.save();
     ctx.fillStyle = action.index === this.index ? 'green' : this.color;

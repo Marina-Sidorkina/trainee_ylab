@@ -2,8 +2,8 @@ import Base from "@src/components/canvas-oop/graphics/figures/base";
 
 class StrokeRectangle extends Base {
 
-  constructor({x, y, color}, index){
-    super({x, y, color}, index);
+  constructor({x, y, color}, index, updateFigureStoreData){
+    super({x, y, color}, index, updateFigureStoreData);
     this.type = 'strokeRectangle';
     this.width = 150 * this.pxl;
     this.height = 150 * this.pxl;
@@ -17,6 +17,7 @@ class StrokeRectangle extends Base {
    */
   draw(ctx, metrics, action) {
     this.processAction(action, metrics);
+    this.processUpdate(action);
 
     ctx.save();
     ctx.strokeStyle = action.index === this.index ? 'green' : this.color;

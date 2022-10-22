@@ -3,9 +3,8 @@ const generateRandomNumber = (min, max) => Math.floor(Math.random() * (max + 1 -
 
 // Генерирует случайные координаты с учетом ширины и высоты канваса
 export default function createCoordinates(canvas) {
-  const realToCSSPixels = window.devicePixelRatio;
-  const displayWidth  = Math.floor(canvas.clientWidth  * realToCSSPixels);
-  //const displayHeight = Math.floor(canvas.clientHeight * realToCSSPixels);
+  const displayWidth  = Math.floor(canvas.clientWidth);
+  //const displayHeight = Math.floor(canvas.clientHeight);
 
   return {
    x: generateRandomNumber(0, displayWidth),

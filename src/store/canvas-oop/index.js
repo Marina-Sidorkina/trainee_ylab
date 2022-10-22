@@ -14,6 +14,11 @@ class CanvasOOPState extends StateModule{
   initState() {
     return {
       objects: [],
+      figure: {
+        index: -1,
+        x: 0,
+        y: 0,
+      },
     };
   }
 
@@ -41,6 +46,16 @@ class CanvasOOPState extends StateModule{
       ...this.getState(),
       objects: [],
     }, 'Удаление всех объектов');
+  }
+
+  /**
+   * Обновление данных выбранной фигуры
+   */
+  updateFigureStoreData(index, x, y) {
+    this.setState({
+      ...this.getState(),
+      figure: {index, x: Math.round(x), y: Math.round(y)}
+    }, 'Обновление данных выбранной фигуры');
   }
 }
 
