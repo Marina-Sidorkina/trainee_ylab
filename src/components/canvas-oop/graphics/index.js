@@ -7,7 +7,7 @@ import StrokeTriangle from "@src/components/canvas-oop/graphics/figures/stroke-t
 
 class Graphics {
 
-  constructor(updateFigureStoreData) {
+  constructor(updateInputStoreData) {
     this.elements = [];
 
     this.metrics = {
@@ -21,11 +21,10 @@ class Graphics {
     this.needAnimation = true;
     this.pxl = window.devicePixelRatio;
     this.timer = null;
-    this.updateFigureStoreData = updateFigureStoreData;
+    this.updateFigureStoreData = updateInputStoreData;
   }
 
   /**
-   *
    * @param root {HTMLElement}
    */
   mount(root) {
@@ -71,6 +70,14 @@ class Graphics {
     this.bottom = Math.floor(this.canvas.clientHeight * this.pxl);
   }
 
+  /**
+   * Добавление новой фигуры
+   * @param type {string} Тип фигуры, которую нужно создать
+   * @param x {number} Координата x фигуры, которую нужно создать
+   * @param y {number} Координата y фигуры, которую нужно создать
+   * @param color {string} Цвет фигуры, которую нужно создать
+   * @param index {number} Индекс фигуры, которую нужно создать
+   */
   addElement({type, x, y, color}, index) {
     if (type === 'fillRectangle') this.elements = [...this.elements, new FillRectangle({x, y, color}, index, this.updateFigureStoreData)];
     if (type === 'strokeRectangle') this.elements = [...this.elements, new StrokeRectangle({x, y, color}, index, this.updateFigureStoreData)];
@@ -80,6 +87,9 @@ class Graphics {
     if (type === 'strokeTriangle') this.elements = [...this.elements, new StrokeTriangle({x, y, color}, index, this.updateFigureStoreData)];
   }
 
+  /**
+   * Сброс значений
+   */
   reset() {
     this.elements = [];
     this.metrics = {
@@ -91,6 +101,10 @@ class Graphics {
     this.timer = null;
   }
 
+  /**
+   * Обработка события нажатия кнопки мыши
+   * @param evt {MouseEvent}
+   */
   onMouseDown = (evt) => {
     this.action = {
       name: 'mouseMove',
@@ -105,6 +119,10 @@ class Graphics {
     this.checkElementCoordinates();
   }
 
+  /**
+   * Обработка события передвижения курсора (мыши)
+   * @param evt {MouseEvent}
+   */
   onMouseMove = (evt) => {
     if (this.action.name === 'mouseMove') {
       this.action.active = true;
@@ -115,6 +133,9 @@ class Graphics {
     }
   }
 
+  /**
+   * Обработка события отпускания кнопки мыши
+   */
   onMouseUp = () => {
     if (this.action.active) this.action.index = -1;
     this.action.name = null;
@@ -126,6 +147,10 @@ class Graphics {
     this.needAnimation = true;
   }
 
+  /**
+   * Обработка события прокручивания колесика мыши
+   * @param evt {MouseEvent}
+   */
   onMouseWheel = (evt) => {
     if (evt.shiftKey) {
       this.scale(evt,  {center: {x: evt.offsetX, y: evt.offsetY}});
@@ -140,6 +165,11 @@ class Graphics {
     }, 100);
   }
 
+  /**
+   * Обработка масштабирования
+   * @param evt {MouseEvent}
+   * @param center {Object}
+   */
   scale = (evt, {center}) => {
     this.needAnimation = false;
     this.action.name = 'scale';
@@ -159,6 +189,10 @@ class Graphics {
     this.metrics.scaleScrollY = this.metrics.scale === 1 ? 0 : centerNew.y - center.y;
   }
 
+  /**
+   * Обработка скролла
+   * @param evt {MouseEvent}
+   */
   scroll = (evt) => {
     this.needAnimation = false;
     this.action.name = 'scroll';
@@ -167,6 +201,10 @@ class Graphics {
     if (evt.deltaY < 0) this.metrics.scrollY = -7;
   }
 
+  /**
+   * Проверка, попадает ли курсор мыши по какому-либо из элементов
+   * Запись индекса последнего подходящего элемента или -1
+   */
   checkElementCoordinates() {
     const check = this.elements
                     .map(item => item.checkClick({x: this.action.clickX, y: this.action.clickY}));
@@ -175,6 +213,11 @@ class Graphics {
     this.action.follow = check.lastIndexOf(true);
   }
 
+  /**
+   * Изменение координат выбранного элемента
+   * @param x {number}
+   * @param y {number}
+   */
   changeFigureCoordinates(x, y) {
     if (this.elements[this.action.index]) {
       this.elements[this.action.index].changeCoordinates({x, y});
@@ -183,6 +226,9 @@ class Graphics {
     }
   }
 
+  /**
+   * Отрисовка всех элементов
+   */
   draw = () => {
     const time = performance.now();
     this.ctx.save();

@@ -10,19 +10,22 @@ function CanvasOOPContainer() {
 
   const select = useSelector(state => ({
     objects: state.canvasOOP.objects,
-    x: state.canvasOOP.figure.x,
-    y: state.canvasOOP.figure.y,
+    x: state.canvasOOP.input.x,
+    y: state.canvasOOP.input.y,
   }));
 
   const callbacks = {
+    // Добавление нового объекта с данными для фигуры в стор
     onFigureAdd: useCallback((type) => {
       store.get('canvasOOP').createObject(type);
     }, []),
+    // Сброс значений в сторе
     onReset: useCallback(() => {
-      store.get('canvasOOP').deleteObjects();
+      store.get('canvasOOP').reset();
     }, []),
-    updateFigureStoreData: useCallback((index, x, y) => {
-      store.get('canvasOOP').updateFigureStoreData(index, x, y);
+    // Обновление данных инпута в сторе
+    updateInputStoreData: useCallback((index, x, y) => {
+      store.get('canvasOOP').updateInputStoreData(index, x, y);
     }, []),
   };
 
@@ -31,7 +34,7 @@ function CanvasOOPContainer() {
                onFigureAdd={callbacks.onFigureAdd}
                onReset={callbacks.onReset}
                resetTitle={t('filter.reset')}
-               updateFigureStoreData={callbacks.updateFigureStoreData}
+               updateInputStoreData={callbacks.updateInputStoreData}
                x={select.x}
                y={select.y}/>
   )

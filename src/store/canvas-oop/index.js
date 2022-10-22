@@ -14,7 +14,7 @@ class CanvasOOPState extends StateModule{
   initState() {
     return {
       objects: [],
-      figure: {
+      input: {
         index: -1,
         x: 0,
         y: 0,
@@ -39,28 +39,32 @@ class CanvasOOPState extends StateModule{
   }
 
   /**
-   * Удаление всех объектов
+   * Обновление поля с данными
+   * @param index {number} Индекс элемента, чьи данные отображаются в инпутах
+   * @param x {number} Текущая координата x
+   * @param y {number} Текущая координата y
    */
-  deleteObjects() {
+  updateInputStoreData(index, x, y) {
+    this.setState({
+      ...this.getState(),
+      input: {index, x: Math.round(x), y: Math.round(y)}
+    }, 'Обновление данных выбранной фигуры');
+  }
+
+
+  /**
+   * Сброс всех значений
+   */
+  reset() {
     this.setState({
       ...this.getState(),
       objects: [],
-      figure: {
+      input: {
         index: -1,
         x: 0,
         y: 0,
       },
-    }, 'Удаление всех объектов');
-  }
-
-  /**
-   * Обновление данных выбранной фигуры
-   */
-  updateFigureStoreData(index, x, y) {
-    this.setState({
-      ...this.getState(),
-      figure: {index, x: Math.round(x), y: Math.round(y)}
-    }, 'Обновление данных выбранной фигуры');
+    }, 'Удаление всех объектов и данных о них');
   }
 }
 

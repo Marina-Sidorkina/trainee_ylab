@@ -15,12 +15,15 @@ function CanvasOOPControls({onFigureAdd, onReset, resetTitle, x, y, onValuesSubm
   }, [x, y])
 
   const callbacks = {
+    // Изменение стейта для координаты x
     onXChange: useCallback((evt) => {
       setXValue(evt.target.value);
     }, []),
+    // Изменение стейта для координаты y
     onYChange: useCallback((evt) => {
       setYValue(evt.target.value);
     }, []),
+    // Передача значений из стейта для изменения координат выбранной фигуры
     onValuesSubmit: useCallback(() => {
       onValuesSubmit(xValue, yValue);
     }, [xValue, yValue]),

@@ -12,12 +12,18 @@ class Base {
     this.follow = false;
   }
 
+  /**
+   * Изменение координат фигуры
+   * @param x {number}
+   * @param y {number}
+   */
   changeCoordinates({x, y}) {
     this.x = x * this.pxl;
     this.y = y * this.pxl;
   }
 
   /**
+   * Обработка анимации
    * @param time {number}
    * @param bottom {number}
    */
@@ -33,6 +39,11 @@ class Base {
     }
   }
 
+  /**
+   * Проверка, находится ли точка курсора внутри фигуры
+   * @param x {number}
+   * @param y {number}
+   */
   checkClick({x, y}) {
     if (this.type === 'fillCircle' || this.type === 'strokeCircle') {
       return (this.x - x)**2 + (this.y - y)**2 <= this.radius**2;
@@ -61,6 +72,7 @@ class Base {
   }
 
   /**
+   * Обработка действий пользователя в зависимости от типа action
    * @param metrics {Object}
    * @param action {Object}
    */
@@ -79,6 +91,10 @@ class Base {
     if (action.name === 'scale' || !action.check) this.time = performance.now();
   }
 
+  /**
+   * Вызов обновления значений в сторе для инпута
+   * @param action {Object}
+   */
   processUpdate(action) {
     if (action.index === this.index || action.follow === this.index) {
       this.updateFigureStoreData(this.index, this.x / this.pxl, this.y / this.pxl);
