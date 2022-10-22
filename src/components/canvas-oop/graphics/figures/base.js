@@ -67,9 +67,7 @@ class Base {
       this.time = performance.now();
     }
 
-    if (action.name === 'scale') {
-      this.time = performance.now();
-    }
+    if (action.name === 'scale' || !action.check) this.time = performance.now();
   }
 }
 
