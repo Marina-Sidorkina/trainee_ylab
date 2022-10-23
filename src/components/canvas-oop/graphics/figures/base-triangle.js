@@ -25,7 +25,6 @@ class BaseTriangle extends Base {
     return result1 || result2;
   }
 
-
   /**
    * Проверка, находится ли хотя бы часть фигуры в пределах видимой области
    */
