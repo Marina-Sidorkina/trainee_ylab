@@ -1,6 +1,6 @@
-import Base from "@src/components/canvas-oop/graphics/figures/base";
+import BaseCircle from "@src/components/canvas-oop/graphics/figures/base-circle";
 
-class FillCircle extends Base {
+class FillCircle extends BaseCircle {
 
   constructor({x, y, color}, index, updateFigureStoreData){
     super({x, y, color}, index, updateFigureStoreData);

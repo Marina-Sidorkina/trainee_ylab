@@ -1,6 +1,6 @@
-import Base from "@src/components/canvas-oop/graphics/figures/base";
+import BaseTriangle from "@src/components/canvas-oop/graphics/figures/base-triangle";
 
-class FillTriangle extends Base {
+class FillTriangle extends BaseTriangle {
 
   constructor({x, y, color}, index, updateFigureStoreData){
     super({x, y, color}, index, updateFigureStoreData);
