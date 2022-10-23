@@ -24,6 +24,24 @@ class BaseTriangle extends Base {
     const result2 = check1 <= 0 && check2 <=0 && check3 <= 0;
     return result1 || result2;
   }
+
+
+  /**
+   * Проверка, находится ли хотя бы часть фигуры в пределах видимой области
+   */
+  checkVisibility() {
+    const canvas = document.querySelector('canvas');
+    const canvasMinY = 0;
+    const canvasMinX = 0;
+    const canvasMaxY = canvas.clientHeight;
+    const canvasMaxX = canvas.clientWidth;
+    const minX = this.x / this.pxl;
+    const maxX = (this.x / this.pxl) + (this.side / this.pxl);
+    const minY = (this.y / this.pxl) - (this.side / this.pxl);
+    const maxY = this.y / this.pxl;
+
+    return maxX < canvasMinX || minX > canvasMaxX || maxY < canvasMinY || minY > canvasMaxY;
+  }
 }
 
 export default BaseTriangle;

@@ -242,7 +242,7 @@ class Graphics {
 
       if (this.action.check) element.animate(time, this.bottom, this.metrics);
 
-      element.draw(this.ctx, this.metrics, this.action);
+      if (!element.checkVisibility()) element.draw(this.ctx, this.metrics, this.action);
     }
 
     this.ctx.restore();
