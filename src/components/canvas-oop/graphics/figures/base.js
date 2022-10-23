@@ -46,8 +46,8 @@ class Base {
    */
   processAction(action, metrics) {
     if (action.name === 'mouseMove' && action.active && this.index === action.index) {
-      this.x = this.x - action.scrollX * this.pxl;
-      this.y = this.y - action.scrollY * this.pxl;
+      this.x = this.x - (action.scrollX * this.pxl) / metrics.scale;
+      this.y = this.y - (action.scrollY * this.pxl) / metrics.scale;
       this.time = performance.now();
     }
 

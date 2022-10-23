@@ -9,14 +9,19 @@ class BaseTriangle extends Base {
    * Проверка, находится ли точка курсора внутри фигуры
    * @param x {number}
    * @param y {number}
+   * @param metrics {Object}
    */
-  checkClick({x, y}) {
-    const x1 = this.x;
-    const y1 = this.y;
-    const x2 = this.x + this.side;
-    const y2 = this.y;
-    const x3 = this.x + this.side;
-    const y3 = this.y - this.side;
+  checkClick({x, y}, metrics) {
+    const newX = (this.x * metrics.scale) - metrics.scaleScrollX * this.pxl;
+    const newY = (this.y * metrics.scale) - metrics.scaleScrollY  * this.pxl;
+    const newSide = this.side * metrics.scale;
+
+    const x1 = newX;
+    const y1 = newY;
+    const x2 = newX + newSide;
+    const y2 = newY;
+    const x3 = newX + newSide;
+    const y3 = newY - newSide;
     const check1 = (x1-x)*(y2-y1)-(x2-x1)*(y1-y);
     const check2 = (x2-x)*(y3-y2)-(x3-x2)*(y2-y);
     const check3 = (x3-x)*(y1-y3)-(x1-x3)*(y3-y);

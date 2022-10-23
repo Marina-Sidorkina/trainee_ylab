@@ -9,11 +9,17 @@ class BaseRectangle extends Base {
    * Проверка, находится ли точка курсора внутри фигуры
    * @param x {number}
    * @param y {number}
+   * @param metrics {Object}
    */
-  checkClick({x, y}) {
-    const rightX = this.x + this.width;
-    const bottomY = this.y + this.height;
-    return x <= rightX && x >= this.x && y >= this.y && y <= bottomY;
+  checkClick({x, y}, metrics) {
+    const newX = (this.x * metrics.scale) - metrics.scaleScrollX * this.pxl;
+    const newY = (this.y * metrics.scale) - metrics.scaleScrollY  * this.pxl;
+    const newWidth = this.width * metrics.scale;
+    const newHeight = this.height * metrics.scale;
+
+    const rightX = newX + newWidth;
+    const bottomY = newY + newHeight;
+    return x <= rightX && x >= newX && y >= newY && y <= bottomY;
   }
 
   /**

@@ -9,9 +9,14 @@ class BaseCircle extends Base {
    * Проверка, находится ли точка курсора внутри фигуры
    * @param x {number}
    * @param y {number}
+   * @param metrics {Object}
    */
-  checkClick({x, y}) {
-    return (this.x - x)**2 + (this.y - y)**2 <= this.radius**2;
+  checkClick({x, y}, metrics) {
+    const newX = (this.x * metrics.scale) - metrics.scaleScrollX * this.pxl;
+    const newY = (this.y * metrics.scale) - metrics.scaleScrollY  * this.pxl;
+    const newRadius = this.radius * metrics.scale;
+
+    return (newX - x )**2 + (newY - y)**2 <= newRadius**2;
   }
 
   /**

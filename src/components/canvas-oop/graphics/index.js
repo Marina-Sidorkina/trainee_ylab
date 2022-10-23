@@ -93,8 +93,10 @@ class Graphics {
   reset() {
     this.elements = [];
     this.metrics = {
-      scale: 1,
       scrollY: 0,
+      scale: 1,
+      scaleScrollX: 0,
+      scaleScrollY: 0,
     }
     this.action = {};
     this.needAnimation = true;
@@ -207,7 +209,7 @@ class Graphics {
    */
   checkElementCoordinates() {
     const check = this.elements
-                    .map(item => item.checkClick({x: this.action.clickX, y: this.action.clickY}));
+                    .map(item => item.checkClick({x: this.action.clickX, y: this.action.clickY}, this.metrics));
 
     this.action.index = check.lastIndexOf(true);
     this.action.follow = check.lastIndexOf(true);
