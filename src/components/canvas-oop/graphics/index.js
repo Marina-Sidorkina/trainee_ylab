@@ -155,6 +155,7 @@ class Graphics {
    */
   onMouseWheel = (evt) => {
     if (evt.shiftKey) {
+      evt.preventDefault();
       this.scale(evt,  {center: {x: evt.offsetX, y: evt.offsetY}});
     } else {
       this.scroll(evt)
