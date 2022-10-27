@@ -8,7 +8,7 @@ import LayoutFlex from "@src/components/layouts/layout-flex";
 import CatalogButton from "@src/components/elements/catalog-button";
 import PropTypes from "prop-types";
 
-function ToolsContainer({article}) {
+function ToolsContainer({article, showBasket}) {
 
   const store = useStore();
 
@@ -34,14 +34,15 @@ function ToolsContainer({article}) {
     menu: useMemo(() => ([
       {key: 1, title: t('menu.main'), link: '/'},
       {key: 2, title: t('menu.chat'), link: '/chat'},
+      {key: 3, title: 'Canvas', link: '/canvas'},
     ]), [t]),
   }
 
   return (
     <LayoutFlex flex="between" indent="big">
       <Menu items={options.menu}/>
-      <BasketSimple onOpen={callbacks.openModalBasket} amount={select.amount} sum={select.sum}
-                    t={t}/>
+      {showBasket && <BasketSimple onOpen={callbacks.openModalBasket} amount={select.amount} sum={select.sum}
+                     t={t}/>}
       {!article && <CatalogButton onClick={callbacks.openCatalogModal} title="Открыть новый каталог"/>}
     </LayoutFlex>
   );
@@ -49,10 +50,12 @@ function ToolsContainer({article}) {
 
 ToolsContainer.propTypes = {
   article: PropTypes.bool,
+  showBasket: PropTypes.bool,
 };
 
 ToolsContainer.defaultProps = {
   article: false,
+  showBasket: true,
 };
 
 export default React.memo(ToolsContainer);
