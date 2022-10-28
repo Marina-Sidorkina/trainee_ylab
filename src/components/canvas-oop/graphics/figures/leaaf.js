@@ -44,10 +44,16 @@ class Leaf extends BaseRectangle {
     }
   }
 
+  /**
+   * Добавляет листочку попеременное вращение
+   */
   swing() {
     this.angle += Math.sin(this.dt);
   }
 
+  /**
+   * Добавляет листочку вращение в одном направлении
+   */
   rotate() {
     this.angle += 1;
     if (this.angle > 360) this.angle = 0;
