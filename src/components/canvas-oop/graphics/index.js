@@ -160,8 +160,8 @@ class Graphics {
    * @param evt {MouseEvent}
    */
   onMouseWheel = (evt) => {
+    evt.preventDefault();
     if (evt.shiftKey) {
-      evt.preventDefault();
       this.scale(evt,  {center: {x: evt.offsetX, y: evt.offsetY}});
     } else {
       this.scroll(evt)
@@ -251,8 +251,9 @@ class Graphics {
 
     for (const element of this.elements) {
       this.action.check = this.needAnimation && this.action.index !== element.index;
+      const leafCheck = element.type === 'leaf' && this.action.index !== element.index;
 
-      if (this.action.check) element.animate(time, this.bottom, this.metrics);
+      if (this.action.check || leafCheck) element.animate(time, this.bottom, this.metrics);
 
       if (!element.checkVisibility()) element.draw(this.ctx, this.metrics, this.action);
     }

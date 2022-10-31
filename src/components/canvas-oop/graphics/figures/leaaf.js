@@ -63,6 +63,19 @@ class Leaf extends BaseRectangle {
   }
 
   /**
+   * Обработка действий пользователя
+   * @param metrics {Object}
+   * @param action {Object}
+   */
+  processAction(action, metrics) {
+    if (action.name === 'mouseMove' && action.active && this.index === action.index) {
+      this.x = this.x - (action.scrollX * this.pxl) / metrics.scale;
+      this.y = this.y - (action.scrollY * this.pxl) / metrics.scale;
+      this.time = performance.now();
+    }
+  }
+
+  /**
    * @param ctx {CanvasRenderingContext2D}
    * @param metrics {Object}
    * @param action {Object}
