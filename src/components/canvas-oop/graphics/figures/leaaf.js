@@ -1,5 +1,6 @@
 import BaseRectangle from "@src/components/canvas-oop/graphics/figures/base-rectangle";
 import generateRandomNumber from "@src/utils/generateRandomNumber";
+import * as leaves from "@src/components/canvas-oop/graphics/img";
 
 class Leaf extends BaseRectangle {
   constructor({x, y, color, mod}, index, updateFigureStoreData){
@@ -15,7 +16,6 @@ class Leaf extends BaseRectangle {
     }
     this.mod = `leaf${mod}`;
     this.divider = generateRandomNumber(1, 2);
-    this.img = document.getElementById(this.mod);
     this.width = (this.params[this.mod].width * this.pxl) / this.divider;
     this.height = (this.params[this.mod].height * this.pxl) / this.divider;
     this.bottomOffset =  (this.params[this.mod].height * this.pxl) / this.divider;
@@ -26,6 +26,13 @@ class Leaf extends BaseRectangle {
     }
     this.animationVariant = this.animationFunctions[generateRandomNumber(1, 2)];
     this.alpha = 1;
+    this.img = new Image();
+
+    this.img.onload = () => {
+      this.loaded = true;
+      this.time = performance.now();
+    };
+    this.img.src = leaves[this.mod];
   }
 
   /**
@@ -41,7 +48,8 @@ class Leaf extends BaseRectangle {
       this.y += 1;
       this.x += Math.sin(this.dt);
       if (this.y > bottom / 3 * 2) this.alpha = this.alpha > 0.004 ? this.alpha - 0.004 : 0;
-    } else {
+    }
+    if (this.alpha === 0) {
       this.y = -200;
       this.alpha = 1;
     }
@@ -84,15 +92,17 @@ class Leaf extends BaseRectangle {
     this.processAction(action, metrics);
     this.processUpdate(action);
 
-    ctx.save();
-    if (action.index === this.index || action.follow === this.index) ctx.strokeStyle = 'green';
-    ctx.translate(this.x + this.width/2, this.y + this.height/2);
-    ctx.rotate(this.angle * Math.PI / 180 );
-    ctx.translate(-(this.x + this.width/2), -(this.y + this.height/2));
-    ctx.globalAlpha = this.alpha;
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-    if (action.index === this.index || action.follow === this.index) ctx.strokeRect(this.x, this.y, this.width, this.height);
-    ctx.restore();
+    if (this.loaded) {
+      ctx.save();
+      if (action.index === this.index || action.follow === this.index) ctx.strokeStyle = 'green';
+      ctx.translate(this.x + this.width/2, this.y + this.height/2);
+      ctx.rotate(this.angle * Math.PI / 180 );
+      ctx.translate(-(this.x + this.width/2), -(this.y + this.height/2));
+      ctx.globalAlpha = this.alpha;
+      ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+      if (action.index === this.index || action.follow === this.index) ctx.strokeRect(this.x, this.y, this.width, this.height);
+      ctx.restore();
+    }
   }
 }
 

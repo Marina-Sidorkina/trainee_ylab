@@ -5,18 +5,18 @@ import Graphics from "@src/components/canvas-oop/graphics";
 import CanvasOOPControls from "@src/components/canvas-oop-controls";
 import PropTypes from "prop-types";
 import {v4 as uuidv4} from 'uuid';
+import generateRandomNumber from "@src/utils/generateRandomNumber";
 
 function CanvasOOP({objects, onFigureAdd, onReset, resetTitle, updateInputStoreData, index, x, y, onLeafAdd}) {
   const cn = bem('CanvasOOP');
   const dom = useRef();
   const graphics = useMemo(() => new Graphics(updateInputStoreData), []);
   const [leavesCount, setLeavesCount] = useState(0);
-  const mods = [1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5];
 
   useEffect(() => {
-    if(leavesCount < 30) {
+    if(leavesCount < 50) {
       setTimeout(() => {
-        onLeafAdd(mods[leavesCount]);
+        onLeafAdd(generateRandomNumber(1, 5));
         setLeavesCount(prev => prev + 1);
       }, 700);
     }
