@@ -1,6 +1,7 @@
 import StateModule from "@src/store/module";
 import createCoordinates from "@src/utils/canvas/createCoordinates";
 import getRandomColor from "@src/utils/canvas/getRandomColor";
+import generateRandomNumber from "@src/utils/generateRandomNumber";
 
 /**
  * Состояние рисунка на canvas
@@ -36,6 +37,21 @@ class CanvasOOPState extends StateModule{
       ...this.getState(),
       objects: [...this.getState().objects, {type, x, y, color}],
     }, 'Добавление еще одного объекта');
+  }
+
+  /**
+   * Добавление нового листочка
+   * @param mod {number} Модификация для листочка
+   */
+  createLeaf(mod) {
+    const x = generateRandomNumber(0, 1004)
+    const y = generateRandomNumber(-150, -100);
+    const data = {type: 'leaf', x, y, color: 'transparent', mod};
+
+    this.setState({
+      ...this.getState(),
+      objects: [...this.getState().objects, data],
+    }, 'Добавление еще одного листочка');
   }
 
   /**

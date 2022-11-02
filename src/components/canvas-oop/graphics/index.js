@@ -4,6 +4,8 @@ import FillCircle from "@src/components/canvas-oop/graphics/figures/fill-circle"
 import StrokeCircle from "@src/components/canvas-oop/graphics/figures/stroke-circle";
 import FillTriangle from "@src/components/canvas-oop/graphics/figures/fill-triangle";
 import StrokeTriangle from "@src/components/canvas-oop/graphics/figures/stroke-triange";
+import Leaf from "@src/components/canvas-oop/graphics/figures/leaaf";
+import {addImgElements, removeImgElements} from "@src/utils/canvas/img-elements";
 
 class Graphics {
 
@@ -32,7 +34,8 @@ class Graphics {
     this.canvas = document.createElement('canvas');
     this.ctx = this.canvas.getContext('2d', {alpha: false});
     this.root.appendChild(this.canvas);
-    this.bottom = Math.floor(this.canvas.clientHeight * this.pxl)
+    this.bottom = Math.floor(this.canvas.clientHeight * this.pxl);
+    addImgElements();
 
     this.needAnimation = true;
     this.resize();
@@ -53,6 +56,7 @@ class Graphics {
     document.removeEventListener('mouseup', this.onMouseUp);
     this.canvas.removeEventListener('mousewheel', this.onMouseWheel);
     this.root.removeChild(this.canvas);
+    removeImgElements();
   }
 
   resize = () => {
@@ -77,14 +81,16 @@ class Graphics {
    * @param y {number} Координата y фигуры, которую нужно создать
    * @param color {string} Цвет фигуры, которую нужно создать
    * @param index {number} Индекс фигуры, которую нужно создать
+   * @param mod {number|null} Модификатор для листочка
    */
-  addElement({type, x, y, color}, index) {
+  addElement({type, x, y, color, mod = null}, index) {
     if (type === 'fillRectangle') this.elements = [...this.elements, new FillRectangle({x, y, color}, index, this.updateFigureStoreData)];
     if (type === 'strokeRectangle') this.elements = [...this.elements, new StrokeRectangle({x, y, color}, index, this.updateFigureStoreData)];
     if (type === 'fillCircle') this.elements = [...this.elements, new FillCircle({x, y, color}, index, this.updateFigureStoreData)];
     if (type === 'strokeCircle') this.elements = [...this.elements, new StrokeCircle({x, y, color}, index, this.updateFigureStoreData)];
     if (type === 'fillTriangle') this.elements = [...this.elements, new FillTriangle({x, y, color}, index, this.updateFigureStoreData)];
     if (type === 'strokeTriangle') this.elements = [...this.elements, new StrokeTriangle({x, y, color}, index, this.updateFigureStoreData)];
+    if (type === 'leaf') this.elements = [...this.elements, new Leaf({x, y, color, mod}, index, this.updateFigureStoreData)];
   }
 
   /**
@@ -154,8 +160,8 @@ class Graphics {
    * @param evt {MouseEvent}
    */
   onMouseWheel = (evt) => {
+    evt.preventDefault();
     if (evt.shiftKey) {
-      evt.preventDefault();
       this.scale(evt,  {center: {x: evt.offsetX, y: evt.offsetY}});
     } else {
       this.scroll(evt)
@@ -212,8 +218,10 @@ class Graphics {
     const check = this.elements
                     .map(item => item.checkClick({x: this.action.clickX, y: this.action.clickY}, this.metrics));
 
-    this.action.index = check.lastIndexOf(true);
-    this.action.follow = check.lastIndexOf(true);
+    this.action.index = check.lastIndexOf(true) !== -1 ?
+      this.elements[check.lastIndexOf(true)].index : -1;
+    this.action.follow = check.lastIndexOf(true) !== -1 ?
+      this.elements[check.lastIndexOf(true)].index : -1;
   }
 
   /**
@@ -222,8 +230,9 @@ class Graphics {
    * @param y {number}
    */
   changeFigureCoordinates(x, y) {
-    if (this.elements[this.action.index]) {
-      this.elements[this.action.index].changeCoordinates({x, y});
+    if (this.action.index !== -1) {
+      const index =  this.elements.findIndex(item => item.index === this.action.index);
+      if (index !== -1) this.elements[index].changeCoordinates({x, y});
       this.needAnimation = true;
       this.action.index = -1;
     }
@@ -242,8 +251,9 @@ class Graphics {
 
     for (const element of this.elements) {
       this.action.check = this.needAnimation && this.action.index !== element.index;
+      const leafCheck = element.type === 'leaf' && this.action.index !== element.index;
 
-      if (this.action.check) element.animate(time, this.bottom, this.metrics);
+      if (this.action.check || leafCheck) element.animate(time, this.bottom, this.metrics);
 
       if (!element.checkVisibility()) element.draw(this.ctx, this.metrics, this.action);
     }

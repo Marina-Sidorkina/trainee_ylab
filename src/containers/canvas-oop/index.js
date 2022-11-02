@@ -19,6 +19,10 @@ function CanvasOOPContainer() {
     onFigureAdd: useCallback((type) => {
       store.get('canvasOOP').createObject(type);
     }, []),
+    // Добавление нового объекта с данными для листочка в стор
+    onLeafAdd: useCallback((mod) => {
+      store.get('canvasOOP').createLeaf(mod);
+    }, []),
     // Сброс значений в сторе
     onReset: useCallback(() => {
       store.get('canvasOOP').reset();
@@ -36,7 +40,8 @@ function CanvasOOPContainer() {
                resetTitle={t('filter.reset')}
                updateInputStoreData={callbacks.updateInputStoreData}
                x={select.x}
-               y={select.y}/>
+               y={select.y}
+               onLeafAdd={callbacks.onLeafAdd}/>
   )
 }
 
