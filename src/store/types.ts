@@ -10,7 +10,6 @@ import {ICountryState} from "@src/store/country/types";
 import {ICatalogState} from "@src/store/catalog/types";
 import {ICategoriesState} from "@src/store/categories/types";
 import Services from "@src/services";
-import React from "react";
 import Store from "@src/store/index";
 
 export interface IConfigStore {
@@ -45,9 +44,3 @@ export interface IState {
   catalog: ICatalogState;
   categories: ICategoriesState;
 }
-
-export interface IServiceProvider {
-  services: Services,
-  children: React.ReactNode | React.ReactNode[],
-}
-
