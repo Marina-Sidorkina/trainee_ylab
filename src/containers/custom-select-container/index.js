@@ -1,21 +1,21 @@
 import React, {useCallback} from "react";
-import {useStore as useStoreRedux, useSelector as useSelectorRedux, shallowEqual} from "react-redux";
-import actionsCountry from "../../store-redux/country/actions";
 import CustomSelect from '@src/components/custom-select';
 import LayoutFlex from "@src/components/layouts/layout-flex";
+import useStore from "@src/hooks/use-store";
+import useSelector from "@src/hooks/use-selector";
 
 function CustomSelectContainer() {
-  const storeRedux = useStoreRedux();
+  const store = useStore();
 
-  const select = useSelectorRedux(state => ({
+  const select = useSelector(state => ({
     countyOptions: state.country.options,
     code: state.country.code,
     title: state.country.title,
-  }), shallowEqual);
+  }));
 
   const callbacks = {
     onSelect: useCallback(({code, title}) => {
-      storeRedux.dispatch(actionsCountry.change({code, title}));
+      store.get('country').change({code, title});
     }, []),
   };
 

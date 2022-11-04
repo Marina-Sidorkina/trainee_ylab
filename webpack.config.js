@@ -34,7 +34,7 @@ let config = {
   ],
   //
   resolve: {
-    extensions: ['.js', '.jsx'], // Расширения по умолчанию, если не указаны в import
+    extensions: ['*', '.js', '.jsx', '.tsx', '.ts'], // Расширения по умолчанию, если не указаны в import
     modules: [path.resolve(__dirname, 'src'), 'node_modules'], // Где искать файлы подключаемых модулей
     alias: {
       '@src': path.resolve(__dirname, './src'),
@@ -42,11 +42,10 @@ let config = {
   },
   module: {
     rules: [
-      // Транспиляция JS
       {
-        test: /\.jsx?$/,
+        test: /\.(js|jsx|tsx|ts)$/,
         exclude: /node_modules/,
-        use: [{loader: 'babel-loader'}],
+        use: ['babel-loader', 'ts-loader'],
       },
       // Возможность подключать css как модули, чтобы попали в сборку
       // С опцией modules при импорте стиля получаем объект с названиями ccs классов
