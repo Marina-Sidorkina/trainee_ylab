@@ -2,6 +2,7 @@ import {useCallback} from 'react';
 import useSelector from "@src/hooks/use-selector";
 import translate from "@src/utils/translate";
 import useStore from "@src/hooks/use-store";
+import {IState} from "../store/types";
 
 /**
  * Хук возвращает функция для локализации текстов
@@ -11,16 +12,15 @@ export default function useTranslate() {
   const store = useStore();
 
   // Текущая локаль
-  const lang = useSelector(state => state.locale.lang);
+  const lang = useSelector((state: IState) => state.locale.lang);
 
   // Функция для семны локали
-  const setLang = useCallback(lang => store.get('locale').setLang(lang), []);
+  const setLang = useCallback((lang: string) => store.get('locale').setLang(lang), []);
 
   // Функция для локализации текстов
-  const t = useCallback((text, number = undefined) => {
+  const t = useCallback((text: string, number = undefined) => {
     return translate(lang, text, number)
   }, [lang]);
-
 
   return {lang, setLang, t};
 }
