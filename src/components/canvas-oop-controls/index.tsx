@@ -1,31 +1,39 @@
 import React, {useCallback, useEffect} from 'react';
 import {cn as bem} from "@bem-react/classname";
 import './style.less';
-import PropTypes from "prop-types";
 import {useThrottle} from '@react-hook/throttle'
 
-function CanvasOOPControls({onFigureAdd, onReset, resetTitle, x, y, onValuesSubmit}) {
+function CanvasOOPControls(props: {
+  onFigureAdd: (value: string) => void;
+  onReset: () => void;
+  resetTitle: string;
+  x: number;
+  y: number;
+  onValuesSubmit: (x: string, y: string) => void;
+}) {
   const cn = bem('CanvasControls');
   const [xValue, setXValue] = useThrottle('', 10);
   const [yValue, setYValue] = useThrottle('', 10);
 
   useEffect(() => {
-    setXValue(x);
-    setYValue(y);
-  }, [x, y])
+    // @ts-ignore
+    setXValue(props.x);
+    // @ts-ignore
+    setYValue(props.y);
+  }, [props.x, props.y])
 
   const callbacks = {
     // Изменение стейта для координаты x
-    onXChange: useCallback((evt) => {
+    onXChange: useCallback((evt: any) => {
       setXValue(evt.target.value);
     }, []),
     // Изменение стейта для координаты y
-    onYChange: useCallback((evt) => {
+    onYChange: useCallback((evt: any) => {
       setYValue(evt.target.value);
     }, []),
     // Передача значений из стейта для изменения координат выбранной фигуры
     onValuesSubmit: useCallback(() => {
-      onValuesSubmit(xValue, yValue);
+      props.onValuesSubmit(xValue, yValue);
     }, [xValue, yValue]),
   }
 
@@ -34,22 +42,22 @@ function CanvasOOPControls({onFigureAdd, onReset, resetTitle, x, y, onValuesSubm
       <div className={cn('options')}>
         <button className={cn('fillRectangle')}
                 type='button'
-                onClick={() => onFigureAdd('fillRectangle')} />
+                onClick={() => props.onFigureAdd('fillRectangle')} />
         <button className={cn('strokeRectangle')}
                 type='button'
-                onClick={() => onFigureAdd('strokeRectangle')} />
+                onClick={() => props.onFigureAdd('strokeRectangle')} />
         <button className={cn('fillCircle')}
                 type='button'
-                onClick={() => onFigureAdd('fillCircle')} />
+                onClick={() => props.onFigureAdd('fillCircle')} />
         <button className={cn('strokeCircle')}
                 type='button'
-                onClick={() => onFigureAdd('strokeCircle')} />
+                onClick={() => props.onFigureAdd('strokeCircle')} />
         <button className={cn('triangle')}
                 type='button'
-                onClick={() => onFigureAdd('fillTriangle')}>{'▲'}</button>
+                onClick={() => props.onFigureAdd('fillTriangle')}>{'▲'}</button>
         <button className={cn('triangle')}
                 type='button'
-                onClick={() => onFigureAdd('strokeTriangle')}>{'△'}</button>
+                onClick={() => props.onFigureAdd('strokeTriangle')}>{'△'}</button>
       </div>
       <div className={cn('coordinates')}>
         <label htmlFor='x-coordinate' className={cn('x-label')}>X : </label>
@@ -71,25 +79,10 @@ function CanvasOOPControls({onFigureAdd, onReset, resetTitle, x, y, onValuesSubm
       <div className={cn('buttons')}>
         <button className={cn('reset')}
                 type='button'
-                onClick={onReset}>{resetTitle}</button>
+                onClick={props.onReset}>{props.resetTitle}</button>
       </div>
     </div>
   )
-}
-
-CanvasOOPControls.propTypes = {
-  onFigureAdd: PropTypes.func,
-  onReset: PropTypes.func,
-  resetTitle: PropTypes.string,
-  x: PropTypes.number,
-  y: PropTypes.number,
-  onValuesSubmit: PropTypes.func,
-}
-
-CanvasOOPControls.defaultProps = {
-  onFigureAdd: () => {},
-  onReset: () => {},
-  resetTitle: '',
 }
 
 export default React.memo(CanvasOOPControls);
