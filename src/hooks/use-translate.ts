@@ -1,6 +1,6 @@
 import {useCallback} from 'react';
 import useSelector from "@src/hooks/use-selector";
-import translate from "@src/utils/translate";
+import translate from "../utils/translate";
 import useStore from "@src/hooks/use-store";
 import {IState} from "../store/types";
 

@@ -5,7 +5,6 @@ import StrokeCircle from "@src/components/canvas-oop/graphics/figures/stroke-cir
 import FillTriangle from "@src/components/canvas-oop/graphics/figures/fill-triangle";
 import StrokeTriangle from "@src/components/canvas-oop/graphics/figures/stroke-triange";
 import Leaf from "@src/components/canvas-oop/graphics/figures/leaaf";
-import {addImgElements, removeImgElements} from "@src/utils/canvas/img-elements";
 
 class Graphics {
 
@@ -35,7 +34,6 @@ class Graphics {
     this.ctx = this.canvas.getContext('2d', {alpha: false});
     this.root.appendChild(this.canvas);
     this.bottom = Math.floor(this.canvas.clientHeight * this.pxl);
-    addImgElements();
 
     this.needAnimation = true;
     this.resize();
@@ -56,7 +54,6 @@ class Graphics {
     document.removeEventListener('mouseup', this.onMouseUp);
     this.canvas.removeEventListener('mousewheel', this.onMouseWheel);
     this.root.removeChild(this.canvas);
-    removeImgElements();
   }
 
   resize = () => {

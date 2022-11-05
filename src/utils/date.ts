@@ -4,7 +4,7 @@
  * @returns {string}
  */
 
-function getValue(time) {
+function getValue(time: number) {
   return time.toString().length === 1 ? `0${time}` : `${time}`;
 }
 
@@ -15,11 +15,11 @@ function getValue(time) {
  * @returns {string}
  */
 
-export default function date(value, lang) {
+export default function date(value: string, lang: string) {
   const date = new Date(value);
   const months = {
     ru: ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'],
     en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-  };
+  } as {[key: string]: any};
   return `${date.getDate()} ${months[lang][date.getMonth()]} ${date.getFullYear()} ${lang === 'ru' ? 'в' : 'at'} ${ getValue(date.getHours())}:${getValue(date.getMinutes())}`
 }

@@ -1,5 +1,5 @@
 import React, {useState, useRef, useCallback, useEffect} from 'react';
-import qs from "@src/utils/search-params";
+import qs from "../utils/search-params";
 
 function useInfiniteScroll(initial: boolean) {
   const urlParams = qs.parse(window.location.search) as {[key: string]: any};
