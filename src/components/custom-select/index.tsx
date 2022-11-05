@@ -1,37 +1,36 @@
-import React, {useEffect, useState, useCallback, useMemo, useRef} from 'react';
-import propTypes from 'prop-types';
+import React, {useEffect, useState, useCallback, useMemo, useRef, LegacyRef} from 'react';
 import {cn as bem} from '@bem-react/classname';
 import './style.css';
+// @ts-ignore
 import arrow from "@src/components/custom-select/custom-select-arrow.svg";
 import CustomScroll from "@src/components/custom-scroll";
-
 
 const cn = bem('CustomSelect');
 
 const CustomSelect = (
-  {
-    showSearch,
-    currentSearchValue,
-    currentCode,
-    currentTitle,
-    onSelect,
-    children,
+  props: {
+    showSearch: boolean;
+    currentSearchValue: string;
+    currentCode: string;
+    currentTitle: string;
+    onSelect: (value: {code: string, title: string}) => any;
+    children: React.ReactNode |  React.ReactNode[];
   }) => {
 
   const [open, setOpen] = useState(false);
-  const [currentCodeValue, setCurrentCodeValue] = useState(currentCode);
-  const [currentTitleValue, setCurrentTitleValue] = useState(currentTitle);
-  const [searchValue, setSearchValue] = useState(currentSearchValue || '');
+  const [currentCodeValue, setCurrentCodeValue] = useState(props.currentCode);
+  const [currentTitleValue, setCurrentTitleValue] = useState(props.currentTitle);
+  const [searchValue, setSearchValue] = useState(props.currentSearchValue || '');
   const [shift, setShift] = useState(false);
-  const select = useRef();
+  const select = useRef<HTMLElement>(null);
 
-  const extendedChildren = React.Children.map(children, child => {
+  const extendedChildren = React.Children.map(props.children, (child: any) => {
     if (child.props.title.toLowerCase().startsWith(searchValue.toLowerCase())) {
-      return React.cloneElement(child, {
-        onSelect: ({code, title}) => {
-          setCurrentCodeValue(code);
-          setCurrentTitleValue(title);
-          onSelect({code, title});
+      return React.cloneElement((child), {
+        onSelect: (value: {code: string; title: string}) => {
+          setCurrentCodeValue(value.code);
+          setCurrentTitleValue(value.title);
+          props.onSelect({code: value.code, title: value.title});
         },
         current: child.props.code === currentCodeValue && child.props.title === currentTitleValue
       })
@@ -40,7 +39,7 @@ const CustomSelect = (
     }
   });
 
-  const onCustomSelectClose = (evt) => {
+  const onCustomSelectClose = (evt: any) => {
     if(evt.type === 'keyup' && evt.key === 'Shift') {
       setShift(false)
     }
@@ -67,7 +66,7 @@ const CustomSelect = (
     }
 
     if(evt.type === 'click'
-      && !select.current.contains(evt.target)) {
+      && !(select.current as HTMLElement).contains(evt.target)) {
       setOpen(false)
     }
   }
@@ -110,7 +109,7 @@ const CustomSelect = (
   }, [open, shift])
 
   return (
-    <div className={cn('container')} ref={select}
+    <div className={cn('container')} ref={select as LegacyRef<HTMLDivElement> | undefined}
          onKeyDown={(evt) => {
            if(evt.key === 'Escape') {
              evt.preventDefault();
@@ -118,7 +117,7 @@ const CustomSelect = (
            }
          }}>
       <div className={cn('control')}
-           tabIndex='0'
+           tabIndex={0}
            onKeyDown={(evt) => {
              if (evt.key === 'ArrowDown') setOpen(true)
            }}
@@ -135,14 +134,14 @@ const CustomSelect = (
       {
         open && <div className={cn('dropdown')}>
         {
-          showSearch && <input className={cn('search')} type='text'
+          props.showSearch && <input className={cn('search')} type='text'
                                placeholder='Поиск'
-                               tabIndex='0'
+                               tabIndex={0}
                                value={searchValue}
                                onChange={(evt) => setSearchValue(evt.target.value)}
                                aria-label="Поле поиска по опциям выпадающего списка"/>
         }
-        <CustomScroll showScroll={extendedChildren.length > 4}
+        <CustomScroll showScroll={extendedChildren ? extendedChildren.length > 4 : false}
                       scrollHeight={options.scrollParams.height}
                       scrollWidth={options.scrollParams.width}
                       pinHeight={options.scrollParams.pinHeight}
@@ -165,49 +164,26 @@ const CustomSelect = (
   )
 };
 
-CustomSelect.Option = ({code, title, current, onSelect}) => (
-  <li className={cn('option', {current, hover: true})}
-      tabIndex='0'
-      onKeyDown={(evt) => {if (evt.key === 'Enter') onSelect({code, title})}}
-      onClick={() => onSelect({code, title})}
-      aria-label={`Опция выпадающего списка. Значение ${title}. Для выбора нажмите Enter`}
-      id={title}
-      title={title}
+CustomSelect.Option = (props: {
+  code: string;
+  title: string;
+  current: boolean;
+  onSelect: (value: {code: string, title: string}) => any;
+}) => (
+  <li className={cn('option', {current: props.current, hover: true})}
+      tabIndex={0}
+      onKeyDown={(evt) => {
+        if (evt.key === 'Enter') props.onSelect({code: props.code, title: props.title});
+      }}
+      onClick={() => props.onSelect({code: props.code, title: props.title})}
+      aria-label={`Опция выпадающего списка. Значение ${props.title}. Для выбора нажмите Enter`}
+      id={props.title}
+      title={props.title}
       role='listitem'>
-    <span className={cn('code')}>{code.slice(0,2).toUpperCase()}</span>
-    <span className={cn('title')}>{title.length < 20 ? title : title.slice(0,20) + '...'}</span>
+    <span className={cn('code')}>{props.code.slice(0,2).toUpperCase()}</span>
+    <span className={cn('title')}>{props.title.length < 20 ? props.title : props.title.slice(0,20) + '...'}</span>
   </li>
 );
-
-// PropTypes
-CustomSelect.propTypes = {
-  showSearch: propTypes.bool,
-  currentCode: propTypes.string,
-  currentTitle: propTypes.string,
-  children: propTypes.node,
-  currentSearchValue: propTypes.string,
-}
-
-CustomSelect.defaultProps = {
-  showSearch: false,
-  currentCode: '',
-  currentTitle: '',
-  currentSearchValue: '',
-}
-
-CustomSelect.Option.propTypes = {
-  code: propTypes.string,
-  title: propTypes.string,
-  current: propTypes.bool,
-  onSelect: propTypes.func,
-}
-
-CustomSelect.Option.defaultProps = {
-  code: '',
-  title: '',
-  current: false,
-  onSelect: () => {},
-}
 
 // Export
 export default CustomSelect;

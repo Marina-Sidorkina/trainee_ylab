@@ -30,6 +30,8 @@ function CustomSelectContainer() {
                     onSelect={(current: {code: string; title: string;}) => callbacks.onSelect(current)}>
         {select.countyOptions.map((item: IOption) => (
             <CustomSelect.Option key={item.code}
+                                 onSelect={() => {}}
+                                 current={false}
                                  code={item.code}
                                  title={item.title}/>))}
       </CustomSelect>

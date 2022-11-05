@@ -1,23 +1,27 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {LegacyRef, useCallback, useRef, useState} from 'react';
 import {cn as bem} from '@bem-react/classname';
 import './style.less';
-import PropTypes from "prop-types";
 
-function ChatInput({value, placeholder, onSubmit, buttonTitle}) {
+function ChatInput(props: {
+  value?: string;
+  placeholder: string;
+  onSubmit: (value: string) => void
+  buttonTitle: string;
+}) {
   const cn = bem('ChatInput');
-  const [inputValue, changeInputValue] = useState(value || '');
-  const field = useRef();
+  const [inputValue, changeInputValue] = useState(props.value || '');
+  const field = useRef<HTMLElement>(null);
 
   const callbacks = {
     // Вызов коллбэка с текущим значением и сброс внутренних значений
-    sendMessageSubmit: useCallback(evt => {
+    sendMessageSubmit: useCallback((evt: any) => {
      evt.preventDefault();
       // Отправка текущего значения внутреннего стейта
-      onSubmit(inputValue);
+      props.onSubmit(inputValue);
       // Сброс значения внутреннего стейта
       changeInputValue('');
       // Сброс значения текстового поля
-      field.current.value = '';
+      (field.current as HTMLTextAreaElement).value = '';
     }, [inputValue]),
   };
 
@@ -26,28 +30,14 @@ function ChatInput({value, placeholder, onSubmit, buttonTitle}) {
       <textarea className={cn('field')}
                 autoFocus={true}
                 name={'chat-message'}
-                placeholder={placeholder}
-                ref={field}
+                placeholder={props.placeholder}
+                ref={field as LegacyRef<HTMLTextAreaElement> | undefined}
                 onChange={(evt) => changeInputValue(evt.target.value)}></textarea>
       <button className={cn('submit')}
               type='submit'
-              disabled={!inputValue.trim()}>{buttonTitle}</button>
+              disabled={!inputValue.trim()}>{props.buttonTitle}</button>
     </form>
   )
-}
-
-ChatInput.propTypes = {
-  value: PropTypes.string,
-  onSubmit: PropTypes.func,
-  placeholder: PropTypes.string,
-  buttonTitle: PropTypes.string,
-}
-
-ChatInput.defaultProps = {
-  onSubmit: () => {},
-  value: '',
-  placeholder: '',
-  buttonTitle: '',
 }
 
 export default React.memo(ChatInput);

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {LegacyRef, useCallback, useEffect, useRef, useState} from 'react';
 import useTranslate from "@src/hooks/use-translate";
 import ChatInput from "@src/components/chat/chat-input";
 import ChatList from "@src/components/chat/chat-list";
@@ -88,8 +88,8 @@ function ChatContainer() {
     <>
       <ChatList items={select.items}
                 renderItem={renders.item}
-                lastMessageRef={lastMessage}
-                listBlockRef={listBlock}
+                lastMessageRef={lastMessage as LegacyRef<HTMLDivElement> | undefined}
+                listBlockRef={listBlock as LegacyRef<HTMLDivElement> | undefined}
                 onScroll={callbacks.onScroll}/>
       <ChatInput placeholder={t('message.placeholder')}
                  onSubmit={callbacks.sendMessage}
