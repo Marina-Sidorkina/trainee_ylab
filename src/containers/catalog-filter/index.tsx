@@ -7,14 +7,15 @@ import Input from "@src/components/elements/input";
 import LayoutFlex from "@src/components/layouts/layout-flex";
 import listToTree from "@src/utils/list-to-tree";
 import treeToList from "@src/utils/tree-to-list";
-import propTypes from "prop-types";
 import Button from "@src/components/elements/button";
+import {IState} from "@src/store/types";
+import {ICatalogItem} from "@src/store/catalog/types";
 
-function CatalogFilter({index}) {
+function CatalogFilter(props: {index: number}) {
   const store = useStore();
-  const catalogField = index ? 'catalog_' + index : 'catalog'
+  const catalogField = props.index ? 'catalog_' + props.index : 'catalog';
 
-  const select = useSelector(state => ({
+  const select = useSelector((state: IState) => ({
     sort: state[catalogField] ? state[catalogField].params.sort : '',
     query: state[catalogField] ? state[catalogField].params.query : '',
     category: state[catalogField] ? state[catalogField].params.category : '',
@@ -25,17 +26,17 @@ function CatalogFilter({index}) {
 
   const callbacks = {
     // Сортировка
-    onSort: useCallback(sort => {
+    onSort: useCallback((sort: string) => {
       store.get(catalogField).setParams({sort, page: 1}, true, 'page');
     }, []),
     // Поиск
-    onSearch: useCallback(query => {
+    onSearch: useCallback((query: string) => {
       store.get(catalogField).setParams({query, page: 1}, true, 'page');
     }, []),
     // Сброс
     onReset: useCallback(() => store.get(catalogField).resetParams(), []),
     // Фильтр по категории
-    onCategory: useCallback(category => {
+    onCategory: useCallback((category: string) => {
       store.get(catalogField).setParams({category, page: 1}, true, 'page');
     }, []),
   };
@@ -53,7 +54,7 @@ function CatalogFilter({index}) {
       {value: '', title: 'Все'},
       ...treeToList(
         listToTree(select.categories),
-        (item, level) => ({value: item._id, title: '- '.repeat(level) + item.title})
+        (item: ICatalogItem, level: number) => ({value: item._id, title: '- '.repeat(level) + item.title})
       )
     ], [select.categories]),
   }
@@ -63,17 +64,9 @@ function CatalogFilter({index}) {
       <Select onChange={callbacks.onCategory} value={select.category} options={options.categories}/>
       <Select onChange={callbacks.onSort} value={select.sort} options={options.sort}/>
       <Input onChange={callbacks.onSearch} value={select.query} placeholder={'Поиск'} theme="big"/>
-      <Button onClick={callbacks.onReset} title={t('filter.reset')}/>
+      <Button onClick={callbacks.onReset} title={t('filter.reset')} submit={false}/>
     </LayoutFlex>
   );
-}
-
-CatalogFilter.propTypes = {
-  index: propTypes.number,
-}
-
-CatalogFilter.defaultProps = {
-  index: 0,
 }
 
 export default React.memo(CatalogFilter);

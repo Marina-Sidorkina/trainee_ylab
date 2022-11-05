@@ -7,15 +7,15 @@ import LayoutModal from "@src/components/layouts/layout-modal";
 import ItemBasket from "@src/components/catalog/item-basket";
 import List from "@src/components/elements/list";
 import CatalogButton from "@src/components/elements/catalog-button";
-import ArticleListModal from "@src/containers/article-list-modal";
-import {IState} from "../../store/types";
-import {ICatalogItem} from "../../store/catalog/types";
+import ArticleListModal from "../../containers/article-list-modal";
+import {IState} from "@src/store/types";
+import {ICatalogItem} from "@src/store/catalog/types";
 
 function Basket() {
   const store = useStore();
   const {t} = useTranslate();
   const basketCatalogModal = useSelector((state: IState) => state.modals.basketCatalog);
-  let onModalValueResolve;
+  let onModalValueResolve = (values: []) => {};
 
   const select = useSelector((state: IState) => ({
     items: state.basket.items,

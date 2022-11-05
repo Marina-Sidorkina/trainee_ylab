@@ -5,6 +5,7 @@ import LayoutFlex from "@src/components/layouts/layout-flex";
 import useSelector from "@src/hooks/use-selector";
 import useStore from "@src/hooks/use-store";
 import Button from "@src/components/elements/button";
+import {IState} from "@src/store/types";
 
 function TopContainer() {
 
@@ -14,7 +15,7 @@ function TopContainer() {
   const location = useLocation();
   const store = useStore();
 
-  const select = useSelector(state => ({
+  const select = useSelector((state: IState) => ({
     user: state.session.user,
     exists: state.session.exists
   }))
@@ -35,8 +36,8 @@ function TopContainer() {
     <LayoutFlex flex="end" indent="small">
       {select.exists && <Link to="/profile">{select.user.profile.name}</Link>}
       {select.exists
-        ? <Button onClick={callbacks.onSignOut} title={t('session.signOut')}/>
-        : <Button onClick={callbacks.onSignIn} title={t('session.signIn')}/>
+        ? <Button onClick={callbacks.onSignOut} title={t('session.signOut')} submit={false}/>
+        : <Button onClick={callbacks.onSignIn} title={t('session.signIn')} submit={false}/>
       }
     </LayoutFlex>
   );

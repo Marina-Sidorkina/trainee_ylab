@@ -2,13 +2,14 @@ import React, {useCallback, useEffect} from 'react';
 import LayoutAddItemModal from "@src/components/layouts/layout-add-item-modal";
 import useStore from "@src/hooks/use-store";
 import useSelector from "@src/hooks/use-selector";
+import {IState} from "@src/store/types";
 
 function AddItemModalContainer() {
   const store = useStore();
-  let onModalValueResolve;
-  let onModalValueReject;
+  let onModalValueResolve: Function;
+  let onModalValueReject: Function;
 
-  const select = useSelector(state => ({
+  const select = useSelector((state: IState) => ({
     currentItemId: state.basket.currentItemId,
   }));
 
@@ -31,9 +32,9 @@ function AddItemModalContainer() {
 
   const callbacks = {
     // Отменить добаление в корзину
-    onModalValueReject: useCallback(onModalValueReject, []),
+    onModalValueReject: useCallback(() => onModalValueReject(), []),
     // Добавить в корзину указанное количество товара
-    onModalValueResolve: useCallback((value) => onModalValueResolve(value), []),
+    onModalValueResolve: useCallback((value: number) => onModalValueResolve(value), []),
   };
 
   return (

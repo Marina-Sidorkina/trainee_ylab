@@ -1,4 +1,6 @@
-export interface IAvatar {}
+export interface IAvatar {
+  url: string;
+}
 
 export interface IProfile {
   name: string;
@@ -16,7 +18,7 @@ export interface IItem {
   _key: string;
   text: string;
   author: IAuthor;
-  dateCreate: Date;
+  dateCreate: string | Date;
 }
 
 export interface IPayload {
@@ -25,7 +27,7 @@ export interface IPayload {
   _id: string;
   text: string;
   author: IAuthor;
-  dateCreate: Date;
+  dateCreate: string  | Date;
 }
 
 export interface IData {

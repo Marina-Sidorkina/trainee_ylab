@@ -7,8 +7,10 @@ import useSelector from "@src/hooks/use-selector";
 import useTranslate from "@src/hooks/use-translate";
 import ListModalItem from "@src/components/catalog/list-modal-item";
 import useInit from "@src/hooks/use-init";
+import {IState} from "@src/store/types";
+import {ICatalogItem} from "@src/store/catalog/types";
 
-function ArticleListModal({onClose}) {
+function ArticleListModal(props: {onClose: Function}) {
   const store = useStore();
   const {t} = useTranslate();
   const [itemsChecked, setItemsChecked] = useState({});
@@ -24,7 +26,7 @@ function ArticleListModal({onClose}) {
     };
   }, []);
 
-  const select = useSelector(state => ({
+  const select = useSelector((state: IState) => ({
     items: state[fieldName] ? state[fieldName].items : [],
     page: state[fieldName] ? state[fieldName].params.page : 0,
     limit: state[fieldName] ? state[fieldName].params.limit : 0,
@@ -33,33 +35,34 @@ function ArticleListModal({onClose}) {
 
   const callbacks = {
     // Переход по страницам
-    onPaginate: useCallback(pageValue => {
+    onPaginate: useCallback((pageValue: number) => {
       store.get('catalog_basket').setParams({page: pageValue}, false, 'page');
     }, [select.page]),
     // Закрытие модального окна
     onItemsAdd: useCallback(() => {
-      onClose(Object.keys(itemsChecked));
+      props.onClose(Object.keys(itemsChecked));
       store.get('modals').close('basketCatalog');
-    }, [itemsChecked, onClose]),
+    }, [itemsChecked, props.onClose]),
     // Закрытие модального окна
     onModalClose: useCallback(() => {
       store.get('modals').close('basketCatalog');
-    }, [itemsChecked, onClose]),
+    }, [itemsChecked, props.onClose]),
     // Закрытие модального окна
-    onItemChange: useCallback((id, value) => {
-      if (value && !itemsChecked[id]) {
+    onItemChange: useCallback((id: string, value: boolean) => {
+      const typesItemsChecked = itemsChecked as {[key: string]: any};
+      if (value && !typesItemsChecked[id]) {
         setItemsChecked(Object.assign(itemsChecked, {[id]: true}));
       }
-      if (!value && itemsChecked[id]) {
+      if (!value && typesItemsChecked[id]) {
         const newValue = Object.assign({}, itemsChecked);
-        delete newValue[id]
+        delete (newValue as {[key: string]: any})[id]
         setItemsChecked(newValue);
       }
       }, [itemsChecked]),
   };
 
   const renders = {
-    item: useCallback(item => (
+    item: useCallback((item: ICatalogItem) => (
       <ListModalItem item={item} onChange={callbacks.onItemChange}/>
     ), [t]),
   }

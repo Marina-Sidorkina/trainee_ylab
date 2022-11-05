@@ -8,13 +8,15 @@ import Spinner from "@src/components/elements/spinner";
 import Item from "@src/components/catalog/item";
 import useInfiniteScroll from "@src/hooks/use-infinite-scroll";
 import LoadMoreIndicator from "@src/components/elements/load-more-indicator";
+import {IState} from "@src/store/types";
+import {ICatalogItem} from "@src/store/catalog/types";
 
 function CatalogList() {
 
   const store = useStore();
   const {t} = useTranslate();
 
-  const select = useSelector(state => ({
+  const select = useSelector((state: IState) => ({
     items: state.catalog.items,
     page: state.catalog.params.page,
     limit: state.catalog.params.limit,
@@ -28,25 +30,28 @@ function CatalogList() {
 
   const callbacks = {
     // Добавление в корзину
-    openModal: useCallback(id => {
+    openModal: useCallback((id: string) => {
       store.get('basket').setItemId(id);
       store.get('modals').addModalElement('addToBasket');
     }, []),
     // Пагианция
-    onPaginate: useCallback(pageValue => {
+    onPaginate: useCallback((pageValue: number) => {
       setPage(pageValue - 1);
       setCheck(1);
       store.get('catalog').setParams({page: pageValue}, false, 'page');
     }, [select.page]),
     // Загрузка при скролле
-    onloadMore: useCallback((page) => {
+    onloadMore: useCallback((page: number) => {
       store.get('catalog').setParams({page}, false, 'scroll');
     }, [page]),
   };
 
   const renders = {
-    item: useCallback(item => (
-      <Item item={item} onAdd={callbacks.openModal} link={`/articles/${item._id}`} labelAdd={t('article.add')}/>
+    item: useCallback((item: ICatalogItem) => (
+      <Item item={item}
+            onAdd={callbacks.openModal}
+            link={`/articles/${item._id}`}
+            labelAdd={t('article.add')}/>
     ), [t]),
   }
 

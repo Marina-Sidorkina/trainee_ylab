@@ -1,11 +1,20 @@
-import React, {useCallback} from 'react';
-import propTypes from 'prop-types';
+import React, {MouseEventHandler, useCallback} from 'react';
 import {cn as bem} from "@bem-react/classname";
 import {Link} from "react-router-dom";
 import numberFormat from "@src/utils/number-format";
 import './style.css';
+import {ICatalogItem} from "@src/store/catalog/types";
 
-function Item(props) {
+interface IProps {
+  item: ICatalogItem;
+  onAdd: Function;
+  onLinkClick?: MouseEventHandler<HTMLAnchorElement>;
+  link: string;
+  labelCurr?: string;
+  labelAdd?: string;
+}
+
+function Item(props: IProps) {
   const cn = bem('Item');
 
   const callbacks = {
@@ -23,20 +32,6 @@ function Item(props) {
       </div>
     </div>
   )
-}
-
-Item.propTypes = {
-  item: propTypes.object.isRequired,
-  onAdd: propTypes.func,
-  link: propTypes.string,
-  labelCurr: propTypes.string,
-  labelAdd: propTypes.string
-}
-
-Item.defaultProps = {
-  onAdd: () => {},
-  labelCurr: '₽',
-  labelAdd: 'Добавить'
 }
 
 export default React.memo(Item);

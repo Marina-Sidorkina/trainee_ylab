@@ -22,10 +22,10 @@ function Main() {
   return (
     <Layout>
       <TopContainer/>
-      <HeadContainer/>
+      <HeadContainer title={'title'} showLanguage={true}/>
       <ToolsContainer/>
       <CustomSelectContainer />
-      <CatalogFilter/>
+      <CatalogFilter index={0}/>
       <CatalogList/>
     </Layout>
   )

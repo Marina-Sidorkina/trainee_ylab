@@ -13,6 +13,8 @@ import useSelector from "@src/hooks/use-selector";
 import Button from "@src/components/elements/button";
 import {IState} from "@src/store/types";
 
+// Login: test_7; Password: 123456
+
 function Login() {
   const {t} = useTranslate();
   const store = useStore();
@@ -49,7 +51,7 @@ function Login() {
   return (
     <Layout>
       <TopContainer/>
-      <HeadContainer/>
+      <HeadContainer title={'auth.title'} showLanguage={true}/>
       <ToolsContainer article={true}/>
 
       <LayoutFlex>

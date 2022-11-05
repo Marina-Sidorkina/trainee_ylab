@@ -4,7 +4,7 @@ import {IModalsState} from "@src/store/modals/types";
 /**
  * Управление модальными окнами
  */
-class ModalsState extends StateModule{
+class ModalsState extends StateModule {
 
   initState() {
     return {

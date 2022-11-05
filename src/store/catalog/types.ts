@@ -1,10 +1,10 @@
 export interface ICatalogParams {
-  page: number;
-  skip: number;
-  limit: number;
-  sort: string;
-  query: string;
-  category: string;
+  page?: number;
+  skip?: number;
+  limit?: number;
+  sort?: string;
+  query?: string;
+  category?: string;
 }
 
 export interface ICatalogCategory {

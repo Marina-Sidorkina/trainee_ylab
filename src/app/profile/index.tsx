@@ -26,7 +26,7 @@ function Profile(){
   return (
     <Layout>
       <TopContainer/>
-      <HeadContainer/>
+      <HeadContainer title={'Профиль'} showLanguage={true}/>
       <ToolsContainer article={true}/>
       <Spinner active={select.waiting}>
         <ProfileCard data={select.profile}/>
