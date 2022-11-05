@@ -42,7 +42,7 @@ function ToolsContainer(props: {article?: boolean, showBasket?: boolean}) {
     <LayoutFlex flex="between" indent="big">
       <Menu items={options.menu}/>
       {props.showBasket && <BasketSimple onOpen={callbacks.openModalBasket} amount={select.amount} sum={select.sum}
-                     t={t}/>}
+                     t={t as (text: string, amount?: number) => any} button={true}/>}
       {!props.article && <CatalogButton onClick={callbacks.openCatalogModal} title="Открыть новый каталог"/>}
     </LayoutFlex>
   );
