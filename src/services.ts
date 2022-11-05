@@ -1,10 +1,16 @@
 import Store from "./store";
 import APIService from "./api";
 import WSService from "@src/ws";
+import {IConfig} from "@src/store/types";
 
 class Services {
 
-  constructor(config) {
+  config: IConfig;
+  _store: Store | undefined;
+  _api: APIService | undefined;
+  _ws: WSService | undefined;
+
+  constructor(config: IConfig) {
     this.config = config;
   }
 

@@ -8,14 +8,18 @@ import config from "./config";
 
 // Менеджер сервисов
 const services = new Services(config);
+const rootElement: Element | DocumentFragment | null = document.getElementById('root');
 
 // Корень React приложения
-const root = createRoot(document.getElementById('root'));
+if (rootElement) {
+  const root = createRoot(rootElement);
 
-root.render(
-  <ServicesProvider services={services}>
-    <BrowserRouter>
-      <App/>
-    </BrowserRouter>
-  </ServicesProvider>
-);
+  root.render(
+    <ServicesProvider services={services}>
+      <BrowserRouter>
+        <App/>
+      </BrowserRouter>
+    </ServicesProvider>
+  );
+}
+
