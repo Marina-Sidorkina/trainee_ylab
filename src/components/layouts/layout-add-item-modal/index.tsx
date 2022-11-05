@@ -1,11 +1,13 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import PropTypes from 'prop-types';
+import React, {LegacyRef, useCallback, useEffect, useRef, useState} from 'react';
 import {cn as bem} from "@bem-react/classname";
 import './style.less';
 
-function LayoutAddItemModal(props) {
+function LayoutAddItemModal(props: {
+  onOkButtonClick: (value: number) => void;
+  onCancelButtonClick:  () => void;
+}) {
   const cn = bem('LayoutAddItemModal');
-  const frame = useRef();
+  const frame = useRef<HTMLElement>(null);
   const [value, setValue] = useState(1);
   const [error, setError] = useState(false);
 
@@ -28,7 +30,7 @@ function LayoutAddItemModal(props) {
 
   return (
     <div className={cn()}>
-      <div className={cn('frame')} ref={frame}>
+      <div className={cn('frame')} ref={frame as LegacyRef<HTMLDivElement> | undefined}>
         <div className={cn('head')}>
           <h1 className={cn('title')}>Укажите количество товара</h1>
         </div>
@@ -49,15 +51,5 @@ function LayoutAddItemModal(props) {
     </div>
   );
 }
-
-LayoutAddItemModal.propTypes = {
-  onOkButtonClick: PropTypes.func,
-  onCancelButtonClick: PropTypes.func,
-};
-
-LayoutAddItemModal.defaultProps = {
-  onOkButtonClick: () => {},
-  onCancelButtonClick: () => {},
-};
 
 export default React.memo(LayoutAddItemModal);

@@ -6,11 +6,24 @@
  * @param [result] {Array} Результат функции - используется рекурсией.
  * @returns {Array} Корневые узлы
  */
-export default function treeToList(tree: any[], callback: Function, level: number = 0, result: any[] = []) {
-  for (const itemInit of tree) {
-    const item = callback ? callback(itemInit, level) : itemInit;
-    result.push(item);
+
+export interface ITree {
+  children?: ITree[];
+  _id: string;
+  title: string;
+}
+
+export default function treeToList(tree: ITree[],
+                                   callback?: (item: ITree, level: number) => any,
+                                   level: number = 0,
+                                   result: any[] = []) {
+  for (const item of tree) {
+    const pushItem = callback ? callback(item, level) : item;
+
+    result.push(pushItem);
+
     if (item.children?.length) treeToList(item.children, callback, level + 1, result);
   }
   return result;
 }
+

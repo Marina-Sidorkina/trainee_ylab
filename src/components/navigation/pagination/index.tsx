@@ -1,9 +1,17 @@
 import React from 'react';
-import propTypes from "prop-types";
 import {cn as bem} from '@bem-react/classname'
 import './style.css';
 
-function Pagination(props) {
+interface IProps {
+  page: number;
+  limit: number;
+  count: number;
+  onChange: Function;
+  indent: number;
+  modal: boolean;
+}
+
+function Pagination(props: IProps) {
   const cn = bem('Pagination');
   // Количество страниц
   const length = Math.ceil(props.count / Math.max(props.limit, 1));
@@ -28,7 +36,7 @@ function Pagination(props) {
   if (right < length) items.push(length);
 
   // Возвращает функцию с замыканием на номер страницы
-  const clickHandler = page => {
+  const clickHandler = (page: number) => {
     return () => props.onChange(page);
   };
 
@@ -46,22 +54,12 @@ function Pagination(props) {
   )
 }
 
-Pagination.propTypes = {
-  page: propTypes.number.isRequired,
-  limit: propTypes.number,
-  count: propTypes.number,
-  onChange: propTypes.func,
-  indent: propTypes.number,
-  modal: propTypes.bool,
-}
-
 Pagination.defaultProps = {
   page: 1,
   limit: 10,
   count: 1000,
   indent: 1,
-  onChange: () => {
-  },
+  onChange: () => {},
   modal: false,
 }
 

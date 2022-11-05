@@ -1,10 +1,11 @@
 export interface ICategory {
-  _id: string,
   _type: string,
-  title?: string
-  code?: string
+  code?: string;
+  children: ICategory[];
+  parent: { _id: string } | null;
+  title?: string;
+  _id: string;
 }
-
 
 export interface ICategoriesState {
   items: ICategory[];
