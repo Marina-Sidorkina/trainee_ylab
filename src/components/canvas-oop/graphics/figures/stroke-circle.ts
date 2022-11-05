@@ -1,9 +1,10 @@
 import BaseCircle from "@src/components/canvas-oop/graphics/figures/base-circle";
 
 class StrokeCircle extends BaseCircle {
+  type: string;
 
-  constructor({x, y, color}, index, updateFigureStoreData){
-    super({x, y, color}, index, updateFigureStoreData);
+  constructor(value: {x: number; y: number; color: string; type?: string; mod?: number}, index: string, updateFigureStoreData: Function) {
+    super(value, index, updateFigureStoreData);
     this.type = 'strokeCircle';
     this.radius = 90 * this.pxl;
     this.bottomOffset =  90 * this.pxl; //radius
@@ -14,7 +15,17 @@ class StrokeCircle extends BaseCircle {
    * @param metrics {Object}
    * @param action {Object}
    */
-  draw(ctx, metrics, action) {
+  draw(
+    ctx: any,
+    metrics: {
+      scrollY: number;
+      scrollX: number;
+      scale: number;
+      scaleScrollX: number;
+      scaleScrollY: number;
+    },
+    action: any,
+    ) {
     this.processAction(action, metrics);
     this.processUpdate(action);
 

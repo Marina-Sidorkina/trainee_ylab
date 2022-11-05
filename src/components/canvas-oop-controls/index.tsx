@@ -9,7 +9,7 @@ function CanvasOOPControls(props: {
   resetTitle: string;
   x: number;
   y: number;
-  onValuesSubmit: (x: string, y: string) => void;
+  onValuesSubmit: (x: number, y: number) => void;
 }) {
   const cn = bem('CanvasControls');
   const [xValue, setXValue] = useThrottle('', 10);
@@ -33,7 +33,7 @@ function CanvasOOPControls(props: {
     }, []),
     // Передача значений из стейта для изменения координат выбранной фигуры
     onValuesSubmit: useCallback(() => {
-      props.onValuesSubmit(xValue, yValue);
+      props.onValuesSubmit(Number(xValue), Number(yValue));
     }, [xValue, yValue]),
   }
 

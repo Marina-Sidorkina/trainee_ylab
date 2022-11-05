@@ -1,9 +1,10 @@
 import BaseRectangle from "@src/components/canvas-oop/graphics/figures/base-rectangle";
 
 class FillRectangle extends BaseRectangle {
+  type: string;
 
-  constructor({x, y, color}, index, updateFigureStoreData){
-    super({x, y, color}, index, updateFigureStoreData);
+  constructor(value: {x: number; y: number; color: string; type?: string; mod?: number}, index: string, updateFigureStoreData: Function) {
+    super(value, index, updateFigureStoreData);
     this.type = 'fillRectangle';
     this.width = 100 * this.pxl;
     this.height = 100 * this.pxl;
@@ -15,7 +16,17 @@ class FillRectangle extends BaseRectangle {
    * @param metrics {Object}
    * @param action {Object}
    */
-  draw(ctx, metrics, action) {
+  draw(
+    ctx: any,
+    metrics: {
+      scrollY: number;
+      scrollX: number;
+      scale: number;
+      scaleScrollX: number;
+      scaleScrollY: number;
+    },
+    action: any,
+  ) {
     this.processAction(action, metrics);
     this.processUpdate(action);
 

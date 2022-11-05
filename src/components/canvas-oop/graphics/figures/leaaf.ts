@@ -3,8 +3,31 @@ import generateRandomNumber from "@src/utils/generateRandomNumber";
 import * as leaves from "@src/components/canvas-oop/graphics/img";
 
 class Leaf extends BaseRectangle {
-  constructor({x, y, color, mod}, index, updateFigureStoreData){
-    super({x, y, color}, index, updateFigureStoreData);
+  type: string;
+  params: {
+    [key: string]: any;
+    leaf1: { width: number; height: number; };
+    leaf2: { width: number; height: number; };
+    leaf3: { width: number; height: number; };
+    leaf4: { width: number; height: number; };
+    leaf5: { width: number; height: number; };
+  }
+  mod: string;
+  divider: number;
+  angle: number;
+  animationFunctions: {
+    [key: string]: any;
+    1: (value: number) => void;
+    2: (value: number) => void;
+  }
+  loaded: boolean;
+  alpha: number;
+  img: any;
+  dt: number;
+  animationVariant: any;
+
+  constructor(value: {x: number; y: number; color: string; type?: string; mod?: number}, index: string, updateFigureStoreData: Function) {
+    super(value, index, updateFigureStoreData);
     this.type = 'leaf';
     this.a = 0.5;
     this.params = {
@@ -14,7 +37,7 @@ class Leaf extends BaseRectangle {
       leaf4: { width: 40 / 1.2, height: 50 / 1.2 },
       leaf5: { width: 47 / 1.2, height: 50 / 1.2 },
     }
-    this.mod = `leaf${mod}`;
+    this.mod = `leaf${value.mod}`;
     this.divider = generateRandomNumber(1, 2);
     this.width = (this.params[this.mod].width * this.pxl) / this.divider;
     this.height = (this.params[this.mod].height * this.pxl) / this.divider;
@@ -26,13 +49,15 @@ class Leaf extends BaseRectangle {
     }
     this.animationVariant = this.animationFunctions[generateRandomNumber(1, 2)];
     this.alpha = 1;
+    this.loaded = false;
     this.img = new Image();
+    this.dt = 0;
 
     this.img.onload = () => {
       this.loaded = true;
       this.time = performance.now();
     };
-    this.img.src = leaves[this.mod];
+    this.img.src = (leaves as {[key: string]: any})[this.mod];
   }
 
   /**
@@ -40,7 +65,7 @@ class Leaf extends BaseRectangle {
    * @param time {number}
    * @param bottom {number}
    */
-  animate(time, bottom) {
+  animate(time: number, bottom: number) {
     this.dt = (time - this.time) / 1000;
     this.animationVariant();
 
@@ -75,7 +100,16 @@ class Leaf extends BaseRectangle {
    * @param metrics {Object}
    * @param action {Object}
    */
-  processAction(action, metrics) {
+  processAction(
+    action: any,
+    metrics: {
+      scrollY: number;
+      scrollX: number;
+      scale: number;
+      scaleScrollX: number;
+      scaleScrollY: number;
+    },
+  ) {
     if (action.name === 'mouseMove' && action.active && this.index === action.index) {
       this.x = this.x - (action.scrollX * this.pxl) / metrics.scale;
       this.y = this.y - (action.scrollY * this.pxl) / metrics.scale;
@@ -88,7 +122,17 @@ class Leaf extends BaseRectangle {
    * @param metrics {Object}
    * @param action {Object}
    */
-  async draw(ctx, metrics, action) {
+  async draw(
+    ctx: any,
+    metrics: {
+      scrollY: number;
+      scrollX: number;
+      scale: number;
+      scaleScrollX: number;
+      scaleScrollY: number;
+    },
+    action: any,
+  ) {
     this.processAction(action, metrics);
     this.processUpdate(action);
 
