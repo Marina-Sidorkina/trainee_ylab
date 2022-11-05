@@ -8,21 +8,23 @@ import ItemBasket from "@src/components/catalog/item-basket";
 import List from "@src/components/elements/list";
 import CatalogButton from "@src/components/elements/catalog-button";
 import ArticleListModal from "@src/containers/article-list-modal";
+import {IState} from "../../store/types";
+import {ICatalogItem} from "../../store/catalog/types";
 
 function Basket() {
   const store = useStore();
   const {t} = useTranslate();
-  const basketCatalogModal = useSelector(state => state.modals.basketCatalog);
+  const basketCatalogModal = useSelector((state: IState) => state.modals.basketCatalog);
   let onModalValueResolve;
 
-  const select = useSelector(state => ({
+  const select = useSelector((state: IState) => ({
     items: state.basket.items,
     amount: state.basket.amount,
     sum: state.basket.sum
   }));
 
   const openModal = new Promise((resolve) => {
-    onModalValueResolve = (values) => {
+    onModalValueResolve = (values: []) => {
       resolve(values)
     };
   });
@@ -40,13 +42,13 @@ function Basket() {
       store.get('modals').close('basket')
     }, []),
     // Удаление из корзины
-    removeFromBasket: useCallback(_id => store.get('basket').removeFromBasket(_id), []),
+    removeFromBasket: useCallback((_id: number) => store.get('basket').removeFromBasket(_id), []),
     // Открытие модального окна со списком
     openModal: useCallback(() => store.get('modals').open('basketCatalog'), []),
   };
 
   const renders = {
-    itemBasket: useCallback(item => (
+    itemBasket: useCallback((item: ICatalogItem) => (
       <ItemBasket
         item={item}
         link={`/articles/${item._id}`}

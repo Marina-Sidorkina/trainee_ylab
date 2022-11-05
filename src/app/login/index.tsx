@@ -11,6 +11,7 @@ import HeadContainer from "@src/containers/head";
 import useStore from "@src/hooks/use-store";
 import useSelector from "@src/hooks/use-selector";
 import Button from "@src/components/elements/button";
+import {IState} from "@src/store/types";
 
 function Login() {
   const {t} = useTranslate();
@@ -18,7 +19,7 @@ function Login() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const select = useSelector(state => ({
+  const select = useSelector((state: IState) => ({
     waiting: state.session.waiting,
     errors: state.session.errors
   }))
@@ -29,16 +30,16 @@ function Login() {
   });
 
   const callbacks = {
-    onChange: useCallback((value, name) => {
+    onChange: useCallback((value: string, name: string) => {
       setData(prevData => ({...prevData, [name]: value}));
     }, []),
 
-    onSubmit: useCallback((e) => {
+    onSubmit: useCallback((e: any) => {
       e.preventDefault();
       store.get('session').signIn(data, () => {
         // Возврат на страницу, с которой пришли
-        const back = location.state?.back && location.state?.back !== location.pathname
-          ? location.state?.back
+        const back = (location.state as {[key: string]: any})?.back && (location.state as {[key: string]: any}).back !== location.pathname
+          ? (location.state as {[key: string]: any}).back
           : '/';
         navigate(back);
       });
