@@ -23,7 +23,7 @@ function Main() {
     <Layout>
       <TopContainer/>
       <HeadContainer title={'title'} showLanguage={true}/>
-      <ToolsContainer/>
+      <ToolsContainer showBasket={true}/>
       <CustomSelectContainer />
       <CatalogFilter index={0}/>
       <CatalogList/>

@@ -33,7 +33,7 @@ function Article(){
     <Layout>
       <TopContainer/>
       <HeadContainer title={select.article.title || ''}/>
-      <ToolsContainer article={true}/>
+      <ToolsContainer article={true} showBasket={true}/>
       <Spinner active={select.waiting}>
         <ArticleCard article={select.article}
                      onAdd={callbacks.addToBasket} />
