@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback, useMemo, useRef, LegacyRef} from 'react';
+import React, {useEffect, useState, useCallback, useMemo, useRef} from 'react';
 import {cn as bem} from '@bem-react/classname';
 import './style.css';
 import CustomScroll from "@src/components/custom-scroll";
@@ -21,7 +21,7 @@ const CustomSelect = (
   const [currentTitleValue, setCurrentTitleValue] = useState(props.currentTitle);
   const [searchValue, setSearchValue] = useState(props.currentSearchValue || '');
   const [shift, setShift] = useState(false);
-  const select = useRef<HTMLElement>(null);
+  const select = useRef<HTMLDivElement>(null);
 
   const extendedChildren = React.Children.map(props.children, (child: any) => {
     if (child.props.title.toLowerCase().startsWith(searchValue.toLowerCase())) {
@@ -108,7 +108,7 @@ const CustomSelect = (
   }, [open, shift])
 
   return (
-    <div className={cn('container')} ref={select as LegacyRef<HTMLDivElement> | undefined}
+    <div className={cn('container')} ref={select}
          onKeyDown={(evt) => {
            if(evt.key === 'Escape') {
              evt.preventDefault();

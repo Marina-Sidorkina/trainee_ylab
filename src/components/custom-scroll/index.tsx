@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState, useMemo, LegacyRef, ReactComponentElement} from "react";
+import React, {useCallback, useEffect, useRef, useState, useMemo, ReactComponentElement} from "react";
 import './style.css';
 
 const CustomScroll = (
@@ -12,10 +12,10 @@ const CustomScroll = (
     children: React.ReactNode | React.ReactNode[];
   }
 ) => {
-  const scroll = useRef<HTMLElement>(null);
-  const track = useRef<HTMLElement>(null);
-  const pin = useRef<HTMLElement>(null);
-  const container = useRef<HTMLElement>(null);
+  const scroll = useRef<HTMLDivElement>(null);
+  const track = useRef<HTMLDivElement>(null);
+  const pin = useRef<HTMLDivElement>(null);
+  const container = useRef<HTMLDivElement>(null);
   const movementLength = props.scrollHeight - props.pinHeight;
   const percent = (movementLength) / 100;
   const [step, setStep] = useState(0);
@@ -104,19 +104,19 @@ const CustomScroll = (
          style = {options.customScrollStyle}>
       { props.showScroll &&
         <div className="CustomScroll-line"
-                ref={scroll as LegacyRef<HTMLDivElement> | undefined}
+                ref={scroll}
                 style = {options.customScrollLineStyle}>
           <div className="CustomScroll-pin"
-               ref={pin as LegacyRef<HTMLDivElement> | undefined}
+               ref={pin}
                onMouseDown={callbacks.onMouseDown}
                style = {options.customScrollPinStyle}/>
         </div> }
       <div className="CustomScroll-container"
-           ref={container as LegacyRef<HTMLDivElement> | undefined}
+           ref={container}
            onScroll={callbacks.onScroll}
            style = {options.customScrollStyle}>
         <div className="CustomScroll-track"
-             ref={track as LegacyRef<HTMLDivElement> | undefined}
+             ref={track}
              style={options.customScrollTrackStyle}>
           { props.children }
         </div>

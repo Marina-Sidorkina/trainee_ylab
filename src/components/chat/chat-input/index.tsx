@@ -1,4 +1,4 @@
-import React, {LegacyRef, useCallback, useRef, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {cn as bem} from '@bem-react/classname';
 import './style.less';
 
@@ -10,7 +10,7 @@ function ChatInput(props: {
 }) {
   const cn = bem('ChatInput');
   const [inputValue, changeInputValue] = useState(props.value || '');
-  const field = useRef<HTMLElement>(null);
+  const field = useRef<HTMLTextAreaElement>(null);
 
   const callbacks = {
     // Вызов коллбэка с текущим значением и сброс внутренних значений
@@ -31,7 +31,7 @@ function ChatInput(props: {
                 autoFocus={true}
                 name={'chat-message'}
                 placeholder={props.placeholder}
-                ref={field as LegacyRef<HTMLTextAreaElement> | undefined}
+                ref={field}
                 onChange={(evt) => changeInputValue(evt.target.value)}></textarea>
       <button className={cn('submit')}
               type='submit'

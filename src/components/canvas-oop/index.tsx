@@ -1,4 +1,4 @@
-import React, {LegacyRef, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {cn as bem} from "@bem-react/classname";
 import './style.less';
 import Graphics from "@src/components/canvas-oop/graphics";
@@ -17,7 +17,7 @@ function CanvasOOP(props: {
   onLeafAdd: (value: number) => void;
 }) {
   const cn = bem('CanvasOOP');
-  const dom = useRef<HTMLElement>(null);
+  const dom = useRef<HTMLDivElement>(null);
   const graphics = useMemo(() => new Graphics(props.updateInputStoreData), []);
   const [leavesCount, setLeavesCount] = useState(0);
 
@@ -57,7 +57,7 @@ function CanvasOOP(props: {
   };
 
   return (
-    <div className={cn()} ref={dom as LegacyRef<HTMLDivElement> | undefined}>
+    <div className={cn()} ref={dom}>
       <CanvasOOPControls onFigureAdd={props.onFigureAdd}
                          onReset={callbacks.onReset}
                          resetTitle={props.resetTitle}

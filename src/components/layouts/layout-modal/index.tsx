@@ -1,4 +1,4 @@
-import React, {LegacyRef, useEffect, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {cn as bem} from "@bem-react/classname";
 import './style.less';
 import Button from "@src/components/elements/button";
@@ -12,8 +12,7 @@ interface IProps {
 
 function LayoutModal(props: IProps) {
   const cn = bem('LayoutModal');
-
-  const frame = useRef<HTMLElement>(null);
+  const frame = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let top = 10;
@@ -29,7 +28,7 @@ function LayoutModal(props: IProps) {
 
   return (
     <div className={cn()}>
-      <div className={cn('frame')} ref={frame as LegacyRef<HTMLDivElement> | undefined}>
+      <div className={cn('frame')} ref={frame}>
         <div className={cn('head')}>
           <h1 className={cn('title')}>
             {props.title}

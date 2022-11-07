@@ -1,4 +1,4 @@
-import React, {LegacyRef, useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {cn as bem} from "@bem-react/classname";
 import './style.less';
 
@@ -7,7 +7,7 @@ function LayoutAddItemModal(props: {
   onCancelButtonClick:  () => void;
 }) {
   const cn = bem('LayoutAddItemModal');
-  const frame = useRef<HTMLElement>(null);
+  const frame = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState(1);
   const [error, setError] = useState(false);
 
@@ -30,7 +30,7 @@ function LayoutAddItemModal(props: {
 
   return (
     <div className={cn()}>
-      <div className={cn('frame')} ref={frame as LegacyRef<HTMLDivElement> | undefined}>
+      <div className={cn('frame')} ref={frame}>
         <div className={cn('head')}>
           <h1 className={cn('title')}>Укажите количество товара</h1>
         </div>

@@ -19,12 +19,23 @@ import ModalsState from "@src/store/modals";
 import CountryState from "@src/store/country";
 import CatalogState from "@src/store/catalog";
 import CategoriesState from "@src/store/categories";
+//import * as modules from '@src/config-types';
 
 export interface IModuleConfig {
   name: string;
 }
 
+/*
+export type ITypeOfModules = typeof modules;
+
+export type IModules = {
+  [P in keyof ITypeOfModules]: InstanceType<ITypeOfModules[P]>;
+}
+*/
+
 export interface IModules {
+  /*[key: string]: BasketState | ChatState | LocaleState | ArticleState | SessionState | ProfileState |
+    CanvasState | ModalsState | CountryState | CatalogState | CategoriesState;*/
   [key: string]: any;
   basket: BasketState;
   chat: ChatState;
