@@ -1,31 +1,21 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "target": "ES5", // Версия стандарта ECMAScript, в которую будет скомпилирован код
+    "module": "ES6", // Модульная система, которую будет использовать собранное приложение
+    "moduleResolution": "node", // Стратегия, кот. будет исп-ся для импорта модулей (node или classic)
     "baseUrl": "./",
-    "paths": {
-      "@src/*": ["src/*"]
-    },
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
+    "outDir": "./dist/", // Конечная папка, куда будут помещаться собранные артефакты (.js, .d.ts, и .js.map файлы)
+    "paths": { "@src/*": ["src/*"] },
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": false,
-    "jsx": "react-jsx"
+    "noImplicitAny": true, // Запрет на нетипизированные сущности
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true, // вместо -import * as React from 'react'- можно -import React from 'react';-
+    "forceConsistentCasingInFileNames": true, // Включает режим чувствительности к регистру для импорта файлов
+    "noFallthroughCasesInSwitch": true, // Флаг проверяет наличие break в операторе switch/case:
+    "resolveJsonModule": true, // Возможность импортировать *.json файлы
+    "noEmit": false, // Т.к. не удален babel
+    "jsx": "react-jsx" // Поддержка jsx
   },
-  "include": [
-    "src/*"
-  ],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/*"], // В каких папках искать файлы
+  "exclude": ["node_modules", "dist"] // Исключить из поиска файлы из данных папок
 }
