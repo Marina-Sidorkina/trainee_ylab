@@ -11,7 +11,7 @@ import useInit from "@src/hooks/use-init";
 import CatalogFilter from "@src/containers/catalog-filter";
 import propTypes from "prop-types";
 import {IState} from "@src/store/types";
-import {ICatalogItem} from "@src/store/catalog/types";
+import {ICatalogItem, ICatalogState} from "@src/store/catalog/types";
 
 function CatalogModalContainer (props: {index: number}) {
   const store = useStore();
@@ -31,12 +31,13 @@ function CatalogModalContainer (props: {index: number}) {
     amount: state.basket.amount,
     sum: state.basket.sum,
     lang: state.locale.lang,
-    items: state[fieldName] ? state[fieldName].items : [],
-    page: state[fieldName] ? state[fieldName].params.page : 0,
-    limit: state[fieldName] ? state[fieldName].params.limit : 0,
-    count: state[fieldName] ? state[fieldName].count : 0,
+    items: state[fieldName] ? ((state[fieldName]) as ICatalogState).items : [],
+    page: state[fieldName] ? ((state[fieldName]) as ICatalogState).params.page : 0,
+    limit: state[fieldName] ? ((state[fieldName]) as ICatalogState).params.limit : 0,
+    count: state[fieldName] ? ((state[fieldName]) as ICatalogState).count : 0,
     modals: state.modals.list,
   }));
+
 
   const {t} = useTranslate();
 

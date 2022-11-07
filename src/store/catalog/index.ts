@@ -71,7 +71,7 @@ class CatalogState extends StateModule {
    * @returns {Promise<void>}
    */
   async setParams(params: ICatalogParams = {} as ICatalogParams, historyReplace: boolean = false, check: string) {
-    const newParams = {...this.getState().params, ...params};
+    const newParams = {...(this.getState() as ICatalogState).params, ...params};
 
     // Установка новых параметров и признака загрузки
     this.setState({
@@ -97,7 +97,7 @@ class CatalogState extends StateModule {
     // Установка полученных данных и сброс признака загрузки
     this.setState({
       ...this.getState(),
-      items: check === 'page' ? json.result.items : [...this.getState().items, ...json.result.items],
+      items: check === 'page' ? json.result.items : [...(this.getState() as ICatalogState).items, ...json.result.items],
       count: json.result.count,
       waiting: false,
       initial: false

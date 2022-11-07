@@ -9,15 +9,16 @@ import listToTree from "@src/utils/list-to-tree";
 import treeToList, {ITree} from "@src/utils/tree-to-list";
 import Button from "@src/components/elements/button";
 import {IState} from "@src/store/types";
+import {ICatalogState} from "@src/store/catalog/types";
 
 function CatalogFilter(props: {index: number}) {
   const store = useStore();
   const catalogField = props.index ? 'catalog_' + props.index : 'catalog';
 
   const select = useSelector((state: IState) => ({
-    sort: state[catalogField] ? state[catalogField].params.sort : '',
-    query: state[catalogField] ? state[catalogField].params.query : '',
-    category: state[catalogField] ? state[catalogField].params.category : '',
+    sort: state[catalogField] ? ((state[catalogField]) as ICatalogState).params.sort : '',
+    query: state[catalogField] ? ((state[catalogField]) as ICatalogState).params.query : '',
+    category: state[catalogField] ? ((state[catalogField]) as ICatalogState).params.category : '',
     categories: state.categories.items,
   }));
 

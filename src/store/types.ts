@@ -40,7 +40,8 @@ export interface IModules {
 }
 
 export interface IState {
-  [key: string]: any;
+  [key: string | number]: IBasketState | IChatState | ILocaleState | IArticleState | ISessionState | IProfileState |
+    ICanvasState | IModalsState | ICountryState | ICatalogState | ICategoriesState;
   basket: IBasketState;
   chat: IChatState;
   locale: ILocaleState;
@@ -51,5 +52,6 @@ export interface IState {
   modals:  IModalsState;
   country: ICountryState;
   catalog: ICatalogState;
+  catalog_basket: ICatalogState;
   categories: ICategoriesState;
 }

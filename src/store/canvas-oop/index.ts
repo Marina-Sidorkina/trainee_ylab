@@ -36,7 +36,7 @@ class CanvasOOPState extends StateModule{
 
     this.setState({
       ...this.getState(),
-      objects: [...this.getState().objects, {type, x, y, color}],
+      objects: [...(this.getState() as ICanvasState).objects, {type, x, y, color}],
     }, 'Добавление еще одного объекта');
   }
 
@@ -51,7 +51,7 @@ class CanvasOOPState extends StateModule{
 
     this.setState({
       ...this.getState(),
-      objects: [...this.getState().objects, data],
+      objects: [...(this.getState() as ICanvasState).objects, data],
     }, 'Добавление еще одного листочка');
   }
 

@@ -50,7 +50,7 @@ class ChatState extends StateModule {
     }
 
     if(data.method === 'post' && !data.error) {
-      if (this.getState().waiting && data.payload._key === this.getState().current) {
+      if ((this.getState() as IChatState).waiting && data.payload._key === (this.getState() as IChatState).current) {
         this.replaceMessage(data.payload);
       } else {
         this.addMessages([data.payload]);
@@ -68,9 +68,9 @@ class ChatState extends StateModule {
 
     // Добавляем новые сообщения в конец или начало в зависимости от метода old или post/last
     if (previous) {
-      newItems = filterMessages([...messages, ...this.getState().items]);
+      newItems = filterMessages([...messages, ...(this.getState() as IChatState).items]);
     } else {
-      newItems = filterMessages([...this.getState().items, ...messages]);
+      newItems = filterMessages([...(this.getState() as IChatState).items, ...messages]);
     }
 
     this.setState({
@@ -85,9 +85,9 @@ class ChatState extends StateModule {
    * @param  message {Object} новое сообщение, полученное с сервера
    */
   replaceMessage = (message: IItem) => {
-    let index = this.getState().items.findIndex((item: IItem) => item._key === message._key);
-    const start = this.getState().items.slice(0, index) || [];
-    const end = this.getState().items.slice(index + 1) || [];
+    let index = (this.getState() as IChatState).items.findIndex((item: IItem) => item._key === message._key);
+    const start = (this.getState() as IChatState).items.slice(0, index) || [];
+    const end = (this.getState() as IChatState).items.slice(index + 1) || [];
 
     this.setState({
       ...this.getState(),
@@ -132,7 +132,7 @@ class ChatState extends StateModule {
    * Ориентируемся на айдишник самого старого из текущих сообщений в списке
    */
   loadPrevious() {
-    this.services.ws.request('old', {fromId: this.getState().lastMessageId})
+    this.services.ws.request('old', {fromId: (this.getState() as IChatState).lastMessageId})
   }
 
   /**

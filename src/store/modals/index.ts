@@ -41,7 +41,7 @@ class ModalsState extends StateModule {
   addModalElement(name: string) {
     this.setState({
       ...this.getState(),
-      list: [...this.getState().list, name]
+      list: [...(this.getState() as IModalsState).list, name]
     }, `Добавление элемента в список модалок`);
   }
 
@@ -49,7 +49,7 @@ class ModalsState extends StateModule {
    * Удалить элемент из массива модалок каталога
    */
   deleteModalElement() {
-    let newList = [...this.getState().list];
+    let newList = [...(this.getState() as IModalsState).list];
     newList.pop();
     this.setState({
       ...this.getState(),
