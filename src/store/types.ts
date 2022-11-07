@@ -40,7 +40,7 @@ export interface IModules {
 }
 
 export interface IState {
-  [key: string | number]: IBasketState | IChatState | ILocaleState | IArticleState | ISessionState | IProfileState |
+  [key: string]: IBasketState | IChatState | ILocaleState | IArticleState | ISessionState | IProfileState |
     ICanvasState | IModalsState | ICountryState | ICatalogState | ICategoriesState;
   basket: IBasketState;
   chat: IChatState;
