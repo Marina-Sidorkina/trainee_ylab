@@ -1,9 +1,8 @@
 import React, {useEffect, useState, useCallback, useMemo, useRef, LegacyRef} from 'react';
 import {cn as bem} from '@bem-react/classname';
 import './style.css';
-// @ts-ignore
-import arrow from "@src/components/custom-select/custom-select-arrow.svg";
 import CustomScroll from "@src/components/custom-scroll";
+const arrow = require("@src/components/custom-select/custom-select-arrow.svg") as string;
 
 const cn = bem('CustomSelect');
 

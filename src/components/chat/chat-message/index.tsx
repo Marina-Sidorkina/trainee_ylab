@@ -1,8 +1,7 @@
 import React from 'react';
 import {cn as bem} from "@bem-react/classname";
 import './style.less';
-// @ts-ignore
-import avatar from "@src/components/chat/chat-message/avatar-profile-svgrepo-com.svg";
+const avatar = require("@src/components/chat/chat-message/avatar-profile-svgrepo-com.svg") as string;
 
 function ChatMessage(props: {
   self: boolean;
