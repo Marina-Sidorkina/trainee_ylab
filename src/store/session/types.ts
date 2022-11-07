@@ -1,5 +1,7 @@
-export interface ISessionConfig {
-  tokenHeader: string
+import {IModuleConfig} from "@src/store/types";
+
+export interface ISessionConfig extends IModuleConfig{
+  tokenHeader: string;
 }
 
 export interface IRole {
@@ -41,7 +43,6 @@ export interface IUser {
   dateUpdate: Date;
   isDeleted: boolean;
 }
-
 
 export interface ISessionState {
   user: IUser;

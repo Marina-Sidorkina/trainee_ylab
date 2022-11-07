@@ -1,8 +1,7 @@
-import {IConfig} from "@src/store/types";
-
 /**
  * Настройки сервисов
  */
+import {IConfig} from "@src/config-types";
 
 const config: IConfig = {
   store: {

@@ -9,12 +9,13 @@
 
 export interface ITree {
   children?: ITree[];
-  _id: string;
+  _id: string | number;
   title: string;
 }
 
 export default function treeToList(tree: ITree[],
-                                   callback?: (item: ITree, level: number) => any,
+                                   callback?: (item: ITree, level: number) => ({
+                                     value: string | number, title: string;}),
                                    level: number = 0,
                                    result: any[] = []) {
   for (const item of tree) {

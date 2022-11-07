@@ -12,20 +12,13 @@ import {ICategoriesState} from "@src/store/categories/types";
 import Services from "@src/services";
 import Store from "@src/store/index";
 
-export interface IConfigStore {
-  log: boolean;
-  modules: { [session: string]: { tokenHeader: string; } };
-}
-
-export interface IConfig {
-  store: IConfigStore;
-  api: { baseUrl: string; };
-  ws: { chatURL: string; };
+export interface IModuleConfig {
+  name: string;
 }
 
 export interface IModules {
   [key: string]: any;
-  config: any;
+  config: IModuleConfig;
   services: Services;
   store: Store;
 }

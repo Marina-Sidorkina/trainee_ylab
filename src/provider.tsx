@@ -14,7 +14,7 @@ function ServicesProvider(props: { services: Services; children: React.ReactNode
   return (
     <ServicesContext.Provider value={props.services}>
       {props.children}
-      </ServicesContext.Provider>
+    </ServicesContext.Provider>
   );
 }
 

@@ -1,6 +1,7 @@
 import * as modules from './exports';
-import {IConfigStore, IModules, IState} from "@src/store/types";
+import {IModules, IState} from "@src/store/types";
 import Services from "@src/services";
+import {IConfigStore} from "@src/config-types";
 
 class Store {
 

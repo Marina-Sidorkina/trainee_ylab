@@ -1,7 +1,7 @@
 import Store from "./store";
 import APIService from "./api";
 import WSService from "@src/ws";
-import {IConfig} from "@src/store/types";
+import {IConfig} from "@src/config-types";
 
 class Services {
 
