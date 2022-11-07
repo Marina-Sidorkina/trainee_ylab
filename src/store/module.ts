@@ -1,5 +1,6 @@
 import Store from "@src/store/index";
 import Services from "@src/services";
+import {IModuleConfig} from "@src/store/types";
 
 class StateModule {
 
@@ -8,10 +9,10 @@ class StateModule {
    * @param config {Object}
    */
   store: Store;
-  config: any;
+  config: IModuleConfig;
   services: Services;
 
-  constructor(store: Store, config: any) {
+  constructor(store: Store, config: IModuleConfig) {
     this.store = store;
     this.config = config;
     this.services = store.services;

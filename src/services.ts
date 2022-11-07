@@ -6,9 +6,9 @@ import {IConfig} from "@src/config-types";
 class Services {
 
   config: IConfig;
-  _store: Store | undefined;
-  _api: APIService | undefined;
-  _ws: WSService | undefined;
+  private _store: Store | undefined;
+  private _api: APIService | undefined;
+  private _ws: WSService | undefined;
 
   constructor(config: IConfig) {
     this.config = config;

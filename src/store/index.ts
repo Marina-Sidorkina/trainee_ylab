@@ -18,7 +18,7 @@ class Store {
   constructor(services: Services, config: IConfigStore) {
     // Менеджер сервисов
     this.services = services;
-    this.config = config as IConfigStore;
+    this.config = config;
     // Состояние приложения (данные)
     this.state = {} as IState;
     // Слушатели изменений state
