@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import useSelector from "@src/hooks/use-selector";
 import {IState} from "@src/store/types";
 
-function Protected(props: {children: any; redirect: string}) {
+function Protected(props: {children: React.ReactElement; redirect: string}) {
 
   const navigate = useNavigate();
   const location = useLocation();
