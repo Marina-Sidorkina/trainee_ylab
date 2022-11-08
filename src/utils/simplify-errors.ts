@@ -1,5 +1,6 @@
 export default function simplifyErrors(issues: {path: string[]; message: string}[]){
-  const result = {} as {[key: string]: any};
+  const result = {} as {[key: string]: string[]};
+  
   for (const issue of issues){
     const key = issue.path.join('.') || 'other';
     if (result[key]){

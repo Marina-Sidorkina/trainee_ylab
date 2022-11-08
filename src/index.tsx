@@ -8,7 +8,7 @@ import config from "./config";
 
 // Менеджер сервисов
 const services = new Services(config);
-const rootElement: Element | DocumentFragment | null = document.getElementById('root');
+const rootElement: HTMLElement | null = document.getElementById('root');
 
 // Корень React приложения
 if (rootElement) {
