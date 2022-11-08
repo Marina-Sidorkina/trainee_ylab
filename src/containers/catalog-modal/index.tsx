@@ -38,7 +38,6 @@ function CatalogModalContainer (props: {index: number}) {
     modals: state.modals.list,
   }));
 
-
   const {t} = useTranslate();
 
   const callbacks = {
